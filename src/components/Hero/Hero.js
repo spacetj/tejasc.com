@@ -1,17 +1,53 @@
 import React from "react";
 import PropTypes from "prop-types";
+import Particles from 'react-particles-js'
 
 import { FaArrowDown } from "react-icons/fa/";
+import ResumeData from "../../../content/resume/resume.yaml";
 
 const Hero = props => {
   const { scrollToContent, backgrounds, theme } = props;
+  var heroText = ResumeData.main.name
+  var heroSubtitle = ResumeData.main.description
 
   return (
     <React.Fragment>
-      <section className="hero">
+      <section className="hero" style={{color: "white"}}>
+      <Particles style={{position:"absolute", top:0, left:0,width:"100%", height:"60%"}} params={{
+  "particles": {
+    "number": {
+      "value": 100,
+    },
+    "color": {
+      "value": "#ffffff"
+    },
+    "size": {
+      "value": 10,
+      "random": true,
+      "anim": {
+        "enable": false,
+        "speed": 80,
+        "size_min": 0.1,
+        "sync": false
+      }
+    }
+  },
+  "interactivity": {
+    "detect_on": "canvas",
+    "events": {
+      "onhover": {
+        "enable": true,
+        "mode": "repulse"
+      }
+    }
+  }
+      }}/>
         <h1>
-          This is a demo site of&nbsp;the <strong>heroBlog</strong> GatsbyJS starter
+          {heroText}
         </h1>
+        <h4 style={{padding: "0 0 60px 0"}}>
+          {heroSubtitle}
+        </h4>
         <button onClick={scrollToContent} aria-label="scroll">
           <FaArrowDown />
         </button>
