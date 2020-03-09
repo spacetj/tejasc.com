@@ -1,15 +1,15 @@
 module.exports = {
-  siteTitle: "tejasc", // <title>
+  siteTitle: "Tejas Cherukara", // <title>
   shortSiteTitle: "tejasc", // <title> ending for posts and pages
-  siteDescription: "Adventures of tejasc.",
-  siteUrl: "https://gatsby-starter-hero-blog.greglobinski.com",
+  siteDescription: "Tejas Cherukara",
+  siteUrl: "https://tejasc.com",
   // pathPrefix: "",
   siteImage: "preview.jpg",
   siteLanguage: "en",
 
   /* author */
   authorName: "tejas cherukara",
-  authorTwitterAccount: "greglobinski",
+  authorTwitterAccount: "space_tj",
 
   /* info */
   headerTitle: "/home/tejasc",
@@ -17,7 +17,7 @@ module.exports = {
 
   /* manifest.json */
   manifestName: "/home/tejasc Blog",
-  manifestShortName: "HeroBlog", // max 12 characters
+  manifestShortName: "tejasc", // max 12 characters
   manifestStartUrl: "/index.html",
   manifestBackgroundColor: "white",
   manifestThemeColor: "#666",
@@ -32,8 +32,8 @@ module.exports = {
 
   // social
   authorSocialLinks: [
-    { name: "github", url: "https://github.com/greglobinski" },
-    { name: "twitter", url: "https://twitter.com/greglobinski" },
-    { name: "facebook", url: "http://facebook.com/greglobinski" }
+    { name: "github", url: "https://github.com/spacetj" },
+    { name: "twitter", url: "https://twitter.com/space_tj" },
+    { name: "linkedin", url: "http://linkedin.com/in/tejasc" }
   ]
 };

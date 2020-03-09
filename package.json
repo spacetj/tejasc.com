@@ -1,7 +1,7 @@
 {
   "name": "gatsby-starter-hero-blog",
   "version": "2.0.0",
-  "author": "Greg Lobinski <greglobinski@gmail.com>",
+  "author": "Tejas Cherukara <tejas.cherukara@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "@material-ui/core": "^4.9.5",
