@@ -1,8 +1,8 @@
 module.exports = {
-  siteTitle: "Tejas Cherukara", // <title>
-  shortSiteTitle: "tejasc", // <title> ending for posts and pages
-  siteDescription: "Tejas Cherukara",
-  siteUrl: "https://tejasc.com",
+  siteTitle: "Tejas Cherukara - Adventures, Projects and Blog", // <title>
+  shortSiteTitle: "Tejas Cherukara - Adventures, Projects and Blog", // <title> ending for posts and pages
+  siteDescription: "Tejas Cherukara - Personal website to capture my adventures, thoughts, projects and blogs",
+  siteUrl: "http://tejasc.com",
   // pathPrefix: "",
   siteImage: "preview.jpg",
   siteLanguage: "en",
