@@ -22,4 +22,4 @@ jobs:
         APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
         CLI: gsutil
       with:
-        args: -m rsync ./public/* gs://www.tejasc.com
+        args: -m rsync -d -R ./public/* gs://www.tejasc.com
