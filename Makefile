@@ -15,7 +15,7 @@ a: help
 
 ## Deploy public folder into the Google Cloud Storage bucket
 deploy:
-	@cd ./public && gsutil -m rsync -d -R . ${BUCKET_NAME}; \
+	@cd ./public && gsutil -m rsync -R . ${BUCKET_NAME}; \
   if [ $$? -eq 0 ]; then \
     echo "✅ Deployed successfully"; \
   else \
