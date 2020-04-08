@@ -48,9 +48,17 @@ const Hero = props => {
         <h4 style={{padding: "0 0 60px 0"}}>
           {heroSubtitle}
         </h4>
+        <div>
+        {/* <button onClick={scrollToContent} aria-label="scroll" style={{margin: "0 0 0 -60px"}}>
+          <FaArrowDown />
+        </button> */}
         <button onClick={scrollToContent} aria-label="scroll">
           <FaArrowDown />
         </button>
+        {/* <button onClick={scrollToContent} aria-label="scroll" style={{margin: "0 0 0 60px"}}>
+          <FaArrowDown /> */}
+        {/* </button> */}
+        </div>
       </section>
 
       {/* --- STYLES --- */}

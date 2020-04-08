@@ -68,3 +68,9 @@ yarn-error.log
 
 # other
 report/
+
+# terraform
+infra/*state
+infra/*credential*
+infra/.terraform
+infra/*.plan

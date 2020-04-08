@@ -58,6 +58,7 @@ Meta.propTypes = {
   prefix: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
   category: PropTypes.string,
+  publish: PropTypes.bool,
   theme: PropTypes.object.isRequired
 };
 

@@ -17,6 +17,7 @@ const Item = props => {
         title,
         category,
         author,
+        publish,
         cover: {
           children: [{ fluid }]
         }

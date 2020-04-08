@@ -20,7 +20,9 @@ const CategoryPage = props => {
 
   // Create category list
   const categories = {};
-  posts.forEach(edge => {
+  posts.filter(post => {
+    return post.node.frontmatter.publish
+  }).forEach(edge => {
     const {
       node: {
         frontmatter: { category }
@@ -100,6 +102,7 @@ export const query = graphql`
             title
             category
             author
+            publish
             cover {
               children {
                 ... on ImageSharp {

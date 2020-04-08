@@ -10,7 +10,9 @@ const Blog = props => {
     <React.Fragment>
       <main className="main">
         <ul>
-          {posts.map(post => {
+          {posts.filter(post => {
+            return post.node.frontmatter.publish
+          }).map(post => {
             const {
               node,
               node: {

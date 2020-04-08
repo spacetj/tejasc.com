@@ -1,4 +1,4 @@
-.PHONY: a deploy create.bucket
+.PHONY: a deploy create.bucket plan apply
 
 #❌⚠️✅
 # COLORS
@@ -9,7 +9,7 @@ RED    := $(shell tput -Txterm setaf 1)
 CYAN   := $(shell tput -Txterm setaf 6)
 RESET  := $(shell tput -Txterm sgr0)
 
-BUCKET_NAME := gs://www.tejasc.com
+BUCKET_NAME := gs://tejasc.com
 
 a: help
 
@@ -22,10 +22,11 @@ deploy:
     echo "❌ Deployment failed"; \
   fi
 
-## Create the bucket and give people access to it
-create.bucket:
-  gsutil mb ${BUCKET_NAME}; \
-  gsutil iam ch allUsers:objectViewer ${BUCKET_NAME};
+plan:
+	@./infra/bin/terraform-plan.sh
+
+apply:
+	@./infra/bin/terraform-apply.sh
 
 ## Show help
 help:

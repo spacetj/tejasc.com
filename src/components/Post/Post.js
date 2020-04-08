@@ -24,7 +24,7 @@ const Post = props => {
     post: {
       html,
       fields: { prefix, slug },
-      frontmatter: { title, author, category }
+      frontmatter: { title, author, category, publish }
     },
     authornote,
     facebook,
