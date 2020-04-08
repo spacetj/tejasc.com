@@ -14,7 +14,7 @@ resource "cloudflare_record" "cname" {
 # Add cname record to the domain
 resource "cloudflare_record" "www-cname" {
   zone_id = cloudflare_zone.zone.id
-  name    = "www.tejasc.com"
+  name    = format("www.%s", var.domain)
   value   = var.domain
   type    = "CNAME"
   proxied = true
@@ -60,12 +60,12 @@ resource "cloudflare_zone_settings_override" "test" {
 # Add a page rule to the domain
 resource "cloudflare_page_rule" "github-rewrite" {
   zone_id = cloudflare_zone.zone.id
-  target = "tejasc.com/gh"
+  target = format("%s/code", var.domain)
   priority = 2
 
   actions {
     forwarding_url {
-      url = "https://github.com/spacetj"
+      url = format("https://github.com/spacetj/%s", var.domain)
       status_code  = "301"
     }
   }
@@ -74,12 +74,12 @@ resource "cloudflare_page_rule" "github-rewrite" {
 # Add a page rule to the domain
 resource "cloudflare_page_rule" "www-rewrite" {
   zone_id = cloudflare_zone.zone.id
-  target = "www.tejasc.com/*"
+  target = format("www.%s/*", var.domain)
   priority = 1
 
   actions {
     forwarding_url {
-      url = "https://tejasc.com/$1"
+      url = format("https://%s/$1", var.domain)
       status_code  = "301"
     }
   }
