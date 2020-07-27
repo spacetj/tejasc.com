@@ -11,8 +11,12 @@ provider "google" {
 terraform {
   required_version = ">= 0.12.24"
 
-  backend "gcs" {
-    bucket = "management-tejasc"
-    prefix = "website"
+  backend "remote" {
+    hostname      = "app.terraform.io"
+    organization  = "tejasc"
+
+    workspaces {
+      name = "website"
+    }
   }
 }

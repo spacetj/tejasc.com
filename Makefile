@@ -15,18 +15,7 @@ a: help
 
 ## Deploy public folder into the Google Cloud Storage bucket
 deploy:
-	@cd ./public && gsutil -m rsync -R . ${BUCKET_NAME}; \
-  if [ $$? -eq 0 ]; then \
-    echo "✅ Deployed successfully"; \
-  else \
-    echo "❌ Deployment failed"; \
-  fi
-
-plan:
-	@./infra/bin/terraform-plan.sh
-
-apply:
-	@./infra/bin/terraform-apply.sh
+	@./scripts/deploy-gcs.sh
 
 ## Show help
 help:
