@@ -60,7 +60,8 @@
     "tinycolor2": "^1.4.1",
     "typeface-open-sans": "^0.0.54",
     "typewriter-effect": "^2.12.2",
-    "yaml-loader": "^0.5.0"
+    "yaml-loader": "^0.5.0",
+    "@babel/compat-data": "^7.9.0"
   },
   "keywords": [
     "gatsby"

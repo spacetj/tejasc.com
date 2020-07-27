@@ -17,6 +17,9 @@ a: help
 deploy:
 	@./scripts/deploy-gcs.sh
 
+plan:
+	@./infra/bin/terraform-plan.sh
+
 ## Show help
 help:
 	@echo ''
