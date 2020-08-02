@@ -6,12 +6,10 @@ source ./infra/.credentials
 : "${CLOUDFLARE_API_TOKEN:?CLOUDFLARE_API_TOKEN needs to be set}"
 : "${GOOGLE_CREDENTIALS:?GOOGLE_CREDENTIALS needs to be set}"
 
-TERRAFORM=/usr/local/bin/terraform12
-
 cd ./infra
 
-${TERRAFORM} init -reconfigure -input=false;
+terraform init -reconfigure -input=false;
 
-${TERRAFORM} validate;
+terraform validate;
 
-${TERRAFORM} plan -input=false -out infra.plan;
+terraform plan -input=false;
