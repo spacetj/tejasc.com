@@ -29,6 +29,16 @@ resource "cloudflare_record" "google-verification" {
   proxied = false
 }
 
+# Add cname record to the domain
+resource "cloudflare_record" "mx" {
+  count = length(local.mx_records)
+  zone_id = cloudflare_zone.zone.id
+  name    = "gmail-alias-${count.index}"
+  value   = local.mx_records[count.index]
+  ttl     = 3600
+  type    = "MX"
+}
+
 resource "cloudflare_zone_settings_override" "test" {
     zone_id = cloudflare_zone.zone.id
     settings {
