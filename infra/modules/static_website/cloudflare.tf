@@ -33,7 +33,7 @@ resource "cloudflare_record" "google-verification" {
 resource "cloudflare_record" "mx" {
   count = length(local.mx_records)
   zone_id = cloudflare_zone.zone.id
-  name    = "Blank or @"
+  name    = "@"
   value   = local.mx_records[count.index]
   ttl     = 3600
   type    = "MX"
