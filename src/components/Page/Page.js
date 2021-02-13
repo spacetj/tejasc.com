@@ -1,31 +1,24 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import Headline from "../Article/Headline";
-import Bodytext from "../Article/Bodytext";
+import Article from "../Main/Article";
+import PageHeader from "./PageHeader";
+import Content from "../Main/Content";
 
 const Page = props => {
-  const {
-    page: {
-      html,
-      frontmatter: { title }
-    },
-    theme
-  } = props;
+  const { page } = props;
+  const html = (page || {}).html;
 
   return (
-    <React.Fragment>
-      <header>
-        <Headline title={title} theme={theme} />
-      </header>
-      <Bodytext html={html} theme={theme} />
-    </React.Fragment>
+    <Article>
+      <PageHeader {...page.frontmatter} />
+      <Content html={html} />
+    </Article>
   );
 };
 
 Page.propTypes = {
-  page: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired
+  page: PropTypes.object.isRequired
 };
 
 export default Page;

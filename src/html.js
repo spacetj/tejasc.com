@@ -1,15 +1,29 @@
+/* eslint  react/prop-types: 0 */
 import React from "react";
-import PropTypes from "prop-types";
 
-export default class HTML extends React.Component {
+let stylesStr;
+if (process.env.NODE_ENV === `production`) {
+  try {
+    stylesStr = require(`!raw-loader!../public/styles.css`);
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+module.exports = class HTML extends React.Component {
   render() {
+    let css;
+    if (process.env.NODE_ENV === `production`) {
+      css = <style id="gatsby-inlined-css" dangerouslySetInnerHTML={{ __html: stylesStr }} />;
+    }
     return (
       <html {...this.props.htmlAttributes}>
         <head>
           <meta charSet="utf-8" />
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
-          <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
           {this.props.headComponents}
+          {css}
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-status-bar-style" content="#D0E0D8" />
           <meta name="apple-mobile-web-app-title" content="Lazywill" />
@@ -25,12 +39,9 @@ export default class HTML extends React.Component {
           <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
           <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
           <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png" />
-          <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossOrigin="anonymous" />
-          <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossOrigin="anonymous" />
-          <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossOrigin="anonymous"></script>
-          <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js" crossOrigin="anonymous"></script>
         </head>
         <body {...this.props.bodyAttributes}>
+          <noscript>You need to enable JavaScript to run this app!</noscript>
           {this.props.preBodyComponents}
           <div key={`body`} id="___gatsby" dangerouslySetInnerHTML={{ __html: this.props.body }} />
           {this.props.postBodyComponents}
@@ -38,13 +49,4 @@ export default class HTML extends React.Component {
       </html>
     );
   }
-}
-
-HTML.propTypes = {
-  htmlAttributes: PropTypes.object,
-  headComponents: PropTypes.array,
-  bodyAttributes: PropTypes.object,
-  preBodyComponents: PropTypes.array,
-  body: PropTypes.string,
-  postBodyComponents: PropTypes.array
 };

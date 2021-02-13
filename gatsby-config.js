@@ -2,10 +2,10 @@ require("dotenv").config();
 const config = require("./content/meta/config");
 
 const query = `{
-  allMarkdownRemark( filter: { fields: { slug: { ne: null } } }) {
+  allMarkdownRemark(filter: { id: { regex: "//posts|pages//" } }) {
     edges {
       node {
-        objectID: fileAbsolutePath
+        objectID: id
         fields {
           slug
         }
@@ -14,6 +14,7 @@ const query = `{
         }
         frontmatter {
           title
+          subTitle
         }
       }
     }
@@ -23,36 +24,37 @@ const query = `{
 const queries = [
   {
     query,
-    transformer: ({ data }) => {
-      return data.allMarkdownRemark.edges.reduce(transformer, []);
-    }
+    transformer: ({ data }) => data.allMarkdownRemark.edges.map(({ node }) => node)
   }
 ];
 
 module.exports = {
-  // pathPrefix: config.pathPrefix,
   siteMetadata: {
     title: config.siteTitle,
     description: config.siteDescription,
     siteUrl: config.siteUrl,
+    pathPrefix: config.pathPrefix,
+    algolia: {
+      appId: process.env.ALGOLIA_APP_ID ? process.env.ALGOLIA_APP_ID : "",
+      searchOnlyApiKey: process.env.ALGOLIA_SEARCH_ONLY_API_KEY
+        ? process.env.ALGOLIA_SEARCH_ONLY_API_KEY
+        : "",
+      indexName: process.env.ALGOLIA_INDEX_NAME ? process.env.ALGOLIA_INDEX_NAME : ""
+    },
     facebook: {
       appId: process.env.FB_APP_ID ? process.env.FB_APP_ID : ""
     }
   },
   plugins: [
-    `gatsby-plugin-styled-jsx`, // the plugin's code is inserted directly to gatsby-node.js and gatsby-ssr.js files
-    `gatsby-plugin-styled-jsx-postcss`, // as above
+    `gatsby-plugin-react-next`,
     {
-      resolve: `gatsby-plugin-layout`,
+      resolve: `gatsby-plugin-algolia`,
       options: {
-        component: require.resolve(`./src/layouts/`)
-      }
-    },
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `images`,
-        path: `${__dirname}/src/images/`
+        appId: process.env.ALGOLIA_APP_ID ? process.env.ALGOLIA_APP_ID : "",
+        apiKey: process.env.ALGOLIA_ADMIN_API_KEY ? process.env.ALGOLIA_ADMIN_API_KEY : "",
+        indexName: process.env.ALGOLIA_INDEX_NAME ? process.env.ALGOLIA_INDEX_NAME : "",
+        queries,
+        chunkSize: 10000 // default: 1000
       }
     },
     {
@@ -96,27 +98,7 @@ module.exports = {
           },
           `gatsby-remark-prismjs`,
           `gatsby-remark-copy-linked-files`,
-          `gatsby-remark-smartypants`,
-          {
-            resolve: "gatsby-remark-emojis",
-            options: {
-              // Deactivate the plugin globally (default: true)
-              active: true,
-              // Add a custom css class
-              class: "emoji-icon",
-              // Select the size (available size: 16, 24, 32, 64)
-              size: 64,
-              // Add custom styles
-              styles: {
-                display: "inline",
-                margin: "0",
-                "margin-top": "1px",
-                position: "relative",
-                top: "5px",
-                width: "25px"
-              }
-            }
-          }
+          `gatsby-remark-smartypants`
         ]
       }
     },
@@ -200,7 +182,6 @@ module.exports = {
               return allMarkdownRemark.edges.map(edge => {
                 return Object.assign({}, edge.node.frontmatter, {
                   description: edge.node.excerpt,
-                  date: edge.node.fields.prefix,
                   url: site.siteMetadata.siteUrl + edge.node.fields.slug,
                   guid: site.siteMetadata.siteUrl + edge.node.fields.slug,
                   custom_elements: [{ "content:encoded": edge.node.html }]
@@ -212,15 +193,7 @@ module.exports = {
                 allMarkdownRemark(
                   limit: 1000,
                   sort: { order: DESC, fields: [fields___prefix] },
-                  filter: {
-                    fields: {
-                      prefix: { ne: null },
-                      slug: { ne: null }
-                    },
-                    frontmatter: {
-                      author: { ne: null }
-                    }
-                  }
+                  filter: { id: { regex: "//posts//" } }
                 ) {
                   edges {
                     node {

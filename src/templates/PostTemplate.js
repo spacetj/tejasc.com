@@ -1,53 +1,60 @@
-import PropTypes from "prop-types";
 import React from "react";
-import { graphql } from "gatsby";
+import PropTypes from "prop-types";
+import Main from "../components/Main/";
+import { connect } from "react-redux";
+require("core-js/fn/array/find");
 require("prismjs/themes/prism-okaidia.css");
 
+import { setNavigatorPosition, setNavigatorShape } from "../state/store";
+import { moveNavigatorAside } from "../utils/shared";
+import Post from "../components/Post/";
+import Footer from "../components/Footer/";
 import Seo from "../components/Seo";
-import Article from "../components/Article";
-import Post from "../components/Post";
-import { ThemeContext } from "../layouts";
 
-const PostTemplate = props => {
-  const {
-    data: {
-      post,
-      authornote: { html: authorNote },
-      site: {
-        siteMetadata: { facebook }
-      }
-    },
-    pageContext: { next, prev }
-  } = props;
+class PostTemplate extends React.Component {
+  moveNavigatorAside = moveNavigatorAside.bind(this);
 
-  return (
-    <React.Fragment>
-      <ThemeContext.Consumer>
-        {theme => (
-          <Article theme={theme}>
-            <Post
-              post={post}
-              next={next}
-              prev={prev}
-              authornote={authorNote}
-              facebook={facebook}
-              theme={theme}
-            />
-          </Article>
-        )}
-      </ThemeContext.Consumer>
+  componentDidMount() {
+    if (this.props.navigatorPosition === "is-featured") {
+      this.moveNavigatorAside();
+    }
+  }
 
-      <Seo data={post} facebook={facebook} />
-    </React.Fragment>
-  );
-};
+  render() {
+    const { data, pathContext } = this.props;
+    const facebook = (((data || {}).site || {}).siteMetadata || {}).facebook;
+
+    return (
+      <Main>
+        <Post post={data.post} slug={pathContext.slug} author={data.author} facebook={facebook} />
+        <Footer footnote={data.footnote} />
+        <Seo data={data.post} facebook={facebook} />
+      </Main>
+    );
+  }
+}
 
 PostTemplate.propTypes = {
   data: PropTypes.object.isRequired,
-  pageContext: PropTypes.object.isRequired
+  pathContext: PropTypes.object.isRequired,
+  navigatorPosition: PropTypes.string.isRequired,
+  setNavigatorPosition: PropTypes.func.isRequired,
+  isWideScreen: PropTypes.bool.isRequired
 };
 
-export default PostTemplate;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    navigatorPosition: state.navigatorPosition,
+    isWideScreen: state.isWideScreen
+  };
+};
+
+const mapDispatchToProps = {
+  setNavigatorPosition,
+  setNavigatorShape
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostTemplate);
 
 //eslint-disable-next-line no-undef
 export const postQuery = graphql`
@@ -55,14 +62,14 @@ export const postQuery = graphql`
     post: markdownRemark(fields: { slug: { eq: $slug } }) {
       id
       html
+      htmlAst
       fields {
         slug
         prefix
       }
       frontmatter {
         title
-        author
-        category
+        subTitle
         publish
         cover {
           childImageSharp {
@@ -73,7 +80,11 @@ export const postQuery = graphql`
         }
       }
     }
-    authornote: markdownRemark(fileAbsolutePath: { regex: "/author/" }) {
+    author: markdownRemark(id: { regex: "/author/" }) {
+      id
+      html
+    }
+    footnote: markdownRemark(id: { regex: "/footnote/" }) {
       id
       html
     }
