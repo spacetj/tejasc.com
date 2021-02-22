@@ -1,33 +1,31 @@
 import React from "react";
 import PropTypes from "prop-types";
 import injectSheet from "react-jss";
-import Obfuscate from "react-obfuscate";
+
 
 import Main from "../components/Main";
 import Article from "../components/Main/Article";
 import PageHeader from "../components/Page/PageHeader";
 import Content from "../components/Main/Content";
-import Form from "../components/ContactForm";
-import config from "../../content/meta/config";
+import Resume from "../components/Resume";
 
 const styles = theme => ({});
 
-const Contact = () => {
+const ResumeContent = () => {
   return (
     <Main>
       <Article>
-        <PageHeader title="$ tejasc contact" />
+        <PageHeader title="$ tejasc portfolio --display=changelog" />
         <Content>
-        Coming Soon to a webpage near you. In the meantime, get in touch at <Obfuscate email={config.contactEmail} />
+            <Resume></Resume>
         </Content>
-        {/* <Form /> */}
       </Article>
     </Main>
   );
 };
 
-Contact.propTypes = {
+ResumeContent.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default injectSheet(styles)(Contact);
+export default injectSheet(styles)(ResumeContent);

@@ -5,17 +5,110 @@ cover: whatever.jpg
 category: "cloud-native"
 ---
 
-What does it mean for an application to be production ready in this day and age?
+Its qualitative and quantitative growth scales are known.
 
-Thankfully industry leader a lot smarter than me have given this a lot of thought!
+It uses hardware resources efficiently.
 
-If you havn't seen the following resources, I would definitely recommend going through them before reading this blog:
+Its resource bottlenecks and requirements have been identified.
 
-- [Building Production Ready Application](https://www.infoq.com/presentations/production-ready-applications/) by Michael Kehoe
-- [Production-Ready Microservices](https://www.amazon.com.au/Production-Ready-Microservices-Standardized-Engineering-Organization/dp/1491965975/ref=asc_df_1491965975/?tag=googleshopdsk-22&linkCode=df0&hvadid=341791741598&hvpos=&hvnetw=g&hvrand=11583469740343046994&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9071462&hvtargid=pla-504426002607&psc=1) by Susan J. Fowler
+Capacity planning is automated and performed on a scheduled basis.
 
-Regardless of the technologies, the tenets / principles that Susan refers to are 
+Its dependencies will scale with it.
 
-There is an increasing trend of moving common networking, observability and fault tolernence out of applications and into 
+It will scale with its clients.
 
-In these series of blog posts, I'll be exploring the different tools available in
+Its traffic patterns are understood.
+
+Traffic can be re-routed in case of failures.
+
+It is written in a programming language that allows it to be scalable and performant.
+
+It handles and processes tasks in a performant manner.
+
+It handles and stores data in a scalable and performant way.
+
+
+
+
+Scalability and Performance
+Knowing the Growth Scale
+What is this microservice’s qualitative growth scale?
+
+What is this microservice’s quantitative growth scale?
+
+Efficient Use of Resources
+Is the microservice running on dedicated or shared hardware?
+
+Are any resource abstraction and allocation technologies being used?
+
+Resource Awareness
+What are the microservice’s resource requirements (CPU, RAM, etc.)?
+
+How much traffic can one instance of the microservice handle?
+
+How much CPU does one instance of the microservice require?
+
+How much memory does one instance of the microservice require?
+
+Are there any other resource requirements that are specific to this microservice?
+
+What are the resource bottlenecks of this microservice?
+
+Does this microservice need to be scaled vertically, horizontally, or both?
+
+Capacity Planning
+Is capacity planning performed on a scheduled basis?
+
+What is the lead time for new hardware?
+
+How often are hardware requests made?
+
+Are any microservices given priority when hardware requests are made?
+
+Is capacity planning automated or is it manual?
+
+Dependency Scaling
+What are this microservice’s dependencies?
+
+Are the dependencies scalable and performant?
+
+Will the dependencies scale with this microservice’s expected growth?
+
+Are dependency owners prepared for this microservice’s expected growth?
+
+Traffic Management
+Are the microservice’s traffic patterns well understood?
+
+Are changes to the service scheduled around traffic patterns?
+
+Are drastic changes in traffic patterns (especially bursts of traffic) handled carefully and appropriately?
+
+Can traffic be automatically routed to other datacenters in case of failure?
+
+Task Handling and Processing
+Is the microservice written in a programming language that will allow the service to be scalable and performant?
+
+Are there any scalability or performance limitations in the way the microservice handles requests?
+
+Are there any scalability or performance limitations in the way the microservice processes tasks?
+
+Do developers on the microservice team understand how their service processes tasks, how efficiently it processes those tasks, and how the service will perform as the number of tasks and requests increases?
+
+Scalable Data Storage
+Does this microservice handle data in a scalable and performant way?
+
+What type of data does this microservice need to store?
+
+What is the schema needed for its data?
+
+How many transactions are needed and/or made per second?
+
+Does this microservice need higher read or write performance?
+
+Is it read-heavy, write-heavy, or both?
+
+Is this service’s database scaled horizontally or vertically? Is it replicated or partitioned?
+
+Is this microservice using a dedicated or shared database?
+
+How does the service handle and/or store test data?

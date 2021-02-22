@@ -5,17 +5,52 @@ cover: whatever.jpg
 category: "cloud-native"
 ---
 
-What does it mean for an application to be production ready in this day and age?
+It has no single point of failure.
 
-Thankfully industry leader a lot smarter than me have given this a lot of thought!
+All failure scenarios and possible catastrophes have been identified.
 
-If you havn't seen the following resources, I would definitely recommend going through them before reading this blog:
+It is tested for resiliency through code testing, load testing, and chaos testing.
 
-- [Building Production Ready Application](https://www.infoq.com/presentations/production-ready-applications/) by Michael Kehoe
-- [Production-Ready Microservices](https://www.amazon.com.au/Production-Ready-Microservices-Standardized-Engineering-Organization/dp/1491965975/ref=asc_df_1491965975/?tag=googleshopdsk-22&linkCode=df0&hvadid=341791741598&hvpos=&hvnetw=g&hvrand=11583469740343046994&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9071462&hvtargid=pla-504426002607&psc=1) by Susan J. Fowler
+Failure detection and remediation has been automated.
 
-Regardless of the technologies, the tenets / principles that Susan refers to are 
+There are standardized incident and outage procedures in place within the microservice development team and across the organization.
 
-There is an increasing trend of moving common networking, observability and fault tolernence out of applications and into 
 
-In these series of blog posts, I'll be exploring the different tools available in
+Fault Tolerance and Catastrophe-Preparedness
+Avoiding Single Points of Failure
+Does the microservice have a single point of failure?
+
+Does it have more than one point of failure?
+
+Can any points of failure be architected away, or do they need to be mitigated?
+
+Catastrophes and Failure Scenarios
+Have all of the microservice’s failure scenarios and possible catastrophes been identified?
+
+What are common failures across the microservice ecosystem?
+
+What are the hardware-layer failure scenarios that can affect this microservice?
+
+What communication-layer and application-layer failures can affect this microservice?
+
+What sorts of dependency failures can affect this microservice?
+
+What are the internal failures that could bring down this microservice?
+
+Resiliency Testing
+Does this microservice have appropriate lint, unit, integration, and end-to-end tests?
+
+Does this microservice undergo regular, scheduled load testing?
+
+Are all possible failure scenarios implemented and tested using chaos testing?
+
+Failure Detection and Remediation
+Are there standardized processes across the engineering organization(s) for handling incidents and outages?
+
+How do failures and outages of this microservice impact the business?
+
+Are there clearly defined levels of failure?
+
+Are there clearly defined mitigation strategies?
+
+Does the team follow the five stages of incident response when incidents and outages occur?

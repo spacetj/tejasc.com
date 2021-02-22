@@ -1,10 +1,9 @@
 ---
-title: About
-menuTitle: about
+title: $ tejasc —help
+menuTitle: /usr/tejasc
 ---
 
-## $ tejasc --help
-As an aspiring Cyber Security Engineer with a proven background in Reliability Engineer, I focus on automating toil, improving observability, enforcing Error Budgets and architecting GCP services. I'm a strong believer in Open Source and Shift Left philosophies. When I'm not working, you'll find me snowboarding or riding my Benelli Leoncino motorcycle through the woods.
+As an aspiring Cyber Security Engineer with a proven background in Reliability Engineer, I focus on automating toil, improving observability, enforcing Error Budgets and architecting GCP services. I'm a strong believer in Open Source and Shift Left philosophies. When I'm not working, you'll find me snowboarding or riding my Benelli Leoncino motorcycle.
 
 Global Options:
 
@@ -14,72 +13,3 @@ Global Options:
 * **--current-company**	 Australia and New Zealand Bank
 * **--github** 	         https://github.com/spacetj
 * **--linkedin**	         https://www.linkedin.com/in/tejasc/
-
-
-## $ tejasc certs --help
-
-```yaml
-  - school: Google Cloud
-    degree: Certified Hybrid/Multi-Cloud Fellow
-    graduated: Oct 2020
-    description: https://cloud.google.com/certification/hybrid-multi-cloud/certified-fellows
-  - school: Cloud Native Computing Foundation
-    degree: Certified Kubernetes Administrator
-    graduated: Nov 2019
-    description: Terminal based 3 hour exam which test skills to manage and administer a Kubernetes cluster. https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka/
-  - school: RMIT
-    degree: Graduate Certificate in Cyber Security
-    graduated: Jul 2019
-    description: Fundamentals of Cyber Security, Ethical Hacking, Cryptography and Web Security
-  - school: Google Cloud
-    degree: Professional Cloud Architect
-    graduated: Apr 2019
-    description: Tests ones ability to design, develop, and manage robust, secure, scalable, highly available, and dynamic solutions to drive business objectives. https://cloud.google.com/certification/cloud-architect
-  - school: Cloud Native Computing Foundation
-    degree: Certified Kubernetes Application Developer
-    graduated: Jan 2019
-    description: CKAD certifies that users can design, build, configure, and expose cloud native applications for Kubernetes. https://www.cncf.io/certification/ckad/
-  - school: University of Melbourne
-    degree: Bachelor of Science Majoring in Computing and Software Systems
-    graduated: Jul 2018
-    description: Bachelors degree with a focus on building complex Software System.
-  - school: European Innovation Academy
-    degree: Extreme Entrepreneurship Accelerator Diploma
-    graduated: Jul 2016
-    description: Created a virtual memory palace using AFrame and Javascript to convert PDF and powerpoint lectures into interactive virtual reality rooms.
-```
-
-### $ tejasc work --help
-
-```yaml
-  - start: Sept 2018
-    company: Australia and New Zealand Bank
-    title: Site Reliability Engineer
-    end: Present
-    description: Create and maintain production grade infrastructure in GCP using Terraform. Use Google Kubernetes Engine and Istio in production. Enforce security and compliance as code using various tools such as Open Agent Policy and Istio. Utilise Spinnaker to build blue/green, canary and automated canary deployment pipelines. Use Prometheus, Grafana, Jaeger, Kiali, Stackdriver Debugger and Profiler for application monitoring and observability.
-  - start: Apr 2017
-    company: Utility Software Services
-    title: Junior Full Stack Engineer
-    end: Sept 2018
-    description: Building a full stack customer billing web application. Frontend -> AngularJS, Typescript, Javascript, SASS, Jasmine/Karma Testing, Webpack, NPM Packages. Backend -> Java 8 with Asynchronous programming, Play Framework, SBT, Lombok, Guice, Docker, MySQL.
-  - start: Jun 2014
-    company: University of Melbourne
-    title: Student IT Intern
-    end: Jun 2017
-    description: Assist customers with face to face and online enquires regarding the university IT system. Help them connect to the internet and assist with day to day software and hardware enquiries. Check and keep record of the functionality of over 500 computers and 10 multi-functional printers, attempt first level troubleshooting and report it them to appropriate service desk.
-```
-
-### $ tejasc portfolio --help
-
-```yaml
-  - title: KubeSummit Sydney 2019, Open Policy Agent Testing and Templating
-    category: Speaker
-    image: canadian-wanderlust.jpg
-    url: https://www.youtube.com/watch?v=tGDAuij5RvE
-    description: This talk discusses the significant role OPA plays in a large banking context, and how we went about productionising the deployment across a number of use-cases.
-  - title: Kubernetes Meetup, Automated Canary Analysis with Spinnaker & Istio
-    category: Speaker
-    image: fury-fighting-gear.jpg
-    url: https://www.meetup.com/en-AU/Melbourne-Kubernetes-Meetup/events/261303312/
-    description:  Canary testing and its benefits. Importance of baseline deployment, and comparing canary with the baseline. Traffic redirection with Istio VirtualServices. Automated canary analysis with Spinnaker
-```
