@@ -13,7 +13,18 @@ If you havn't come across these resources yet, I would definitely recommend goin
 - 📹 [Building Production Ready Application][production-ready-talk] by Michael Kehoe
 - 📕 [Production-Ready Microservices][production-readiness-book] by Susan J. Fowler
 
-As technology evolves, there are several tools that help achieve each of the tenets of production readiness mentioned by Susan J. Fowler. In this series of blog posts, I'll be exploring the different cloud native tools which helps implement these production readiness principles. My goal for this series is to introduce you to atleast 1 new tools which you might not have come across before.
+There are 8 main tenets of production readiness that are highlighted in these resources:
+
+- 🔗 Stability
+- 🎯 Reliability
+- 🥁 Performance
+- 📈 Scalability
+- ✂️ Fault Tolerance
+- 💥 Disaster Recovery
+- 🔍 Monitoring
+- 📕 Documentation
+
+As technology evolves, there are several tools that help achieve each of these tenets of production readiness mentioned by Susan J. Fowler. In this series of blog posts, I'll be exploring the different cloud native tools which helps implement these principles. My goal for this series is to introduce you to atleast 1 new tools which you might not have come across before.
 
 The tools mentioned in this blog are just examples of tools available, and might not be the best suited for your usecase. Hopefully this will give you a starting point so you can research the tools that is most appropriate for your ecosystem.
 
@@ -35,13 +46,23 @@ Stability and Realiability is the first 2 production readiness principles mentio
 
 ### Local Testing
 
-
 #### KIND
 
 <img align="left" style="width:100px; height:60px;" src="./assets/kind.png" />
 
-
 Some text about the kind will go here. But when this is viewed in the browser, it'll be turned into a full width image.
+
+#### Skaffold
+
+#### Tilt
+
+### Build and Packaging
+
+#### Image Building
+
+#### Manifest Packaging
+
+
 
 ### Stability
 
@@ -167,4 +188,3 @@ There is an increasing trend of moving common networking, observability and faul
 [production-ready-talk]: https://www.infoq.com/presentations/production-ready-applications/
 
 [cncf-landspace]: https://landscape.cncf.io/
-
