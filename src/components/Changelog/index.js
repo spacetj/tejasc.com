@@ -14,7 +14,7 @@ export default class ReactChangelog extends Component {
     const { endpoint } = this.props;
     return (
       <div className="react-changelog-container">
-        <ChangelogContainer endpoint={endpoint} />
+        {/* <ChangelogContainer endpoint={endpoint} /> */}
       </div>
     );
   }

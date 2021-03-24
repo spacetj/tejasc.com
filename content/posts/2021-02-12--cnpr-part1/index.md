@@ -1,14 +1,14 @@
 ---
 title: Stability and Reliability
 subTitle: Cloud Native Production Readiness Part 1
-cover: whatever.jpg
+cover: stability.jpeg
 category: "cloud-native"
 publish: "true"
 ---
 
 What does it mean for an application to be production ready? Thankfully industry leaders a lot smarter than me have given this a lot of thought!
 
-If you havn't come across these resources yet, I would definitely recommend going through them before reading this post:
+If you havn't come across these resources yet, it is recommended  to go through them before reading this post:
 
 - 📹 [Building Production Ready Application][production-ready-talk] by Michael Kehoe
 - 📕 [Production-Ready Microservices][production-readiness-book] by Susan J. Fowler
@@ -35,37 +35,32 @@ In these series of posts, I'll be exploring application that are:
 - Running in kubernetes
 - Exploring tools that are Cloud Native mostly from [CNCF Landscape][cncf-landspace]
 
+---
+
 ## Principles
 
 Stability and Realiability is the first 2 production readiness principles mentioned in the book.
 
-> Stability: Development, deployment, adoption of new technologies, and the decommissioning or deprecation of other services do not give rise to instability across the larger microservice ecosystem.
+> Stability: Development, deployment and adoption of new technologies do not give rise to instability across the larger microservice ecosystem.
 
 > Reliability: One that can be trusted by other microservices and by the overall system.
 
-## What does stability mean?
+These principles ensures that applications:
 
-It has a standardized development cycle. Its code is thoroughly tested through lint, unit, integration, and end-to-end testing. Its test, packaging, build, and release process is completely automated.
-
-It has a standardized deployment pipeline, containing staging, canary, and production phases.
-
-Its clients are known.
-
-Its dependencies are known, and there are backups, alternatives, fallbacks, and caching in place in case of failures.
-
-It has stable and reliable routing and discovery in place.
-
-
-
-
+- have standardized development, testing and debugging cycles
+- are build and packaged in a standardized and automated fashion
+- has stable and reliable routing and discovery
 
 ### Testing & Debugging
 
-- Kind
-- Skaffold vs Tilt
-- https://github.com/vmware-tanzu/octant
-- Debugging: Squash https://squash.solo.io/
-- https://kui.tools/
+- With the mass adoption of Kubernetes, came the influx of tools that enable creating local kubernetes clusters. A few of those tools are:
+  - KinD (Kubernetes in Docker)
+  - Minikube 
+  - Docker for Desktop
+- Demystifying Kubernetes: Debugging: Squash https://squash.solo.io/
+- https://kui.tools/ + https://github.com/vmware-tanzu/octant
+- Cloud Code vs Skaffold
+- Cloud Debugger vs Delve
 
 ### Build and Packaging
 
@@ -90,33 +85,11 @@ It has stable and reliable routing and discovery in place.
   - Keptn + Argo: https://tutorials.keptn.sh/tutorials/keptn-argo-cd-deployment-07/index.html?index=..%2F..index#9
 - ArgoCD:
 - https://github.com/hyscale/hyscale: Abstraction layer on top of kubernetes
+- Application Manager
 
+### Routing and Discovery
 
-
-## What tools helps us achieve reliability?
-
-Dependencies
-What are this microservice’s dependencies?
-
-What are its clients?
-
-How does this microservice mitigate dependency failures?
-
-Are there backups, alternatives, fallbacks, or defensive caching for each dependency?
-
-Routing and Discovery
-Are health checks to the microservice reliable?
-
-Do health checks accurately reflect the health of the microservice?
-
-Are health checks run on a separate channel within the communication layer?
-
-Are there circuit breakers in place to prevent unhealthy microservices from making requests?
-
-Are there circuit breakers in place to prevent production traffic from being sent to unhealthy hosts and microservices?
-
-Deprecation and Decommissioning
-Are there procedures in place for decommissioning a microservice?
+- Kubernetes: Best practices in kubernetes such as ensuring readinessProbes and livenessProbes are configured correctly helps ensure the reliability of your application, offloading those concerns to the container orchestration tool. Use of kubernetes services ensure that services are discoverable and routable throughout the cluster.
 
 
 ## Conclusion
@@ -125,9 +98,6 @@ Did I succeed in my goal? Were there atleast 1 new cloud native tool which you h
 
 In the next part, we'll explore the different cloud native tooling that helps achieve the scalability and performance principles of production ready microservices.
 
-## Different blog
-
-There is an increasing trend of moving common networking, observability and fault tolernence concerns out of application code and into different cloud-native tooling so that developers are free to focus on implementing business logic which directly correlates with increased profits 💰📈.
 
 
 <!-- Links  -->

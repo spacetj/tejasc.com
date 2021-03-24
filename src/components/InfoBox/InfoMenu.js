@@ -42,12 +42,12 @@ const InfoMenu = props => {
           </Link>
         );
       })}
-      <Link to="/resume/" onClick={linkOnClick} className={classes.link} data-shape="closed">
+      {/* <Link to="/resume/" onClick={linkOnClick} className={classes.link} data-shape="closed">
         /var/resume
-      </Link>
-      <Link to="/contact/" onClick={linkOnClick} className={classes.link} data-shape="closed">
+      </Link> */}
+      {/* <Link to="/contact/" onClick={linkOnClick} className={classes.link} data-shape="closed">
         /bin/contact
-      </Link>
+      </Link> */}
     </nav>
   );
 };

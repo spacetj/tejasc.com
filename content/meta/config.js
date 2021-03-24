@@ -1,9 +1,9 @@
 const colors = require("../../src/styles/colors");
 
 module.exports = {
-  siteTitle: "Tejas Cherukara - Blog", // <title>
+  siteTitle: "Tejas C - Blog", // <title>
   shortSiteTitle: "tejasc --help", // <title>
-  siteDescription: "Tejas Cherukara: Talks, Adventures, Blogs.",
+  siteDescription: "Tejas C: Talks, Adventures, Blogs.",
   siteUrl: "https://tejasc.com",
   pathPrefix: "",
   siteImage: "preview.jpg",
@@ -15,7 +15,7 @@ module.exports = {
   infoTitle: "tejas c",
   infoTitleNote: "Blog",
   // manifest.json
-  manifestName: "Tejas Cherukara",
+  manifestName: "Tejas C",
   manifestShortName: "PersonalBlog", // max 12 characters
   manifestStartUrl: "/",
   manifestBackgroundColor: colors.background,
@@ -26,6 +26,7 @@ module.exports = {
   // social
   authorSocialLinks: [
     { name: "github", url: "https://github.com/spacetj" },
+    { name: "linkedin", url: "https://www.linkedin.com/in/tejasc/" },
     { name: "twitter", url: "https://twitter.com/space_tj" },
   ]
 };

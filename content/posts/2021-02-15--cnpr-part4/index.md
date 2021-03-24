@@ -5,6 +5,12 @@ cover: whatever.jpg
 category: "cloud-native"
 ---
 
+
+Its clients are known.
+
+Its dependencies are known, and there are backups, alternatives, fallbacks, and caching in place in case of failures.
+
+
 Its key metrics are identified and monitored at the host, infrastructure, and microservice levels.
 
 It has appropriate logging that accurately reflects the past states of the microservice.

@@ -5,6 +5,11 @@ cover: whatever.jpg
 category: "cloud-native"
 ---
 
+## Different blog
+
+There is an increasing trend of moving common networking, observability and fault tolernence concerns out of application code and into different cloud-native tooling so that developers are free to focus on implementing business logic which directly correlates with increased profits 💰📈.
+
+
 It has no single point of failure.
 
 All failure scenarios and possible catastrophes have been identified.
@@ -54,3 +59,7 @@ Are there clearly defined levels of failure?
 Are there clearly defined mitigation strategies?
 
 Does the team follow the five stages of incident response when incidents and outages occur?
+
+Are there circuit breakers in place to prevent unhealthy microservices from making requests?
+
+Are there circuit breakers in place to prevent production traffic from being sent to unhealthy hosts and microservices?

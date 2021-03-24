@@ -1,6 +1,6 @@
 ---
 title: $ tejasc talks
-menuTitle: /media/talks
+menuTitle: talks
 ---
 
 ---

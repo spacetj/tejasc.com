@@ -1,6 +1,6 @@
 ---
 title: $ tejasc —help
-menuTitle: /usr/tejasc
+menuTitle: about
 ---
 
 As an aspiring Cyber Security Engineer with a proven background in Reliability Engineer, I focus on automating toil, improving observability, enforcing Error Budgets and architecting GCP services. I'm a strong believer in Open Source and Shift Left philosophies. When I'm not working, you'll find me snowboarding or riding my Benelli Leoncino motorcycle.

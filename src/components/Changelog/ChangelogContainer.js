@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ChangelogList from "./ChangelogList.js";
 import ChangelogFilter from "./ChangelogFilter.js";
+const fetch = require("node-fetch");
 
 export default class ChangelogContainer extends Component {
   static propTypes = {

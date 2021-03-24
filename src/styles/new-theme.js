@@ -1,4 +1,4 @@
-// This is a custom theme, for details go to http://forgatsby.greglobinski.com/customize-personal-blog-starter/
+// This is a custom theme
 
 import { createMuiTheme } from "@material-ui/core/styles";
 import Color from "color";

@@ -1,6 +1,6 @@
 ---
 title: $ tejasc projects
-menuTitle: /lib/projects
+menuTitle: projects
 ---
 
 List of open source projects that I have contributed to / currently maintaining.
