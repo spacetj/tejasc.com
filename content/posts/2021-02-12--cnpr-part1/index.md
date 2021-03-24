@@ -24,7 +24,7 @@ There are 8 main tenets of production readiness that are highlighted in these re
 - 🔍 Monitoring
 - 📕 Documentation
 
-As technology evolves, there are several tools that help achieve each of these tenets of production readiness mentioned by Susan J. Fowler. In this series of blog posts, I'll be exploring the different cloud native tools which helps implement these principles. My goal for this series is to introduce you to atleast 1 new tools which you might not have come across before.
+As technology evolves, there are several tools that help achieve each of these tenets of production readiness mentioned above. In this series of blog posts, I'll be exploring the different cloud native tools which helps implement these principles. My goal for this series is to introduce you to atleast 1 new tools which you might not have come across before.
 
 The tools mentioned in this blog are just examples of tools available, and might not be the best suited for your usecase. Hopefully this will give you a starting point so you can research the tools that is most appropriate for your ecosystem.
 
@@ -43,60 +43,6 @@ Stability and Realiability is the first 2 production readiness principles mentio
 
 > Reliability: One that can be trusted by other microservices and by the overall system.
 
-
-### Local Testing
-
-#### KIND
-
-<img align="left" style="width:100px; height:60px;" src="./assets/kind.png" />
-
-Some text about the kind will go here. But when this is viewed in the browser, it'll be turned into a full width image.
-
-#### Skaffold
-
-#### Tilt
-
-### Build and Packaging
-
-#### Image Building
-
-#### Manifest Packaging
-
-
-
-### Stability
-
-Stability means ensuring that there is a stable development and deployment environment. This involves having a repeatable and realiable Continuous Deployment Process.
-
-- Local Testing:
-  - Kind
-  - Skaffold vs Tilt
-  - Functions Framework
-- Building and packaging
-  - Docker
-  - containerd
-  - CoreOS rkt
-  - Podman
-  - ko
-  - runC
-  - buildpacks: Cloud Native Buildpacks embrace modern container standards, such as the OCI image format. They take advantage of the latest capabilities of these standards, such as cross-repository blob mounting and image layer "rebasing" on Docker API v2 registries.
-  - Manifest packaging:
-    - helm:
-    - https://tanka.dev/
-- CD
-  - Spinnaker
-  - Flagger: https://docs.flagger.app/
-  - Client Side: https://werf.io/introduction.html
-  - Flux: Gitops: https://docs.fluxcd.io/en/latest/
-  - Keptn: https://keptn.sh/
-    - Keptn + Argo: https://tutorials.keptn.sh/tutorials/keptn-argo-cd-deployment-07/index.html?index=..%2F..index#9
-  - ArgoCD:
-  - https://github.com/hyscale/hyscale: Abstraction layer on top of kubernetes
-- Debugging
-  - https://github.com/vmware-tanzu/octant
-  - Debugging: Squash https://squash.solo.io/
-  - https://kui.tools/
-
 ## What does stability mean?
 
 It has a standardized development cycle. Its code is thoroughly tested through lint, unit, integration, and end-to-end testing. Its test, packaging, build, and release process is completely automated.
@@ -109,41 +55,45 @@ Its dependencies are known, and there are backups, alternatives, fallbacks, and 
 
 It has stable and reliable routing and discovery in place.
 
-## What does reliability mean?
+
+
+
+
+### Testing & Debugging
+
+- Kind
+- Skaffold vs Tilt
+- https://github.com/vmware-tanzu/octant
+- Debugging: Squash https://squash.solo.io/
+- https://kui.tools/
+
+### Build and Packaging
+
+- Docker
+- containerd
+- CoreOS rkt
+- Podman
+- ko
+- runC
+- buildpacks: Cloud Native Buildpacks embrace modern container standards, such as the OCI image format. They take advantage of the latest capabilities of these standards, such as cross-repository blob mounting and image layer "rebasing" on Docker API v2 registries.
+- Manifest packaging:
+  - helm:
+  - https://tanka.dev/
+
+### Continuous Delivery
+
+- Spinnaker
+- Flagger: https://docs.flagger.app/
+- Client Side: https://werf.io/introduction.html
+- Flux: Gitops: https://docs.fluxcd.io/en/latest/
+- Keptn: https://keptn.sh/
+  - Keptn + Argo: https://tutorials.keptn.sh/tutorials/keptn-argo-cd-deployment-07/index.html?index=..%2F..index#9
+- ArgoCD:
+- https://github.com/hyscale/hyscale: Abstraction layer on top of kubernetes
+
+
 
 ## What tools helps us achieve reliability?
-
-
-Stability and Reliability
-The Development Cycle
-Does the microservice have a central repository where all code is stored?
-
-Do developers work in a development environment that accurately reflects the state of production (e.g., that accurately reflects the real world)?
-
-Are there appropriate lint, unit, integration, and end-to-end tests in place for the microservice?
-
-Are there code review procedures and policies in place?
-
-Is the test, packaging, build, and release process automated?
-
-The Deployment Pipeline
-Does the microservice ecosystem have a standardized deployment pipeline?
-
-Is there a staging phase in the deployment pipeline that is either full or partial staging?
-
-What access does the staging environment have to production services?
-
-Is there a canary phase in the deployment pipeline?
-
-Do deployments run in the canary phase for a period of time that is long enough to catch any failures?
-
-Does the canary phase accurately host a random sample of production traffic?
-
-Are the microservice’s ports the same for canary and production?
-
-Are deployments to production done all at the same time, or incrementally rolled out?
-
-Is there a procedure in place for skipping the staging and canary phases in case of an emergency?
 
 Dependencies
 What are this microservice’s dependencies?
@@ -168,7 +118,6 @@ Are there circuit breakers in place to prevent production traffic from being sen
 Deprecation and Decommissioning
 Are there procedures in place for decommissioning a microservice?
 
-Are there procedures in place for deprecating a microservice’s API endpoints?
 
 ## Conclusion
 
