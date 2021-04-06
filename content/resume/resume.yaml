@@ -1,10 +1,10 @@
 ---
 main:
-  name: Tejas Cherukara
+  name: Tejas C
   occupation: Site Reliability Engineer
   description: A Site Reliability Engineer with a passion for security
-  bio: As an aspiring Cyber Security Engineer with a proven background in Reliability Engineer, I focus on automating toil, improving observability, enforcing Error Budgets and architecting GCP services. I'm a strong believer in Open Source and Shift Left philosophies. When I'm not working, you'll find me snowboarding or riding my Benelli Leoncino motorcycle through the woods.
-  email: tejas.cherukara@gmail.com
+  bio: As an aspiring Cyber Security Engineer with a proven background in Reliability Engineer, I focus on automating toil, improving observability, enforcing Error Budgets and architecting GCP services. I'm a strong believer in Open Source and Shift Left philosophies. When I'm not working, you'll find me snowboarding or riding my Benelli Leoncino.
+  email: contact@tejasc.com
   address:
     city: Melbourne, Victoria, Australia
   website: http://www.tejasc.com
@@ -20,6 +20,10 @@ main:
     className: fa fa-github
 resume:
   education:
+  - school: Google Cloud
+    degree: Certified Hybrid/Multi-Cloud Fellow
+    graduated: Oct 2020
+    description: https://cloud.google.com/certification/hybrid-multi-cloud/certified-fellows
   - school: Cloud Native Computing Foundation
     degree: Certified Kubernetes Administrator
     graduated: Nov 2019

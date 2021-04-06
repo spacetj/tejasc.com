@@ -2,7 +2,7 @@ resource "cloudflare_zone" "zone" {
     zone = var.domain
 }
 
-# Add cname record to the domain
+# Add storage apis cname record
 resource "cloudflare_record" "cname" {
   zone_id = cloudflare_zone.zone.id
   name    = var.domain
@@ -11,7 +11,7 @@ resource "cloudflare_record" "cname" {
   proxied = true
 }
 
-# Add cname record to the domain
+# Add www redirect cname record
 resource "cloudflare_record" "www-cname" {
   zone_id = cloudflare_zone.zone.id
   name    = format("www.%s", var.domain)
@@ -20,16 +20,7 @@ resource "cloudflare_record" "www-cname" {
   proxied = true
 }
 
-# Add cname record to the domain
-resource "cloudflare_record" "google-verification" {
-  zone_id = cloudflare_zone.zone.id
-  name    = var.domain
-  value   = "google-site-verification=qgXW3lYLc78tX9gpGhAVHYYnpQE_zrL4OyZKMjaD_Ds"
-  type    = "TXT"
-  proxied = false
-}
-
-# Add cname record to the domain
+# Add mx records
 resource "cloudflare_record" "mx" {
   count = length(local.mx_records)
   zone_id = cloudflare_zone.zone.id
@@ -37,6 +28,15 @@ resource "cloudflare_record" "mx" {
   value   = local.mx_records[count.index]
   ttl     = 3600
   type    = "MX"
+}
+
+# Add google domain verification record
+resource "cloudflare_record" "google-verification" {
+  zone_id = cloudflare_zone.zone.id
+  name    = var.domain
+  value   = "google-site-verification=qgXW3lYLc78tX9gpGhAVHYYnpQE_zrL4OyZKMjaD_Ds"
+  type    = "TXT"
+  proxied = false
 }
 
 resource "cloudflare_zone_settings_override" "test" {

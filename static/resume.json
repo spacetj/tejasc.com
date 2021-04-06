@@ -1,0 +1,48 @@
+{
+    "title": "",
+    "list": [
+      {
+        "version": "2.0",
+        "date": "2020",
+        "work": [
+          "Lead Engineer, ANZ Bank"
+        ],
+        "education": [
+          "Hybrid / Multi-Cloud Fellow, Google Cloud"
+        ],
+        "portfolio": []
+      },
+      {
+        "version": "1.0",
+        "date": "2019",
+        "work": [
+          "Site Reliability Engineer, ANZ Bank"
+        ],
+        "education": [
+          "Certified Kubernetes Administrator, Cloud Native Computing Foundation",
+          "Graduate Certificate in Cyber Security, RMIT",
+          "Professional Cloud Architect, Google Cloud",
+          "Certified Kubernetes Application Developer, Cloud Native Computing Foundation"
+        ],
+        "portfolio": [
+          "Open Policy Agent Testing and Templating, KubeSummit Sydney 2019",
+          "Automated Canary Analysis with Spinnaker & Istio, Kubernetes Meetup"
+        ]
+      },
+      {
+        "version": "0.1",
+        "date": "2018",
+        "work": [
+          "Junior Full Stack Developer, Utility Software Services",
+          "Student IT Intern, University of Melbourne",
+          "Content Migration, University of Melbourne"
+        ],
+        "education": [
+          "Bachelor of Science majoring in Computing and Software Systems, University of Melbourne",
+          "Extreme Entrepreneurship Accelerator Diploma, European Innovation Academy"
+        ],
+        "portfolio": []
+      }
+    ]
+  }
+  

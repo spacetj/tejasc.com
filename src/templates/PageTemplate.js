@@ -1,41 +1,57 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { graphql } from "gatsby";
+import { connect } from "react-redux";
+
+import { setNavigatorPosition, setNavigatorShape } from "../state/store";
+import { moveNavigatorAside } from "../utils/shared";
+import Main from "../components/Main/";
+import Page from "../components/Page/";
+import Footer from "../components/Footer/";
 import Seo from "../components/Seo";
-import Article from "../components/Article";
-import Page from "../components/Page";
-import { ThemeContext } from "../layouts";
 
-const PageTemplate = props => {
-  const {
-    data: {
-      page,
-      site: {
-        siteMetadata: { facebook }
-      }
+class PageTemplate extends React.Component {
+  moveNavigatorAside = moveNavigatorAside.bind(this);
+
+  componentDidMount() {
+    if (this.props.navigatorPosition === "is-featured") {
+      this.moveNavigatorAside();
     }
-  } = props;
+  }
 
-  return (
-    <React.Fragment>
-      <ThemeContext.Consumer>
-        {theme => (
-          <Article theme={theme}>
-            <Page page={page} theme={theme} />
-          </Article>
-        )}
-      </ThemeContext.Consumer>
+  render() {
+    const { data } = this.props;
+    const facebook = (((data || {}).site || {}).siteMetadata || {}).facebook;
 
-      <Seo data={page} facebook={facebook} />
-    </React.Fragment>
-  );
-};
+    return (
+      <Main>
+        <Page page={data.page} />
+        <Footer footnote={data.footnote} />
+        <Seo data={data.post} facebook={facebook} />
+      </Main>
+    );
+  }
+}
 
 PageTemplate.propTypes = {
-  data: PropTypes.object.isRequired
+  data: PropTypes.object.isRequired,
+  navigatorPosition: PropTypes.string.isRequired,
+  setNavigatorPosition: PropTypes.func.isRequired,
+  isWideScreen: PropTypes.bool.isRequired
 };
 
-export default PageTemplate;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    navigatorPosition: state.navigatorPosition,
+    isWideScreen: state.isWideScreen
+  };
+};
+
+const mapDispatchToProps = {
+  setNavigatorPosition,
+  setNavigatorShape
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PageTemplate);
 
 //eslint-disable-next-line no-undef
 export const pageQuery = graphql`
@@ -46,6 +62,10 @@ export const pageQuery = graphql`
       frontmatter {
         title
       }
+    }
+    footnote: markdownRemark(id: { regex: "/footnote/" }) {
+      id
+      html
     }
     site {
       siteMetadata {

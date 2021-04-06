@@ -1,50 +1,31 @@
-import PropTypes from "prop-types";
 import React from "react";
-import { graphql } from "gatsby";
-import { ThemeContext } from "../layouts";
-import Article from "../components/Article";
+import PropTypes from "prop-types";
+import injectSheet from "react-jss";
+
+
+import Main from "../components/Main";
+import Article from "../components/Main/Article";
+import PageHeader from "../components/Page/PageHeader";
+import Content from "../components/Main/Content";
 import Resume from "../components/Resume";
 
-const ResumePage = props => {
-  // const {
-  //   data: {
-  //     site: {
-  //       siteMetadata: { facebook }
-  //     }
-  //   }
-  // } = props;
+const styles = theme => ({});
 
-
+const ResumeContent = () => {
   return (
-    <React.Fragment>
-      <ThemeContext.Consumer>
-        {theme => (
-          <Article theme={theme}>
-            <Resume />
-          </Article>
-        )}
-      </ThemeContext.Consumer>
-
-      {/* <Seo facebook={facebook} /> */}
-    </React.Fragment>
+    <Main>
+      <Article>
+        <PageHeader title="$ tejasc portfolio --display=changelog" />
+        <Content>
+            <Resume></Resume>
+        </Content>
+      </Article>
+    </Main>
   );
 };
 
-ResumePage.propTypes = {
-  data: PropTypes.object.isRequired
+ResumeContent.propTypes = {
+  classes: PropTypes.object.isRequired
 };
 
-export default ResumePage;
-
-//eslint-disable-next-line no-undef
-export const query = graphql`
-  query ResumePage {
-    site {
-      siteMetadata {
-        facebook {
-          appId
-        }
-      }
-    }
-  }
-`;
+export default injectSheet(styles)(ResumeContent);

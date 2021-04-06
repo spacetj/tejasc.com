@@ -1,39 +1,32 @@
+const colors = require("../../src/styles/colors");
+
 module.exports = {
-  siteTitle: "Tejas Cherukara - Adventures, Projects and Blog", // <title>
-  shortSiteTitle: "Tejas Cherukara - Adventures, Projects and Blog", // <title> ending for posts and pages
-  siteDescription: "Tejas Cherukara - Personal website to capture my adventures, thoughts, projects and blogs",
-  siteUrl: "http://tejasc.com",
-  // pathPrefix: "",
+  siteTitle: "Tejas C - Blog", // <title>
+  shortSiteTitle: "tejasc --help", // <title>
+  siteDescription: "Tejas C: Talks, Adventures, Blogs.",
+  siteUrl: "https://tejasc.com",
+  pathPrefix: "",
   siteImage: "preview.jpg",
   siteLanguage: "en",
-
-  /* author */
-  authorName: "tejas cherukara",
+  // author
+  authorName: "tejas c",
   authorTwitterAccount: "space_tj",
-
-  /* info */
-  headerTitle: "/home/tejasc",
-  headerSubTitle: "blog, resume and more",
-
-  /* manifest.json */
-  manifestName: "/home/tejasc Blog",
-  manifestShortName: "tejasc", // max 12 characters
-  manifestStartUrl: "/index.html",
-  manifestBackgroundColor: "white",
-  manifestThemeColor: "#666",
+  // info
+  infoTitle: "tejas c",
+  infoTitleNote: "Blog",
+  // manifest.json
+  manifestName: "Tejas C",
+  manifestShortName: "PersonalBlog", // max 12 characters
+  manifestStartUrl: "/",
+  manifestBackgroundColor: colors.background,
+  manifestThemeColor: colors.background,
   manifestDisplay: "standalone",
-
-  // gravatar
-  // Use your Gravatar image. If empty then will use src/images/jpg/avatar.jpg
-  // Replace your email adress with md5-code.
-  // Example https://www.gravatar.com/avatar/g.strainovic@gmail.com ->
-  // gravatarImgMd5: "https://www.gravatar.com/avatar/1db853e4df386e8f699e4b35505dd8c6",
-  gravatarImgMd5: "",
-
+  // contact
+  contactEmail: "contact@tejasc.com",
   // social
   authorSocialLinks: [
     { name: "github", url: "https://github.com/spacetj" },
+    { name: "linkedin", url: "https://www.linkedin.com/in/tejasc/" },
     { name: "twitter", url: "https://twitter.com/space_tj" },
-    { name: "linkedin", url: "http://linkedin.com/in/tejasc" }
   ]
 };
