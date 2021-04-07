@@ -53,22 +53,17 @@ These principles ensures that applications:
 
 ---
 
-### Testing & Debugging
-
-- With the mass adoption of Kubernetes, came the influx of tools that enable creating local kubernetes clusters. A few of those tools are:
+### Dev experience
+ 
+With the mass adoption of Kubernetes, came the influx of tools that enable creating local kubernetes clusters. A few of those tools are:
   - [KinD][kind]: Why run containers when you can run containers inside containers which orchestrates other containers.
   - [Minikube][minikube]: Single node kube cluster on your PC
-  - Docker for Desktop: A kubernetes cluster build into your Docker for Desktop application
 
-- Did you know that `kubectl` has close to 300 different variations of commands? Actually I have no idea if that's true or what the real number is, but I bet you believed it for a second! Such is the complexity of the tooling we deal with. Different kubernetes UI tools have helped demystify kubernetes and reduce it's complexity for developers
-  - [KUI](https://kui.tools/): CLI driven UI for kubernetes, similar to k9s (although that is no longer opensource).
-  - [Octant][octant]: A UI for developers which combines introspective tooling, cluster navigation and object management to help demystify kubernetes clusters and its objects.
+Did you know that `kubectl` has close to 300 different variations of commands? Actually I have no idea if that's true or what the real number is, but I bet you believed it for a second! Such is the complexity of the tooling we deal with. To improve developer experience, different kubernetes UI's and 
+- [Skaffold](https://skaffold.dev/): Skaffold handles the workflow for building, pushing and deploying your application, allowing you to focus on what matters most: writing code.
+- [Octant][octant]: A UI for developers which combines introspective tooling, cluster navigation and object management to help demystify kubernetes clusters and its objects.
 
 ![](./assets/octant.png)
-
-- Further to the complexity of understanding kubernetes is the complexity that comes with working with distributed applications, running in different cluster, across different nodes and replicas. A few tools that help work in such ecosystem:
-- Cloud Code vs Skaffold
-- Cloud Debugger vs Delve vs Debugging: Squash https://squash.solo.io/
 
 ---
 
@@ -85,6 +80,7 @@ These principles ensures that applications:
 - Manifest packaging:
   - [Helm](https://helm.sh/): Ever wanted to use yaml as a programming language? Well, you still can't. But this is the cloest thing we'll get to it. Helm helps template yaml, package and manage deployments of kubernetes manifests.
   - [Tanka](https://tanka.dev/): Use Jsonnet to create kubernetes manifests. Similar to ksonnet (now deprecated), Tanka maintains the kubernetes jsonnet library helping create DRY manifests.
+  - [KO]()
 
 ---
 
