@@ -74,7 +74,7 @@ Ever since the introduction of dockerfiles, it works on my machine is no longer 
 | **First Release** | 18 May 2018           |
 | **Demo**          | [kaniko][kaniko-demo] |
 
-Docker's cooler, faster (when cached), younger cousin. kaniko is a tool for building container images from a Dockerfile. Kaniko doesn't require a Docker daemon and executes each commands in userspace. This enables building container images in environments that can't easily or securely run a Docker daemon, such as a kubernetes cluster. Kaniko can cache image layers which helps exponentially speed up image builds.
+Docker's cooler, faster (when cached), younger cousin. kaniko is a tool for building container images from a Dockerfile without requiring a Docker daemon. Kaniko executes each commands in userspace which enables building container images in environments that can't easily or securely run a Docker daemon, such as a kubernetes cluster. Kaniko can also be used to speed up builds by caching image layers.
 
 
 ### buildpacks
@@ -86,7 +86,7 @@ Docker's cooler, faster (when cached), younger cousin. kaniko is a tool for buil
 | **First Release** | 21 Aug 2018       |
 | **Demo**          | [pack][pack-demo] |
 
-Buildpacks are like the guy friends your crush keeps telling you not to worry about. Buildpacks use auto-detection. It tests groups of buildpacks against your source code and the first group that fits your source code will become the selected set of buildpacks. Criteria is specific to each buildpack – for instance, an NPM buildpack looks for a package.json, and a Go buildpack looks for Go source files, etc.
+Buildpacks are like the guy friends your crush keeps telling you not to worry about. Buildpack can build images without dockerfiles, it uses auto-detection instead. It tests groups of buildpacks against your source code and the first group that fits your source code will become the selected set of buildpacks. Criteria is specific to each buildpack – for instance, an NPM buildpack looks for a package.json, and a Go buildpack looks for Go source files, etc.
 
 ### ko
 
@@ -99,7 +99,7 @@ Buildpacks are like the guy friends your crush keeps telling you not to worry ab
 
 Quick and easy container building for Golang applications without dockerfiles or docker. KO executes `go build` on your local machine thus not requiring docker to be install. It can also populate kubernetes manifests with image references.
 
-This is what ko does:
+ko does the following:
 
 - Download a base image from a container registry
 - Statically compile your Go binary
@@ -119,7 +119,7 @@ This is what ko does:
 | **First Release** | November 2015     |
 | **Demo**          | [helm][helm-demo] |
 
-Ever wanted to use yaml as a programming language? Well, you still can't. But this is the cloest thing we'll get to it. Helm uses charts, a collection of files that describe a related set of Kubernetes resources. Charts are created as files laid out in a particular directory tree. They can be packaged into versioned archives to be deployed. Helm uses Sprig template library to help template the yaml files and values can be defined in single or multiple value files.
+Ever wanted to use yaml as a programming language? Well, you still can't. But this might be the cloest thing available. Helm uses charts, a collection of files that describe a related set of Kubernetes resources. Charts are created as files laid out in a particular directory tree. They can be packaged into versioned archives to be deployed. Helm uses Sprig template library to help template the yaml files and values can be defined in single or multiple value files.
 
 ### Tanka
 
@@ -157,7 +157,7 @@ With the mass adoption of Kubernetes, came the influx of tools that enable creat
 | **First Release** | 29 Nov 2018       |
 | **Demo**          | [kind][kind-demo] |
  
-Why run containers when you can run containers inside containers which orchestrates other containers. kind is a tool for running local Kubernetes clusters using Docker container nodes. Primarily designed for testing Kubernetes itself, it is now wide used for local development or CI.
+Why run containers when you can run containers inside containers which orchestrates other containers. kind is a tool for running local Kubernetes clusters using Docker container nodes. kind was primarily designed for testing Kubernetes itself, but can be used for local development or CI.
 
 ---
 
@@ -210,12 +210,11 @@ Enables gitops for kube manifests, which translates to using Git repositories as
 
 ## Conclusion
 
-Cloud Native tools listed above not only allow developers to build stable and realible applications, they also focus on reducing complexity and initial setup time. 
+This blog presents a very high level summary of these tools and their ability to enable building stable and reliable applications. As demonstrated, each new tool builds upon the last one to reduce complexity, improve developer experience and decrease time to setup.
 
 Are there technologies that you've come across which isn't mentioned here? Reach out and let me know in the comments.
 
 The next post will explore the different cloud native tooling that helps achieve the scalability and performance principles of production ready microservices.
-
 
 <!-- Links  -->
 
