@@ -26,6 +26,8 @@ to create static site ready to host (/public).
 
 ## Overview 
 
+The site is created by the PersonalBlog Gatsby template. For more information checkout the [docs](https://www.gatsbyjs.com/starters/greglobinski/gatsby-starter-personal-blog).
+
 ```sh
 ├── content             ## Blogs / pages / site metadata
 ├── infra               ## Terraform code for cloudflare and gcs
