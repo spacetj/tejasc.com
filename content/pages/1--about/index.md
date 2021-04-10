@@ -10,6 +10,5 @@ Global Options:
 * **--contact-email**	     contact@tejasc.com
 * **--current-city**	     Melbourne, Victoria, Australia
 * **--current-title**	     Lead Cloud Engineer
-* **--current-company**	 Australia and New Zealand Bank
 * **--github** 	         https://github.com/spacetj
 * **--linkedin**	         https://www.linkedin.com/in/tejasc/

@@ -22,6 +22,14 @@ export default {
       margin: [["0.67em", 0]]
     },
 
+    td: {
+      paddingRight: "10px"
+    },
+
+    table: {
+      marginBottom: "10px"
+    },
+
     /**
      * 1. Add the correct box sizing in Firefox.
      * 2. Show the overflow in Edge and IE.
