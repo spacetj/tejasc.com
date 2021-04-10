@@ -33,7 +33,7 @@ As technology evolves, several tools have emerged which helps achieve the tenets
 In these series of posts, I'll be exploring application that are:
 
 - Running in kubernetes
-- Exploring tools that are Cloud Native mostly from [CNCF Landscape][cncf-landspace]
+- Part of the [CNCF Landscape][cncf-landspace]
 
 ---
 
@@ -49,7 +49,7 @@ These principles ensures that applications:
 
 - have standardized development, testing and debugging cycles
 - are build and packaged in a standardized and automated fashion
-- has stable and reliable routing and discovery
+- has stable and reliable routing and discovery.
 
 ## Demo
 
@@ -63,7 +63,7 @@ All commands have been abstracted into `make` targets to easily get up and runni
 
 ## Build and Packaging
 
-Ever since the introduction of dockerfiles, it works on my machine is no longer an excuse for my crappy code. Since it's initial introduction, many tools have been created to help developers get up and running with containers quickly:
+Ever since the introduction of dockerfiles, it works on my machine is no longer an excuse for my crappy code. Since it's initial introduction, many tools have been created to help developers get up and running with containers quicker:
 
 ### kaniko
 
@@ -97,7 +97,7 @@ Buildpacks are like the guy friends your crush keeps telling you not to worry ab
 | **First Release** | 22 Mar 2019   |
 | **Demo**          | [ko][ko-demo] |
 
-Quick and easy container building for Golang applications without dockerfiles or docker. KO executes `go build` on your local machine thus not requiring docker to be install. It can also populate kubernetes manifests with image references.
+Quick and easy container building for Golang applications without dockerfiles or docker. ko executes `go build` on your local machine thus not requiring docker to be installed. It can also populate kubernetes manifests with image references.
 
 ko does the following:
 
@@ -119,7 +119,7 @@ ko does the following:
 | **First Release** | November 2015     |
 | **Demo**          | [helm][helm-demo] |
 
-Ever wanted to use yaml as a programming language? Well, you still can't. But this might be the cloest thing available. Helm uses charts, a collection of files that describe a related set of Kubernetes resources. Charts are created as files laid out in a particular directory tree. They can be packaged into versioned archives to be deployed. Helm uses Sprig template library to help template the yaml files and values can be defined in single or multiple value files.
+Ever wanted to use yaml as a programming language? Well, you still can't. But this might be the next best thing. Helm uses charts, a collection of files that describe a related set of Kubernetes resources. Charts are created as files laid out in a particular directory tree. They can be packaged into versioned archives to be deployed. Helm uses Sprig template library to help template the yaml files and values can be defined in single or multiple value files.
 
 ### Tanka
 
@@ -140,7 +140,7 @@ Inspired by Jsonnet language, Grafana Tanka is a configuration utility that help
 | **Maintained By** | CNCF / Kubernetes   |
 | **First Release** | 22 May 2018         |
 
-Available as standalone and part of kubectl, kustomize allows for template-free yaml manipulations. It reads in raw kube manifest to add, remove or update configuration options through patches. Widely used for it ability to generate secrets and configmaps from files.
+Available as standalone cli tools and part of kubectl, kustomize allows for template-free yaml manipulations. It reads in raw kube manifest to add, remove or update configuration options through patches. Widely used for it ability to generate secrets and configmaps from files.
 
 ---
 
@@ -157,13 +157,13 @@ With the mass adoption of Kubernetes, came the influx of tools that enable creat
 | **First Release** | 29 Nov 2018       |
 | **Demo**          | [kind][kind-demo] |
  
-Why run containers when you can run containers inside containers which orchestrates other containers. kind is a tool for running local Kubernetes clusters using Docker container nodes. kind was primarily designed for testing Kubernetes itself, but can be used for local development or CI.
+Why just run containers when you can run containers inside containers which orchestrates other containers? kind is a tool for running local Kubernetes clusters using Docker container nodes. kind was primarily designed for testing Kubernetes itself, but can be used for local development or CI.
 
 ---
 
 ## Dev Experience
 
-Did you know that `kubectl` has close to 300 different variations of commands? Actually I have no idea if that's true or what the real number is, but I bet you believed it for a second! Such is the complexity of the tooling we deal with. This problem resulted in tools which helps developers visually understand kubernetes resources and help them get up and running quicker.
+Did you know that `kubectl` has close to 300 different variations of commands? Actually I have no idea if that's true or what the real number is, but I bet you believed it for a second! Such is the complexity of the tooling we deal with. Many tools exist which helps developers visually understand kubernetes resources and help them get up and running quicker:
 
 ### Skaffold
 
@@ -174,7 +174,7 @@ Did you know that `kubectl` has close to 300 different variations of commands? A
 | **First Release** | 6 Mar 2018                |
 | **Demo**          | [skaffold][skaffold-demo] |
 
-Skaffold handles the workflow for building, pushing and deploying your application, allowing devs to get their apps up and running quickly in a kube cluster. With the hot reload capability, it enables devs to focus on iterating on your application locally while Skaffold continuously deploys to your local or remote Kubernetes cluster. I highly advice against hot reloading and deploying apps to production cluster, had to put it in here just in case 🤯.
+Skaffold handles the workflow for building, pushing and deploying your application, allowing devs to get their apps up and running quickly in a kube cluster. With the hot reload capability, it enables devs to focus on iterating on your application locally while Skaffold continuously deploys to your local or remote Kubernetes cluster. I highly advice against hot reloading and deploying apps to production cluster, had to put it in here just in case 😱.
 
 ### Octant
 
@@ -210,7 +210,7 @@ Enables gitops for kube manifests, which translates to using Git repositories as
 
 ## Conclusion
 
-This blog presents a very high level summary of these tools and their ability to enable building stable and reliable applications. As demonstrated, each new tool builds upon the last one to reduce complexity, improve developer experience and decrease time to setup.
+This blog presents a very high level summary of these tools and their ability to help building stable and reliable applications. As demonstrated, each new tool builds upon the last one to reduce complexity, improve developer experience and decrease time to setup.
 
 Are there technologies that you've come across which isn't mentioned here? Reach out and let me know in the comments.
 
