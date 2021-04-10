@@ -74,7 +74,7 @@ Ever since the introduction of dockerfiles, it works on my machine is no longer 
 | **First Release** | 18 May 2018           |
 | **Demo**          | [kaniko][kaniko-demo] |
 
-Docker's cooler, faster (when cached), younger cousin. kaniko is a tool for building container images from a Dockerfile. Kaniko doesn't require a Docker daemon and executes each commands in userspace. This enables building container images in environments that can't easily or securely run a Docker daemon, such as a kubernetes cluster.
+Docker's cooler, faster (when cached), younger cousin. kaniko is a tool for building container images from a Dockerfile. Kaniko doesn't require a Docker daemon and executes each commands in userspace. This enables building container images in environments that can't easily or securely run a Docker daemon, such as a kubernetes cluster. Kaniko can cache image layers which helps exponentially speed up image builds.
 
 
 ### buildpacks
