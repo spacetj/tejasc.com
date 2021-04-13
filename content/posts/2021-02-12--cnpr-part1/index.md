@@ -39,7 +39,7 @@ In these series of posts, I'll be exploring application that are:
 
 ## Principles
 
-Stability and Realiability is the first 2 production readiness principles mentioned in the book.
+Stability and Reliability is the first 2 production readiness principles mentioned in the book.
 
 > Stability: Development, deployment and adoption of new technologies do not give rise to instability across the larger microservice ecosystem. Susan J. Fowler
 
