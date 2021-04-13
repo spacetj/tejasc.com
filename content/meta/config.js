@@ -2,7 +2,7 @@ const colors = require("../../src/styles/colors");
 
 module.exports = {
   siteTitle: "Tejas C - Blog", // <title>
-  shortSiteTitle: "tejasc --help", // <title>
+  shortSiteTitle: "tejasc blog", // <title>
   siteDescription: "Tejas C: Talks, Adventures, Blogs.",
   siteUrl: "https://tejasc.com",
   pathPrefix: "",
