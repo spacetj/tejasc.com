@@ -1,19 +1,19 @@
 ---
 title: Stability and Reliability
-subTitle: Cloud Native Production Readiness Part 1
+subTitle: Cloud-Native Production Readiness Part 1
 cover: stability.jpeg
 category: "cloud-native"
 publish: "true"
 ---
 
-What does it mean for an application to be production ready? Thankfully industry leaders a lot smarter than me have given this a lot of thought!
+What does it mean for an application to be production-ready? Thankfully, industry leaders a lot smarter than me have given this a lot of thought!
 
-If you havn't come across these resources yet, it is recommended  to go through them before reading this post:
+If you haven't come across these resources yet, it is recommended  to go through them before reading this post:
 
-- 📹 [Building Production Ready Application][production-ready-talk] by Michael Kehoe
+- 📹 [Building Production-Ready Application][production-ready-talk] by Michael Kehoe
 - 📕 [Production-Ready Microservices][production-readiness-book] by Susan J. Fowler
 
-There are 8 main tenets of production readiness that are highlighted in these resources:
+There are eight fundamental tenets of production readiness highlighted in these resources:
 
 - 🔗 Stability
 - 🎯 Reliability
@@ -24,28 +24,28 @@ There are 8 main tenets of production readiness that are highlighted in these re
 - 🔍 Monitoring
 - 📕 Documentation
 
-As technology evolves, several tools have emerged which helps achieve the tenets of production readiness mentioned above. These series of blog posts will be exploring the different cloud native tools which helps implement these principles.
+As technology evolves, several tools have emerged which helps achieve the tenets of production readiness mentioned above. This series of blog posts will be exploring the different cloud-native tools which help implement these principles.
 
-**DISCLAIMER** The tools mentioned in this blog are just examples of tools available, and might not be the best suited for your usecase. The blog can serve as a starting point to research the tools that is most appropriate for your ecosystem.
+**DISCLAIMER** The tools mentioned in this blog are just examples of tools available and might not be the best suited for your use case. The blog can serve as a starting point to research the most appropriate tools for your ecosystem.
 
 ### Assumptions
 
-In these series of posts, I'll be exploring application that are:
+In this series of posts, I'll be exploring applications that are:
 
-- Running in kubernetes
+- Running in Kubernetes
 - Part of the [CNCF Landscape][cncf-landspace]
 
 ---
 
 ## Principles
 
-Stability and Reliability is the first 2 production readiness principles mentioned in the book.
+Stability and Reliability are the first two production readiness principles mentioned in the book.
 
 > Stability: Development, deployment and adoption of new technologies do not give rise to instability across the larger microservice ecosystem. Susan J. Fowler
 
 > Reliability: One that can be trusted by other microservices and by the overall system. Susan J. Fowler
 
-These principles ensures that applications:
+These principles ensure that applications:
 
 - have standardized development, testing and debugging cycles
 - are build and packaged in a standardized and automated fashion
@@ -53,19 +53,19 @@ These principles ensures that applications:
 
 ## Demo
 
-The tools in this blog have been demoed in the following repo:
+Demos of tools are in the following repo:
 
 [DEMO REPO](https://github.com/spacetj/production-readiness/tree/main/01-stability-reliability)
 
-All commands have been abstracted into `make` targets to easily get up and running.
+All commands have been abstracted into `make` targets to get up and running quickly.
 
 ---
 
 ## Build and Packaging
 
-Ever since the introduction of dockerfiles, it works on my machine is no longer an excuse for my crappy code. Since it's initial introduction, many tools have been created to help developers get up and running with containers quicker:
+Ever since the introduction of Dockerfiles, it works on my machine is no longer an excuse for my crappy code. Since its initial introduction, many tools have been created to help developers get up and running with containers quicker:
 
-### kaniko
+### Kaniko
 
 |                   |                       |
 | ----------------- | --------------------- |
@@ -74,7 +74,7 @@ Ever since the introduction of dockerfiles, it works on my machine is no longer 
 | **First Release** | 18 May 2018           |
 | **Demo**          | [kaniko][kaniko-demo] |
 
-Docker's cooler, faster (when cached), younger cousin. kaniko is a tool for building container images from a Dockerfile without requiring a Docker daemon. Kaniko executes each commands in userspace which enables building container images in environments that can't easily or securely run a Docker daemon, such as a kubernetes cluster. Kaniko can also be used to speed up builds by caching image layers.
+Dockers cooler, faster (when cached), and younger cousin, Kaniko is a tool for building container images from a Dockerfile without requiring a Docker daemon. Kaniko executes each command in userspace, enabling building container images in environments that can't easily or securely run a Docker daemon, such as a Kubernetes cluster. Kaniko can also be used to speed up builds by caching image layers.
 
 
 ### buildpacks
@@ -86,7 +86,7 @@ Docker's cooler, faster (when cached), younger cousin. kaniko is a tool for buil
 | **First Release** | 21 Aug 2018       |
 | **Demo**          | [pack][pack-demo] |
 
-Buildpacks are like the guy friends your crush keeps telling you not to worry about. Buildpack can build images without dockerfiles, it uses auto-detection instead. It tests groups of buildpacks against your source code and the first group that fits your source code will become the selected set of buildpacks. Criteria is specific to each buildpack – for instance, an NPM buildpack looks for a package.json, and a Go buildpack looks for Go source files, etc.
+Buildpacks are like the guy friends your crush keeps telling you not to worry about. Buildpack can build images without a Dockerfile. It uses auto-detection instead. It tests groups of buildpacks against your source code, and the first group that fits your source code will become the selected set of buildpacks. Criteria are specific to each buildpack – for instance, an NPM buildpack looks for a package.json, and a Go buildpack looks for Go source files, etc.
 
 ### ko
 
@@ -97,7 +97,7 @@ Buildpacks are like the guy friends your crush keeps telling you not to worry ab
 | **First Release** | 22 Mar 2019   |
 | **Demo**          | [ko][ko-demo] |
 
-Quick and easy container building for Golang applications without dockerfiles or docker. ko executes `go build` on your local machine thus not requiring docker to be installed. It can also populate kubernetes manifests with image references.
+Quick and easy container building for Golang applications without Dockerfiles or docker. `ko` executes `go build` on your local machine, thus not requiring docker to be installed. It can also populate Kubernetes manifests with image references.
 
 ko does the following:
 
@@ -119,7 +119,7 @@ ko does the following:
 | **First Release** | November 2015     |
 | **Demo**          | [helm][helm-demo] |
 
-Ever wanted to use yaml as a programming language? Well, you still can't. But this might be the next best thing. Helm uses charts, a collection of files that describe a related set of Kubernetes resources. Charts are created as files laid out in a particular directory tree. They can be packaged into versioned archives to be deployed. Helm uses Sprig template library to help template the yaml files and values can be defined in single or multiple value files.
+Ever wanted to use YAML as a programming language? Well, you still can't. But this might be the next best thing. Helm uses charts, a collection of files that describe a related set of Kubernetes resources. Charts are created as files laid out in a particular directory tree. They can be packaged into versioned archives to be deployed. Helm uses Sprig template library to help template the YAML files, and developers can define values in single or multiple value files.
 
 ### Tanka
 
@@ -130,7 +130,7 @@ Ever wanted to use yaml as a programming language? Well, you still can't. But th
 | **First Release** | 31 Jul 2019         |
 | **Demo**          | [tanka][tanka-demo] |
 
-Inspired by Jsonnet language, Grafana Tanka is a configuration utility that helps create kube manifests. Similar to ksonnet (now deprecated), Tanka maintains the kubernetes jsonnet library helping create DRY manifests and allows the definition of Kubernetes resources to be more concise than YAML.
+Inspired by the Jsonnet language, Grafana Tanka is a configuration utility that helps create Kube manifests. Like ksonnet (now deprecated), Tanka maintains the Kubernetes jsonnet library helping create DRY manifests and allows the definition of Kubernetes resources to be more concise than YAML.
 
 ### Kustomize
 
@@ -140,13 +140,13 @@ Inspired by Jsonnet language, Grafana Tanka is a configuration utility that help
 | **Maintained By** | CNCF / Kubernetes   |
 | **First Release** | 22 May 2018         |
 
-Available as standalone cli tools and part of kubectl, kustomize allows for template-free yaml manipulations. It reads in raw kube manifest to add, remove or update configuration options through patches. Widely used for it ability to generate secrets and configmaps from files.
+Available as standalone CLI tools and part of `kubectl`, `kustomize` allows for template-free YAML manipulations. It reads in raw Kube manifest to add, remove or update configuration options through patches. Widely used for its ability to generate secrets and config maps from files.
 
 ---
 
 ## Local Testing
  
-With the mass adoption of Kubernetes, came the influx of tools that enable creating local kubernetes clusters.
+With the mass adoption of Kubernetes came the influx of tools that enable creating local Kubernetes clusters.
 
 ### Kind
 
@@ -157,13 +157,13 @@ With the mass adoption of Kubernetes, came the influx of tools that enable creat
 | **First Release** | 29 Nov 2018       |
 | **Demo**          | [kind][kind-demo] |
  
-Why just run containers when you can run containers inside containers which orchestrates other containers? kind is a tool for running local Kubernetes clusters using Docker container nodes. kind was primarily designed for testing Kubernetes itself, but can be used for local development or CI.
+Why just run containers when you can run containers inside containers which orchestrates other containers? `kind` is a tool for running local Kubernetes clusters using Docker container nodes. `kind` was primarily designed for testing Kubernetes itself but can be used for local development or CI.
 
 ---
 
 ## Dev Experience
 
-Did you know that `kubectl` has close to 300 different variations of commands? Actually I have no idea if that's true or what the real number is, but I bet you believed it for a second! Such is the complexity of the tooling we deal with. Many tools exist which helps developers visually understand kubernetes resources and help them get up and running quicker:
+Did you know that `kubectl` has close to 300 different variations of commands? I have no idea if that's true or what the real number is, but I bet you believed it for a second! Such is the complexity of the tooling. Many tools exist which helps developers visually understand Kubernetes resources and help them get up and running quicker:
 
 ### Skaffold
 
@@ -174,7 +174,7 @@ Did you know that `kubectl` has close to 300 different variations of commands? A
 | **First Release** | 6 Mar 2018                |
 | **Demo**          | [skaffold][skaffold-demo] |
 
-Skaffold handles the workflow for building, pushing and deploying your application, allowing devs to get their apps up and running quickly in a kube cluster. With the hot reload capability, it enables devs to focus on iterating on your application locally while Skaffold continuously deploys to your local or remote Kubernetes cluster. I highly advice against hot reloading and deploying apps to production cluster, had to put it in here just in case 😱.
+Skaffold handles the workflow for building, pushing and deploying your application, allowing devs to get their apps up and running quickly in a Kube cluster. The hot reload capability enables devs to focus on iterating your application locally while Skaffold continuously deploys to your local or remote Kubernetes cluster. I highly advise against hot reloading and deploying apps to the production cluster, had to put it in here just in case 😱.
 
 ### Octant
 
@@ -185,7 +185,7 @@ Skaffold handles the workflow for building, pushing and deploying your applicati
 | **First Release** | 20 Nov 2018           |
 | **Demo**          | [octant][octant-demo] |
 
-A UI for developers which helps developers understand the kubernetes resources deployed in a cluster. Allows for easy navigation of cluster and resources management. The pluggable nature of the UI makes it ideal for writing devex extensions.
+A UI for developers which helps developers understand the Kubernetes resources deployed in a cluster. Allows for easy navigation of cluster and resources management. The pluggable nature of the UI makes it ideal for writing devex extensions.
 
 ![](./assets/octant.png)
 
@@ -206,15 +206,15 @@ Bunch of buzz words coming through:
 
 Declarative, GitOps continuous delivery tool for Kubernetes.
 
-Enables gitops for kube manifests, which translates to using Git repositories as the source of truth for defining the desired application state. In order to define multiple environment for a service, ApplicationSet controller must also be installed. More details on getting started can be found in the [demo repo][argocd-demo].
+Enables gitops for Kube manifests, which translates to using Git repositories as the source of truth for defining the desired application state. To specify multiple environments for a service, `ApplicationSet` controller must also be installed. More details on getting started can be found in the [demo repo][argocd-demo].
 
 ## Conclusion
 
-This blog presents a very high level summary of these tools and their ability to help building stable and reliable applications. As demonstrated, each new tool builds upon the last one to reduce complexity, improve developer experience and decrease time to setup.
+This blog presents a high-level summary of tools and their ability to build stable and reliable applications. As demonstrated, each new tool builds upon the last one to reduce complexity, improve developer experience and decrease time to setup.
 
-Are there technologies that you've come across which isn't mentioned here? Reach out and let me know in the comments.
+Are there technologies that you've come across that isn't mentioned here? Reach out and let me know in the comments.
 
-The next post will explore the different cloud native tooling that helps achieve the scalability and performance principles of production ready microservices.
+The following post will explore the different cloud native tooling that helps achieve the scalability and performance principles of production-ready microservices.
 
 <!-- Links  -->
 
