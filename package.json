@@ -64,7 +64,7 @@
     "gatsby-transformer-sharp": "^1.6.27",
     "hoek": "^5.0.3",
     "instantsearch.css": "^7.1.0",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^3.1.1",
     "prismjs": "^1.15.0",
     "react": "^17.0.2",
     "react-changelog": "^1.1.1",
