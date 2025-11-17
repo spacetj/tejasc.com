@@ -12,16 +12,21 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: '10'
-    - name: Install libpng12 dependency
+    - name: Install pngquant dependency
       run: |
         sudo apt-get update
-        curl -L -o /tmp/libpng12.deb http://security.ubuntu.com/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1.1_amd64.deb
-        sudo dpkg -i /tmp/libpng12.deb || sudo apt-get install -f -y
+        sudo apt-get install -y pngquant
     - name: Install dependencies
       id: install
       run: |
         set -o pipefail
         npm install 2>&1 | tee npm-install.log
+    - name: Override pngquant binary
+      run: |
+        if command -v pngquant >/dev/null 2>&1 && [ -f node_modules/pngquant-bin/vendor/pngquant ]; then
+          cp $(command -v pngquant) node_modules/pngquant-bin/vendor/pngquant
+          chmod +x node_modules/pngquant-bin/vendor/pngquant
+        fi
     - name: Dump npm install log on failure
       if: failure() && steps.install.conclusion == 'failure'
       run: |
