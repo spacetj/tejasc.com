@@ -45,8 +45,8 @@ jobs:
     - name: Dump build log on failure
       if: failure() && steps.build.conclusion == 'failure'
       run: |
-        echo "npm run build failed; last 200 lines:"
-        tail -n 200 npm-build.log | while IFS= read -r line; do
+        echo "npm run build failed; full log:"
+        cat npm-build.log | while IFS= read -r line; do
           echo "::error ::${line}"
         done
         exit 1
