@@ -20,7 +20,19 @@ jobs:
     - name: Dump npm install log on failure
       if: failure() && steps.install.conclusion == 'failure'
       run: |
-        echo "npm install failed, last 200 lines:"
+        echo "npm install failed; npm ERR! lines:"
+        if grep -n "npm ERR!" npm-install.log > npm-err.log; then
+          tail -n 200 npm-err.log | while IFS= read -r line; do
+            echo "::error ::${line}"
+          done
+        fi
+        echo "gyp ERR! lines:"
+        if grep -n "gyp ERR!" npm-install.log > npm-gyp.log; then
+          tail -n 200 npm-gyp.log | while IFS= read -r line; do
+            echo "::error ::${line}"
+          done
+        fi
+        echo "Last 200 lines:"
         tail -n 200 npm-install.log | while IFS= read -r line; do
           echo "::error ::${line}"
         done
