@@ -45,10 +45,16 @@ jobs:
     - name: Dump build log on failure
       if: failure() && steps.build.conclusion == 'failure'
       run: |
-        echo "npm run build failed; full log:"
-        cat npm-build.log | while IFS= read -r line; do
-          echo "::error ::${line}"
-        done
+        echo "npm run build failed; error lines:"
+        if grep -ni "error" npm-build.log > npm-build-errors.log; then
+          tail -n 200 npm-build-errors.log | while IFS= read -r line; do
+            echo "::error ::${line}"
+          done
+        else
+          tail -n 200 npm-build.log | while IFS= read -r line; do
+            echo "::error ::${line}"
+          done
+        fi
         exit 1
     - uses: actions-hub/gcloud@master
       if: ${{ github.ref == 'refs/heads/main' }}
