@@ -12,9 +12,21 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: '18'
-    - run: |
-        npm install
-        npm run build
+    - name: Install dependencies
+      id: install
+      run: |
+        set -o pipefail
+        npm install 2>&1 | tee npm-install.log
+    - name: Dump npm install log on failure
+      if: failure() && steps.install.conclusion == 'failure'
+      run: |
+        echo "npm install failed, last 100 lines:"
+        tail -n 100 npm-install.log | while IFS= read -r line; do
+          echo "::error ::${line}"
+        done
+        exit 1
+    - name: Build site
+      run: npm run build
     - uses: actions-hub/gcloud@master
       if: ${{ github.ref == 'refs/heads/main' }}
       env:
