@@ -6,6 +6,21 @@ module "tejasc" {
     class = "STANDARD"
 }
 
+resource "google_project_service" "artifact_registry" {
+    project = "sandbox-project-tc"
+    service = "artifactregistry.googleapis.com"
+}
+
+resource "google_project_service" "secret_manager" {
+    project = "sandbox-project-tc"
+    service = "secretmanager.googleapis.com"
+}
+
+resource "google_project_service" "context_manager" {
+    project = "sandbox-project-tc"
+    service = "contextmanager.googleapis.com"
+}
+
 module "artifact_registry" {
     source = "git::https://github.com/GoogleCloudPlatform/terraform-google-artifact-registry.git?ref=v0.7.0"
 
@@ -13,4 +28,10 @@ module "artifact_registry" {
     location      = "australia-southeast1"
     format        = "DOCKER"
     repository_id = "docker"
+
+    depends_on = [
+        google_project_service.artifact_registry,
+        google_project_service.secret_manager,
+        google_project_service.context_manager,
+    ]
 }
