@@ -10,6 +10,7 @@
     "develop-host": "gatsby develop --host 192.168.0.112",
     "build": "gatsby build",
     "serve": "gatsby serve",
+    "test": "npm run build && jest --runInBand",
     "format-output": "prettier src/**/*.{js,jsx}",
     "format": "prettier --write src/**/*.{js,jsx}",
     "lint-errors": "eslint src/**/*.{js,jsx} --quiet",
@@ -31,7 +32,9 @@
     "eslint-plugin-react": "^7.23.1",
     "prettier": "^1.13.7",
     "sharp-cli": "^1.15.0",
-    "webpack-bundle-analyzer": "^3.3.2"
+    "webpack-bundle-analyzer": "^3.3.2",
+    "cheerio": "1.0.0-rc.12",
+    "jest": "26.6.3"
   },
   "dependencies": {
     "@material-ui/core": "^1.4.0",
