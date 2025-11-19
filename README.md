@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-Use Node.js 18 (see `.nvmrc`) to match the build toolchain. If you use `nvm`, run `nvm use` to switch automatically.
+Use Node.js 22 (see `.nvmrc`) to match the build toolchain. If you use `nvm`, run `nvm use` to switch automatically.
 
 If you do not have Gatsby Cli installed yet, do it first.
 
