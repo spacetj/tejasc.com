@@ -39,6 +39,24 @@ const buildMarkdownIndex = baseDir => {
     }));
 };
 
+const htmlPathForSlug = slug => {
+  const normalized = normalizeSlug(slug).replace(/\/+$/, "");
+  let candidate = path.join(publicDir, normalized);
+
+  if (fs.existsSync(candidate) && fs.statSync(candidate).isDirectory()) {
+    candidate = path.join(candidate, "index.html");
+  } else if (!candidate.endsWith(".html")) {
+    const htmlCandidate = path.join(publicDir, `${normalized}${normalized ? "" : "index"}.html`);
+    if (fs.existsSync(htmlCandidate)) {
+      candidate = htmlCandidate;
+    }
+  }
+
+  return candidate;
+};
+
+const builtPageExists = slug => fs.existsSync(htmlPathForSlug(slug));
+
 const ensureDir = dir => {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
@@ -91,30 +109,43 @@ const servePublic = port =>
   });
 
 const targetPages = () => {
-  const pages = [
+  const pages = [];
+
+  [
     { slug: "/", name: "home" },
     { slug: "/blog/", name: "blog" },
     { slug: "/projects/", name: "projects" },
     { slug: "/talks/", name: "talks" }
-  ];
+  ].forEach(entry => {
+    if (builtPageExists(entry.slug)) {
+      pages.push(entry);
+    } else {
+      // eslint-disable-next-line no-console
+      console.warn(`Skipping screenshot for missing page ${entry.slug}`);
+    }
+  });
 
   const posts = buildMarkdownIndex(postsDir).slice(0, 3);
   posts.forEach((post, index) => {
-    pages.push({ slug: post.slug, name: `post-${index + 1}` });
+    if (builtPageExists(post.slug)) {
+      pages.push({ slug: post.slug, name: `post-${index + 1}` });
+    }
   });
 
   const contentPages = buildMarkdownIndex(pagesDir).slice(0, 2);
   contentPages.forEach((page, index) => {
-    pages.push({ slug: page.slug, name: `page-${index + 1}` });
+    if (builtPageExists(page.slug)) {
+      pages.push({ slug: page.slug, name: `page-${index + 1}` });
+    }
   });
 
   return pages;
 };
 
-const waitForContent = async page => {
+const waitForContent = async (page, slug) => {
   const bodyText = await page.$eval("body", node => node.innerText.trim());
   if (!bodyText || bodyText.length < 20) {
-    throw new Error("Captured page appears to be empty");
+    throw new Error(`Captured page ${slug} appears to be empty`);
   }
 };
 
@@ -129,8 +160,11 @@ const captureScreenshots = async () => {
     for (const entry of pages) {
       const page = await browser.newPage();
       const url = `http://localhost:${port}${entry.slug}`;
-      await page.goto(url, { waitUntil: "networkidle2", timeout: 60000 });
-      await waitForContent(page);
+      const response = await page.goto(url, { waitUntil: "networkidle2", timeout: 60000 });
+      if (!response || response.status() >= 400) {
+        throw new Error(`Failed to load ${entry.slug}: ${response ? response.status() : "no response"}`);
+      }
+      await waitForContent(page, entry.slug);
       const filePath = path.join(artifactsDir, `${entry.name}.png`);
       await page.screenshot({ path: filePath, fullPage: true });
       await page.close();
