@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { graphql } from "gatsby";
 
 import { setNavigatorPosition, setNavigatorShape } from "../state/store";
 import { featureNavigator } from "../utils/shared";
@@ -9,7 +10,7 @@ import Seo from "../components/Seo";
 class Index extends React.Component {
   featureNavigator = featureNavigator.bind(this);
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.navigatorPosition !== "is-featured") {
       this.props.setNavigatorPosition("is-featured");
     }
