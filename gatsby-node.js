@@ -1,3 +1,7 @@
+if (typeof globalThis === "undefined") {
+  global.globalThis = global;
+}
+
 const webpack = require("webpack");
 //const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const _ = require("lodash");
