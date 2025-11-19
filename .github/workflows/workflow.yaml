@@ -23,7 +23,7 @@ jobs:
       id: install
       run: |
         set -o pipefail
-        npm ci 2>&1 | tee npm-install.log
+        npm install 2>&1 | tee npm-install.log
     - name: Override pngquant binary
       run: |
         if command -v pngquant >/dev/null 2>&1 && [ -f node_modules/pngquant-bin/vendor/pngquant ]; then
