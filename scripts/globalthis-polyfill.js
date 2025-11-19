@@ -10,6 +10,15 @@ if (typeof globalThis === "undefined") {
 if (typeof global !== "undefined") {
   // Some Gatsby internals evaluate code within isolated VM contexts.
   const vm = require("vm");
+  const Module = require("module");
+
+  const originalResolveFilename = Module._resolveFilename;
+  Module._resolveFilename = function patchedResolve(request, parent, isMain, options) {
+    if (typeof request === "string" && request.startsWith("node:")) {
+      request = request.slice(5);
+    }
+    return originalResolveFilename.call(this, request, parent, isMain, options);
+  };
 
   const ensureGlobalThis = context => {
     if (context && typeof context === "object" && !context.globalThis) {
