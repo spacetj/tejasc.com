@@ -1,26 +1,14 @@
 #!/usr/bin/env node
 
-if (typeof globalThis === "undefined") {
-  Object.defineProperty(global, "globalThis", {
-    value: global,
-    configurable: true,
-    enumerable: false,
-    writable: true,
-  });
+const path = require("path");
+
+const polyfillPath = path.join(__dirname, "globalthis-polyfill.js");
+const requireFlag = `--require "${polyfillPath}"`;
+if (!process.env.NODE_OPTIONS || !process.env.NODE_OPTIONS.includes(polyfillPath)) {
+  process.env.NODE_OPTIONS = process.env.NODE_OPTIONS
+    ? `${process.env.NODE_OPTIONS} ${requireFlag}`
+    : requireFlag;
 }
 
-const vm = require("vm");
-const originalRunInNewContext = vm.runInNewContext;
-vm.runInNewContext = function runInNewContext(code, context = {}, options) {
-  if (context && typeof context === "object" && !context.globalThis) {
-    Object.defineProperty(context, "globalThis", {
-      value: context,
-      configurable: true,
-      enumerable: false,
-      writable: true,
-    });
-  }
-  return originalRunInNewContext.call(vm, code, context, options);
-};
-
+require(polyfillPath);
 require("gatsby/dist/bin/gatsby");
