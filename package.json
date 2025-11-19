@@ -6,11 +6,12 @@
   "version": "1.1.1",
   "license": "MIT",
   "scripts": {
-    "develop": "gatsby develop",
-    "develop-host": "gatsby develop --host 192.168.0.112",
-    "build": "gatsby build",
-    "serve": "gatsby serve",
-    "test": "npm run build && jest --runInBand",
+    "develop": "node scripts/run-gatsby.js develop",
+    "develop-host": "node scripts/run-gatsby.js develop --host 192.168.0.112",
+    "build": "node scripts/run-gatsby.js build",
+    "serve": "node scripts/run-gatsby.js serve",
+    "test": "npm run build && npm run test:ci",
+    "test:ci": "jest --runInBand",
     "format-output": "prettier src/**/*.{js,jsx}",
     "format": "prettier --write src/**/*.{js,jsx}",
     "lint-errors": "eslint src/**/*.{js,jsx} --quiet",
@@ -89,5 +90,8 @@
     "redux": "^4.0.0",
     "redux-devtools-extension": "^2.13.9",
     "screenfull": "^3.3.2"
+  },
+  "overrides": {
+    "pngquant-bin": "6.0.1"
   }
 }
