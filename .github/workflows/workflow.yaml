@@ -1,17 +1,29 @@
 name: release
 
 on:
-  push:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+  actions: write
+  pull-requests: write
+  issues: write
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
     - uses: actions/setup-node@v4
       with:
         node-version: '10'
+        cache: 'npm'
     - name: Install pngquant dependency
       run: |
         sudo apt-get update
@@ -62,6 +74,52 @@ jobs:
           done
         else
           tail -n 200 npm-build.log | while IFS= read -r line; do
+            echo "::error ::${line}"
+          done
+        fi
+        exit 1
+    - name: Run tests
+      id: test
+      run: |
+        set -o pipefail
+        npm run test:ci 2>&1 | tee npm-test.log
+    - name: Capture screenshots
+      if: github.event_name == 'pull_request'
+      run: |
+        npm run screenshot:ci
+    - name: Upload screenshots artifact
+      if: github.event_name == 'pull_request'
+      uses: actions/upload-artifact@v4
+      with:
+        name: site-screenshots
+        path: artifacts/screenshots
+        retention-days: 1
+    - name: Comment with screenshot details
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const body = [
+            '📸 Gatsby build screenshots captured.',
+            '',
+            `Artifacts: https://github.com/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`
+          ].join('\n');
+          github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body
+          });
+    - name: Dump test log on failure
+      if: failure() && steps.test.conclusion == 'failure'
+      run: |
+        echo "npm run test:ci failed; error lines:"
+        if grep -ni "error" npm-test.log > npm-test-errors.log; then
+          tail -n 200 npm-test-errors.log | while IFS= read -r line; do
+            echo "::error ::${line}"
+          done
+        else
+          tail -n 200 npm-test.log | while IFS= read -r line; do
             echo "::error ::${line}"
           done
         fi
