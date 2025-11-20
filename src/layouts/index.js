@@ -131,7 +131,7 @@ const LayoutWithData = props => {
   const data = useStaticQuery(graphql`
     query LayoutQuery {
       posts: allMarkdownRemark(
-        filter: { id: { regex: "//posts//" } }
+        filter: { fields: { collection: { eq: "posts" } } }
         sort: { fields: { prefix: DESC } }
       ) {
         edges {
@@ -162,7 +162,7 @@ const LayoutWithData = props => {
         }
       }
       pages: allMarkdownRemark(
-        filter: { id: { regex: "//pages//" }, fields: { prefix: { regex: "/^\\\\d+$/" } } }
+        filter: { fields: { collection: { eq: "pages" } } }
         sort: { fields: { prefix: ASC } }
       ) {
         edges {
@@ -178,7 +178,7 @@ const LayoutWithData = props => {
           }
         }
       }
-      parts: allMarkdownRemark(filter: { id: { regex: "//parts//" } }) {
+      parts: allMarkdownRemark(filter: { fields: { collection: { eq: "parts" } } }) {
         edges {
           node {
             html

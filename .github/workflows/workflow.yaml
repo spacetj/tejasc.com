@@ -124,11 +124,17 @@ jobs:
           done
         fi
         exit 1
-    - uses: actions-hub/gcloud@master
+    - name: Authenticate to Google Cloud
       if: ${{ github.ref == 'refs/heads/main' }}
-      env:
-        PROJECT_ID: sandbox-project-tc
-        APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-        CLI: gsutil
+      uses: google-github-actions/auth@v2
       with:
-        args: -m rsync -R ./public/ gs://tejasc.com
+        credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+    - name: Setup gcloud SDK
+      if: ${{ github.ref == 'refs/heads/main' }}
+      uses: google-github-actions/setup-gcloud@v2
+      with:
+        project_id: sandbox-project-tc
+    - name: Upload site to GCS
+      if: ${{ github.ref == 'refs/heads/main' }}
+      run: |
+        gsutil -m rsync -R ./public/ gs://tejasc.com

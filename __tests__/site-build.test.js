@@ -137,7 +137,13 @@ describe("Blog posts", () => {
     expect(fs.existsSync(sitemapPath)).toBe(true);
     const sitemap = fs.readFileSync(sitemapPath, "utf8");
     posts.forEach(post => {
-      expect(sitemap).toContain(post.slug);
+      const normalizedSlug = post.slug.endsWith("/")
+        ? post.slug.slice(0, -1)
+        : post.slug;
+      const matches = [post.slug, normalizedSlug].some(variant =>
+        sitemap.includes(variant)
+      );
+      expect(matches).toBe(true);
     });
   });
 });

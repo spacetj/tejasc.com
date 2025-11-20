@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Main from "../components/Main/";
 import { connect } from "react-redux";
 import { graphql } from "gatsby";
-require("core-js/fn/array/find");
+require("core-js/es/array/find");
 require("prismjs/themes/prism-okaidia.css");
 
 import { setNavigatorPosition, setNavigatorShape } from "../state/store";
@@ -81,11 +81,17 @@ export const postQuery = graphql`
         }
       }
     }
-    author: markdownRemark(id: { regex: "/author/" }) {
+    author: markdownRemark(
+      fields: { collection: { eq: "parts" } }
+      frontmatter: { title: { eq: "author" } }
+    ) {
       id
       html
     }
-    footnote: markdownRemark(id: { regex: "/footnote/" }) {
+    footnote: markdownRemark(
+      fields: { collection: { eq: "parts" } }
+      frontmatter: { title: { eq: "footnote" } }
+    ) {
       id
       html
     }

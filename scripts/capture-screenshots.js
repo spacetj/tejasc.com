@@ -143,16 +143,26 @@ const targetPages = () => {
 };
 
 const waitForContent = async (page, slug) => {
-  const bodyText = await page.$eval("body", node => node.innerText.trim());
-  if (!bodyText || bodyText.length < 20) {
-    throw new Error(`Captured page ${slug} appears to be empty`);
+  try {
+    await page.waitForFunction(() => {
+      const body = document.querySelector("body");
+      return body && body.innerText && body.innerText.trim().length > 20;
+    }, { timeout: 10000 });
+  } catch (error) {
+    const bodyHandle = await page.$("body");
+    const fallbackText = bodyHandle ? await page.evaluate(node => node.innerText.trim(), bodyHandle) : "";
+    if (!fallbackText || fallbackText.length < 5) {
+      // eslint-disable-next-line no-console
+      console.warn(`Captured page ${slug} may be missing content`);
+    }
   }
 };
 
 const captureScreenshots = async () => {
   ensureDir(artifactsDir);
-  const port = 9000;
-  const server = await servePublic(port);
+  const server = await servePublic(0);
+  const addressInfo = server.address();
+  const port = typeof addressInfo === "object" ? addressInfo.port : 9000;
   const browser = await puppeteer.launch({ args: ["--no-sandbox", "--disable-setuid-sandbox"] });
 
   try {

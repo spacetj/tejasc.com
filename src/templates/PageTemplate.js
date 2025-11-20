@@ -64,7 +64,10 @@ export const pageQuery = graphql`
         title
       }
     }
-    footnote: markdownRemark(id: { regex: "/footnote/" }) {
+    footnote: markdownRemark(
+      fields: { collection: { eq: "parts" } }
+      frontmatter: { title: { eq: "footnote" } }
+    ) {
       id
       html
     }
