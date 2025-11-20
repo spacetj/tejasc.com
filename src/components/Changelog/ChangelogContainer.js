@@ -22,7 +22,7 @@ export default class ChangelogContainer extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { endpoint } = this.props;
     // TODO: Add error handling and bad format
     fetch(endpoint)

@@ -1,29 +1,28 @@
 import React from "react";
-import { Router } from "react-router-dom";
 import { Provider } from "react-redux";
-import PropTypes from "prop-types";
+import { JssProvider } from "react-jss";
 
 import createStore from "./src/state/store";
+import getPageContext from "./src/getPageContext";
+import Layout from "./src/layouts";
 
-// remove the JSS style tag generated on the server to avoid conflicts with the one added on the client
-// exports.onInitialClientRender = function() {
-//   // eslint-disable-next-line no-undef
-//   var ssStyles = window.document.getElementById("server-side-jss");
-//   ssStyles && ssStyles.parentNode.removeChild(ssStyles);
-// };
+const store = createStore();
 
-exports.replaceRouterComponent = ({ history }) => {
-  const store = createStore();
+export const wrapRootElement = ({ element }) => {
+  return <Provider store={store}>{element}</Provider>;
+};
 
-  const ConnectedRouterWrapper = ({ children }) => (
-    <Provider store={store}>
-      <Router history={history}>{children}</Router>
-    </Provider>
+export const wrapPageElement = ({ element, props }) => {
+  const muiPageContext = getPageContext();
+
+  return (
+    <JssProvider
+      registry={muiPageContext.sheetsRegistry}
+      generateClassName={muiPageContext.generateClassName}
+    >
+      <Layout {...props} muiPageContext={muiPageContext}>
+        {element}
+      </Layout>
+    </JssProvider>
   );
-
-  ConnectedRouterWrapper.propTypes = {
-    children: PropTypes.object.isRequired
-  };
-
-  return ConnectedRouterWrapper;
 };

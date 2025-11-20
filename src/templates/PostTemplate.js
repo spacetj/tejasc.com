@@ -2,7 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import Main from "../components/Main/";
 import { connect } from "react-redux";
-require("core-js/fn/array/find");
+import { graphql } from "gatsby";
+require("core-js/es/array/find");
 require("prismjs/themes/prism-okaidia.css");
 
 import { setNavigatorPosition, setNavigatorShape } from "../state/store";
@@ -21,12 +22,12 @@ class PostTemplate extends React.Component {
   }
 
   render() {
-    const { data, pathContext } = this.props;
+    const { data, pageContext } = this.props;
     const facebook = (((data || {}).site || {}).siteMetadata || {}).facebook;
 
     return (
       <Main>
-        <Post post={data.post} slug={pathContext.slug} author={data.author} facebook={facebook} />
+        <Post post={data.post} slug={pageContext.slug} author={data.author} facebook={facebook} />
         <Footer footnote={data.footnote} />
         <Seo data={data.post} facebook={facebook} />
       </Main>
@@ -36,7 +37,7 @@ class PostTemplate extends React.Component {
 
 PostTemplate.propTypes = {
   data: PropTypes.object.isRequired,
-  pathContext: PropTypes.object.isRequired,
+  pageContext: PropTypes.object.isRequired,
   navigatorPosition: PropTypes.string.isRequired,
   setNavigatorPosition: PropTypes.func.isRequired,
   isWideScreen: PropTypes.bool.isRequired
@@ -80,11 +81,17 @@ export const postQuery = graphql`
         }
       }
     }
-    author: markdownRemark(id: { regex: "/author/" }) {
+    author: markdownRemark(
+      fields: { collection: { eq: "parts" } }
+      frontmatter: { title: { eq: "author" } }
+    ) {
       id
       html
     }
-    footnote: markdownRemark(id: { regex: "/footnote/" }) {
+    footnote: markdownRemark(
+      fields: { collection: { eq: "parts" } }
+      frontmatter: { title: { eq: "footnote" } }
+    ) {
       id
       html
     }

@@ -1,8 +1,9 @@
 import React from "react";
-import Link from "gatsby-link";
+import { Link } from "gatsby";
 import PropTypes from "prop-types";
 import injectSheet from "react-jss";
 import LazyLoad from "react-lazyload";
+import { GatsbyImage, getImage } from "gatsby-plugin-image";
 
 const styles = theme => ({
   listItem: {
@@ -136,6 +137,9 @@ class ListItem extends React.Component {
 
   render() {
     const { classes, post, linkOnClick } = this.props;
+    const coverImage = post.node.frontmatter.cover
+      ? getImage(post.node.frontmatter.cover.childImageSharp)
+      : null;
 
     return (
       <li
@@ -149,21 +153,13 @@ class ListItem extends React.Component {
           to={post.node.fields.slug}
           onClick={linkOnClick}
         >
-          {post.node.frontmatter.cover &&
-            post.node.frontmatter.cover.children[0] && (
-              <div className={`${classes.listItemPointer} pointer`}>
-                <LazyLoad height={60} overflow={true} throttle={300} once={true} offset={100}>
-                  <picture>
-                    <source
-                      type="image/webp"
-                      srcSet={post.node.frontmatter.cover.children[0].resolutions.srcSetWebp}
-                    />
-                    <source srcSet={post.node.frontmatter.cover.children[0].resolutions.srcSet} />
-                    <img src={post.node.frontmatter.cover.children[0].resolutions.src} alt="" />
-                  </picture>
-                </LazyLoad>
-              </div>
-            )}
+          {coverImage && (
+            <div className={`${classes.listItemPointer} pointer`}>
+              <LazyLoad height={60} overflow={true} throttle={300} once={true} offset={100}>
+                <GatsbyImage image={coverImage} alt="" />
+              </LazyLoad>
+            </div>
+          )}
           
           <div className={classes.listItemText}>
             <h1>{post.node.frontmatter.title}</h1>

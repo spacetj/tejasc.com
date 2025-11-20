@@ -1,8 +1,8 @@
 import React from "react";
 import injectSheet from "react-jss";
-import { MuiThemeProvider } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { graphql, useStaticQuery } from "gatsby";
 
 import withRoot from "../withRoot";
 
@@ -42,21 +42,28 @@ class Layout extends React.Component {
     if (typeof window !== "undefined") {
       window.addEventListener("resize", this.resizeThrottler, false);
     }
-  }
-
-  componentWillMount() {
-    if (typeof localStorage !== "undefined") {
-      const inLocal = +localStorage.getItem("font-size-increase");
-
-      const inStore = this.props.fontSizeIncrease;
-
-      if (inLocal && inLocal !== inStore && inLocal >= 1 && inLocal <= 1.5) {
-        this.props.setFontSizeIncrease(inLocal);
-      }
-    }
-
+    this.syncFontSizeFromLocalStorage();
     this.getCategories();
   }
+
+  componentWillUnmount() {
+    if (typeof window !== "undefined") {
+      window.removeEventListener("resize", this.resizeThrottler, false);
+    }
+  }
+
+  syncFontSizeFromLocalStorage = () => {
+    if (typeof localStorage === "undefined") {
+      return;
+    }
+
+    const inLocal = +localStorage.getItem("font-size-increase");
+    const inStore = this.props.fontSizeIncrease;
+
+    if (inLocal && inLocal !== inStore && inLocal >= 1 && inLocal <= 1.5) {
+      this.props.setFontSizeIncrease(inLocal);
+    }
+  };
 
   getCategories = () => {
     this.categories = this.props.data.posts.edges.reduce((list, edge, i) => {
@@ -83,7 +90,7 @@ class Layout extends React.Component {
     // TODO: dynamic management of tabindexes for keybord navigation
     return (
       <LayoutWrapper>
-        {children()}
+        {children}
         <Navigator posts={data.posts.edges} />
         <ActionsBar categories={this.categories} />
         <InfoBar pages={data.pages.edges} parts={data.parts.edges} />
@@ -95,7 +102,7 @@ class Layout extends React.Component {
 
 Layout.propTypes = {
   data: PropTypes.object.isRequired,
-  children: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
   setIsWideScreen: PropTypes.func.isRequired,
   isWideScreen: PropTypes.bool.isRequired,
   fontSizeIncrease: PropTypes.number.isRequired,
@@ -115,69 +122,80 @@ const mapDispatchToProps = {
   setFontSizeIncrease
 };
 
-export default connect(
+const ConnectedLayout = connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRoot(injectSheet(globals)(Layout)));
 
-//eslint-disable-next-line no-undef
-export const guery = graphql`
-  query LayoutQuery {
-    posts: allMarkdownRemark(
-      filter: { id: { regex: "//posts//" } }
-      sort: { fields: [fields___prefix], order: DESC }
-    ) {
-      edges {
-        node {
-          excerpt
-          fields {
-            slug
-            prefix
-          }
-          frontmatter {
-            title
-            subTitle
-            category
-            publish
-            cover {
-              children {
-                ... on ImageSharp {
-                  resolutions(width: 90, height: 90) {
-                    ...GatsbyImageSharpResolutions_withWebp_noBase64
-                  }
+const LayoutWithData = props => {
+  const data = useStaticQuery(graphql`
+    query LayoutQuery {
+      posts: allMarkdownRemark(
+        filter: { fields: { collection: { eq: "posts" } } }
+        sort: { fields: { prefix: DESC } }
+      ) {
+        edges {
+          node {
+            excerpt
+            fields {
+              slug
+              prefix
+            }
+            frontmatter {
+              title
+              subTitle
+              category
+              publish
+              cover {
+                childImageSharp {
+                  gatsbyImageData(
+                    width: 90
+                    height: 90
+                    layout: FIXED
+                    placeholder: BLURRED
+                    formats: [AUTO, WEBP]
+                  )
                 }
               }
             }
           }
         }
       }
-    }
-    pages: allMarkdownRemark(
-      filter: { id: { regex: "//pages//" }, fields: { prefix: { regex: "/^\\d+$/" } } }
-      sort: { fields: [fields___prefix], order: ASC }
-    ) {
-      edges {
-        node {
-          fields {
-            slug
-            prefix
+      pages: allMarkdownRemark(
+        filter: { fields: { collection: { eq: "pages" } } }
+        sort: { fields: { prefix: ASC } }
+      ) {
+        edges {
+          node {
+            fields {
+              slug
+              prefix
+            }
+            frontmatter {
+              title
+              menuTitle
+            }
           }
-          frontmatter {
-            title
-            menuTitle
+        }
+      }
+      parts: allMarkdownRemark(filter: { fields: { collection: { eq: "parts" } } }) {
+        edges {
+          node {
+            html
+            frontmatter {
+              title
+            }
           }
         }
       }
     }
-    parts: allMarkdownRemark(filter: { id: { regex: "//parts//" } }) {
-      edges {
-        node {
-          html
-          frontmatter {
-            title
-          }
-        }
-      }
-    }
-  }
-`;
+  `);
+
+  return <ConnectedLayout {...props} data={data} />;
+};
+
+LayoutWithData.propTypes = {
+  children: PropTypes.node.isRequired
+};
+
+export default LayoutWithData;

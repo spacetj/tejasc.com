@@ -9,7 +9,7 @@ function withRoot(Component) {
     constructor(props) {
       super(props);
 
-      this.pageContext = this.props.pageContext || getPageContext();
+      this.muiPageContext = this.props.muiPageContext || getPageContext();
     }
 
     componentDidMount() {
@@ -20,14 +20,12 @@ function withRoot(Component) {
       }
     }
 
-    pageContext = null;
-
     render() {
       // MuiThemeProvider makes the theme available down the React tree thanks to React context.
       return (
         <MuiThemeProvider
-          theme={this.pageContext.theme}
-          sheetsManager={this.pageContext.sheetsManager}
+          theme={this.muiPageContext.theme}
+          sheetsManager={this.muiPageContext.sheetsManager}
         >
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
@@ -38,7 +36,7 @@ function withRoot(Component) {
   }
 
   WithRoot.propTypes = {
-    pageContext: PropTypes.object
+    muiPageContext: PropTypes.object
   };
 
   return WithRoot;

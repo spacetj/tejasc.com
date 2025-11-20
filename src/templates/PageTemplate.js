@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { graphql } from "gatsby";
 
 import { setNavigatorPosition, setNavigatorShape } from "../state/store";
 import { moveNavigatorAside } from "../utils/shared";
@@ -63,7 +64,10 @@ export const pageQuery = graphql`
         title
       }
     }
-    footnote: markdownRemark(id: { regex: "/footnote/" }) {
+    footnote: markdownRemark(
+      fields: { collection: { eq: "parts" } }
+      frontmatter: { title: { eq: "footnote" } }
+    ) {
       id
       html
     }
