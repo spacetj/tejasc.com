@@ -5,3 +5,12 @@ module "tejasc" {
   location = "australia-southeast1"
   class    = "STANDARD"
 }
+
+module "artifact_registry" {
+  source = "git::https://github.com/GoogleCloudPlatform/terraform-google-artifact-registry.git?ref=v0.7.0"
+
+  project_id    = "sandbox-project-tc"
+  location      = "australia-southeast1"
+  format        = "DOCKER"
+  repository_id = "docker"
+}
