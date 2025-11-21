@@ -56,6 +56,20 @@ and Google Beta so the state stops referring to the legacy provider namespace.
 You can then re-run `terraform init`/`terraform plan` in Terraform Cloud using
 Terraform 0.13.x (or newer).
 
+### Authenticating the CLI with Terraform Cloud
+
+Local `terraform init`/`plan` against the Terraform Cloud backend requires a
+user API token. Create one via **Terraform Cloud → User Settings → Tokens**, then
+export it and run the helper script once:
+
+```bash
+export TF_CLOUD_TOKEN=your-tfc-token
+scripts/terraform/configure-cloud.sh
+```
+
+This writes `~/.terraform.d/credentials.tfrc.json` so subsequent CLI commands
+automatically authenticate against `app.terraform.io`.
+
 ## Contributing
 
 - Create your feature branch (git checkout -b feature/fooBar)
