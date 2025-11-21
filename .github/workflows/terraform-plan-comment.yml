@@ -1,0 +1,51 @@
+name: Terraform plan comment
+
+on:
+  pull_request:
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    env:
+      TF_CLOUD_TOKEN: ${{ secrets.TERRAFORM_CLOUD_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_wrapper: false
+      - name: Configure Terraform Cloud credentials
+        if: env.TF_CLOUD_TOKEN != ''
+        run: |
+          mkdir -p ~/.terraform.d
+          cat <<EOF > ~/.terraform.d/credentials.tfrc.json
+          {
+            "credentials": {
+              "app.terraform.io": {
+                "token": "${TF_CLOUD_TOKEN}"
+              }
+            }
+          }
+          EOF
+      - name: Terraform Init
+        working-directory: infra
+        run: terraform init -backend=false -input=false
+      - name: Terraform Plan
+        id: plan
+        working-directory: infra
+        run: terraform plan -input=false -no-color | tee tfplan.txt
+        continue-on-error: true
+      - name: Add comment with plan
+        if: always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const plan = fs.readFileSync('infra/tfplan.txt', 'utf8');
+            const issue_number = context.payload.pull_request.number;
+            const status = '${{ steps.plan.outcome }}' === 'success' ? '✅ Plan Succeeded' : '⚠️ Plan Failed';
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number,
+              body: `### ${status}\n\n\`\`\`\n${plan || 'Terraform plan output was empty.'}\n\`\`\``
+            });

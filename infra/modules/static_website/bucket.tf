@@ -4,7 +4,7 @@ resource "google_storage_bucket" "website" {
   force_destroy = true
   storage_class = var.class
 
-  bucket_policy_only = true
+  uniform_bucket_level_access = true
 
   website {
     main_page_suffix = "index.html"
@@ -12,13 +12,13 @@ resource "google_storage_bucket" "website" {
   }
 
   logging {
-    log_bucket = "management-tejasc"
-    log_object_prefix =  "log/tejasc-"
+    log_bucket        = "management-tejasc"
+    log_object_prefix = "log/tejasc-"
   }
 }
 
 resource "google_storage_bucket_iam_member" "read_only" {
   bucket = google_storage_bucket.website.name
-  role = "roles/storage.objectViewer"
+  role   = "roles/storage.objectViewer"
   member = "allUsers"
 }

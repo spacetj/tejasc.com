@@ -8,18 +8,18 @@ locals {
   ]
 }
 
-variable domain {
+variable "domain" {
   type = string
 }
 
-variable cname {
+variable "cname" {
   type = string
 }
 
-variable location {
+variable "location" {
   type = string
 }
 
-variable class {
+variable "class" {
   type = string
 }

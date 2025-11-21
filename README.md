@@ -42,6 +42,36 @@ The site is created by the PersonalBlog Gatsby template. For more information ch
 - Uses cloudflare as WAF and for defining DNS records
 - Requests are proxied through Cloudflare through to `storage.googleapis.com`
 
+### Terraform upgrade notes
+
+The Terraform Cloud state for `infra/` was originally created with Terraform
+0.12. Before applying changes with Terraform 1.x you **must** migrate the
+provider addresses in the remote state. Run the helper script once with a
+Terraform CLI that is authenticated against Terraform Cloud:
+
+```bash
+scripts/terraform/migrate-providers.sh
+```
+
+This script executes `terraform state replace-provider` for Cloudflare, Google,
+and Google Beta so the state stops referring to the legacy provider namespace.
+You can then re-run `terraform init`/`terraform plan` in Terraform Cloud using
+Terraform 1.14.x (or newer).
+
+### Authenticating the CLI with Terraform Cloud
+
+Local `terraform init`/`plan` against the Terraform Cloud backend requires a
+user API token. Create one via **Terraform Cloud → User Settings → Tokens**, then
+export it and run the helper script once:
+
+```bash
+export TF_CLOUD_TOKEN=your-tfc-token
+scripts/terraform/configure-cloud.sh
+```
+
+This writes `~/.terraform.d/credentials.tfrc.json` so subsequent CLI commands
+automatically authenticate against `app.terraform.io`.
+
 ## Contributing
 
 - Create your feature branch (git checkout -b feature/fooBar)
