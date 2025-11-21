@@ -6,11 +6,10 @@ module "tejasc" {
   class    = "STANDARD"
 }
 
-module "artifact_registry" {
-  source = "git::https://github.com/GoogleCloudPlatform/terraform-google-artifact-registry.git?ref=v0.7.0"
-
-  project_id    = "sandbox-project-tc"
+resource "google_artifact_registry_repository" "docker" {
+  project       = "sandbox-project-tc"
   location      = "australia-southeast1"
-  format        = "DOCKER"
   repository_id = "docker"
+  format        = "DOCKER"
+  description   = "Container images for tejasc.com"
 }
