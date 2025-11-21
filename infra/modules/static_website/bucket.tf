@@ -4,6 +4,7 @@ resource "google_storage_bucket" "website" {
   force_destroy = true
   storage_class = var.class
 
+  bucket_policy_only          = true
   uniform_bucket_level_access = true
 
   website {
