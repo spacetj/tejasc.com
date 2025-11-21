@@ -12,13 +12,13 @@ resource "google_storage_bucket" "website" {
   }
 
   logging {
-    log_bucket = "management-tejasc"
-    log_object_prefix =  "log/tejasc-"
+    log_bucket        = "management-tejasc"
+    log_object_prefix = "log/tejasc-"
   }
 }
 
 resource "google_storage_bucket_iam_member" "read_only" {
   bucket = google_storage_bucket.website.name
-  role = "roles/storage.objectViewer"
+  role   = "roles/storage.objectViewer"
   member = "allUsers"
 }

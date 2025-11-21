@@ -12,7 +12,7 @@ provider "google-beta" {
 }
 
 terraform {
-  required_version = ">= 1.3.0"
+  required_version = ">= 1.14.0"
 
   required_providers {
     cloudflare = {
@@ -30,8 +30,8 @@ terraform {
   }
 
   backend "remote" {
-    hostname      = "app.terraform.io"
-    organization  = "tejasc"
+    hostname     = "app.terraform.io"
+    organization = "tejasc"
 
     workspaces {
       name = "website"
