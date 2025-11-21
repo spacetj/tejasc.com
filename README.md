@@ -54,7 +54,7 @@ scripts/terraform/migrate-providers.sh
 This script executes `terraform state replace-provider` for Cloudflare, Google,
 and Google Beta so the state stops referring to the legacy provider namespace.
 You can then re-run `terraform init`/`terraform plan` in Terraform Cloud using
-Terraform 0.13.x (or newer).
+Terraform 1.14.x (or newer).
 
 ### Authenticating the CLI with Terraform Cloud
 
