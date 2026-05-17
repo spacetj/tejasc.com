@@ -64,6 +64,22 @@ const listBuiltHtmlFiles = dir => {
     });
 };
 
+const listBuiltFiles = dir => {
+  if (!fs.existsSync(dir)) {
+    return [];
+  }
+
+  return fs
+    .readdirSync(dir, { withFileTypes: true })
+    .flatMap(entry => {
+      const filePath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        return listBuiltFiles(filePath);
+      }
+      return entry.isFile() ? [filePath] : [];
+    });
+};
+
 const parseHtml = html => cheerio.load(html);
 const macOSChromePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 let puppeteerModule;
@@ -538,14 +554,42 @@ describe("Accessibility attributes", () => {
 });
 
 describe("Deployment guardrails", () => {
-  test("GCS deploy preserves historical hashed assets", () => {
-    const deployScript = fs.readFileSync(path.join(projectRoot, "scripts/deploy-gcs.sh"), "utf8");
+  test("production build output excludes source maps", () => {
+    const builtFiles = listBuiltFiles(publicDir);
+    const sourceMaps = builtFiles
+      .filter(filePath => filePath.endsWith(".map"))
+      .map(filePath => path.relative(publicDir, filePath));
+    const sourceMapReferences = builtFiles
+      .filter(filePath => /\.(css|js)$/.test(filePath))
+      .flatMap(filePath => {
+        const contents = fs.readFileSync(filePath, "utf8");
+        return contents.includes("sourceMappingURL")
+          ? [path.relative(publicDir, filePath)]
+          : [];
+      });
 
-    expect(deployScript).toMatch(/rm -rf \.\/public/);
-    expect(deployScript).toMatch(/gcloud storage rsync \. "\$\{BUCKET_NAME\}" --recursive/);
+    expect(sourceMaps).toEqual([]);
+    expect(sourceMapReferences).toEqual([]);
+  });
+
+  test("build and deploy paths clean stale production artifacts", () => {
+    const runner = fs.readFileSync(path.join(projectRoot, "scripts/run-gatsby.js"), "utf8");
+    const deployScript = fs.readFileSync(path.join(projectRoot, "scripts/deploy-gcs.sh"), "utf8");
+    const workflow = fs.readFileSync(path.join(projectRoot, ".github/workflows/workflow.yaml"), "utf8");
+
+    expect(runner).toContain("fs.rmSync(publicDir");
+    expect(runner).toContain("pruneProductionArtifacts");
+    expect(deployScript).toContain('find ./public -type f -name "*.map"');
+    expect(deployScript).toContain('${BUCKET_NAME}/**/*.map');
+    expect(deployScript).toContain('gcloud storage rm "${object}"');
+    expect(deployScript).toMatch(/gcloud storage rsync \. "\$\{BUCKET_NAME\}"/);
+    expect(deployScript).toContain("--delete-unmatched-destination-objects");
+    expect(deployScript).toContain('--exclude=".*\\\\.map$"');
     expect(deployScript).toMatch(/gcloud storage cp \.\/talks\/index\.html "\$\{BUCKET_NAME\}\/talks"/);
     expect(deployScript).toContain('${BUCKET_NAME}/**/*.html');
-    expect(deployScript).not.toMatch(/--delete-unmatched-destination-objects/);
+    expect(workflow).toContain('SKIP_BUILD: "1"');
+    expect(workflow).toContain("./scripts/deploy-gcs.sh");
+    expect(workflow).not.toContain("gsutil -m rsync");
   });
 });
 
