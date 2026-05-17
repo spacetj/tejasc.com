@@ -1,11 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import injectSheet from "react-jss";
-import { forceCheck } from "react-lazyload";
 
 import ListHeader from "./ListHeader";
 import SpringScrollbars from "../SpringScrollbars";
 import ListItem from "./ListItem";
+
+const forceCheck = () => {};
 
 const styles = theme => ({
   posts: {

@@ -1,6 +1,5 @@
 const path = require("path");
 const fs = require("fs");
-const webpack = require("webpack");
 const { createFilePath } = require("gatsby-source-filesystem");
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
@@ -94,22 +93,14 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 };
 
 exports.onCreateWebpackConfig = ({ actions }) => {
-  const reactDomShim = path.resolve(__dirname, "src/polyfills/reactDom.js");
-
   actions.setWebpackConfig({
-    plugins: [
-      new webpack.NormalModuleReplacementPlugin(/^react-dom$/, resource => {
-        resource.request = reactDomShim;
-      })
-    ],
     resolve: {
       alias: {
         "@babel/runtime/helpers/builtin/interopRequireDefault$": path.resolve(
           __dirname,
           "src/polyfills/babelInteropRequireDefault.js"
         ),
-        assert$: path.resolve(__dirname, "src/polyfills/assert.js"),
-        "react-dom$": reactDomShim
+        assert$: path.resolve(__dirname, "src/polyfills/assert.js")
       }
     }
   });

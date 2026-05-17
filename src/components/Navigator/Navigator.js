@@ -2,11 +2,12 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import injectSheet from "react-jss";
-import { forceCheck } from "react-lazyload";
 
 import { setNavigatorPosition, setNavigatorShape, setCategoryFilter } from "../../state/store";
 import { moveNavigatorAside } from "./../../utils/shared";
 import List from "./List";
+
+const forceCheck = () => {};
 
 const styles = theme => ({
   navigator: {

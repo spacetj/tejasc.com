@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "gatsby";
 import PropTypes from "prop-types";
 import injectSheet from "react-jss";
-import LazyLoad from "react-lazyload";
 import { GatsbyImage, getImage } from "gatsby-plugin-image";
 
 const styles = theme => ({
@@ -155,12 +154,10 @@ class ListItem extends React.Component {
         >
           {coverImage && (
             <div className={`${classes.listItemPointer} pointer`}>
-              <LazyLoad height={60} overflow={true} throttle={300} once={true} offset={100}>
-                <GatsbyImage
-                  image={coverImage}
-                  alt={`${post.node.frontmatter.title} post thumbnail`}
-                />
-              </LazyLoad>
+              <GatsbyImage
+                image={coverImage}
+                alt={`${post.node.frontmatter.title} post thumbnail`}
+              />
             </div>
           )}
           

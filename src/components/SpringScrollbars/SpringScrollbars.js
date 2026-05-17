@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { Scrollbars } from "react-custom-scrollbars";
 import PropTypes from "prop-types";
 import { SpringSystem, MathUtil } from "rebound";
-import { forceCheck } from "react-lazyload";
 import { connect } from "react-redux";
 
 import { setScrollToTop } from "../../state/store";
+
+const forceCheck = () => {};
 
 class SpringScrollbars extends Component {
   constructor(props, ...rest) {
@@ -30,28 +30,34 @@ class SpringScrollbars extends Component {
   }
 
   componentWillUnmount() {
-    this.springSystem.deregisterSpring(this.spring);
-    this.springSystem.removeAllListeners();
-    this.springSystem = undefined;
-    this.spring.destroy();
+    if (this.springSystem && this.spring) {
+      this.springSystem.deregisterSpring(this.spring);
+      this.springSystem.removeAllListeners();
+      this.spring.destroy();
+    }
     this.spring = undefined;
+    this.springSystem = undefined;
   }
 
   getScrollTop() {
-    return this.scrollbars.getScrollTop();
+    return this.scrollbars ? this.scrollbars.scrollTop : 0;
   }
 
   getScrollHeight() {
-    return this.scrollbars.getScrollHeight();
+    return this.scrollbars ? this.scrollbars.scrollHeight : 0;
   }
 
   getHeight() {
-    return this.scrollbars.getHeight();
+    return this.scrollbars ? this.scrollbars.clientHeight : 0;
   }
 
   scrollTop(top) {
-    const scrollTop = this.scrollbars.getScrollTop();
-    const scrollHeight = this.scrollbars.getScrollHeight();
+    if (!this.scrollbars) {
+      return;
+    }
+
+    const scrollTop = this.scrollbars.scrollTop;
+    const scrollHeight = this.scrollbars.scrollHeight;
     const val = MathUtil.mapValueInRange(
       top,
       0,
@@ -65,8 +71,12 @@ class SpringScrollbars extends Component {
 
   handleSpringUpdate(spring) {
     window.requestAnimationFrame(() => {
+      if (!this.scrollbars) {
+        return;
+      }
+
       const val = spring.getCurrentValue();
-      this.scrollbars.scrollTop(val);
+      this.scrollbars.scrollTop = val;
     });
   }
 
@@ -74,16 +84,15 @@ class SpringScrollbars extends Component {
     const { children, forceCheckOnScroll } = this.props;
 
     return (
-      <Scrollbars
-        autoHide
-        universal={true}
+      <div
+        style={{ height: "100%", overflow: "auto" }}
         onScroll={forceCheckOnScroll && forceCheck}
         ref={comp => {
           this.scrollbars = comp;
         }}
       >
         {children}
-      </Scrollbars>
+      </div>
     );
   }
 }

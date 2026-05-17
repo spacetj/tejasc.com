@@ -1,5 +1,6 @@
-import { forceCheck } from "react-lazyload";
 // import { navigateTo } from 'gatsby-link';
+
+const forceCheck = () => {};
 
 export function featureNavigator(e) {
   e && e.preventDefault();
