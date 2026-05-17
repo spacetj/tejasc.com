@@ -1,6 +1,8 @@
 const fs = require("fs");
+const http = require("http");
 const path = require("path");
 const cheerio = require("cheerio");
+const puppeteer = require("puppeteer");
 const { execSync } = require("child_process");
 
 const projectRoot = path.join(__dirname, "..");
@@ -46,6 +48,65 @@ const buildMarkdownIndex = baseDir => {
 };
 
 const parseHtml = html => cheerio.load(html);
+const macOSChromePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+
+const mimeTypes = {
+  ".html": "text/html; charset=utf-8",
+  ".css": "text/css",
+  ".js": "application/javascript",
+  ".json": "application/json",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".svg": "image/svg+xml",
+  ".xml": "application/xml",
+  ".txt": "text/plain",
+  ".ico": "image/x-icon"
+};
+
+const servePublic = () =>
+  new Promise(resolve => {
+    const server = http.createServer((req, res) => {
+      const safePath = decodeURIComponent(req.url.split("?")[0]);
+      const requestedPath = safePath === "/" ? "/index.html" : safePath;
+      const filePath = path.join(publicDir, normalizeSlug(requestedPath));
+
+      if (!filePath.startsWith(publicDir)) {
+        res.statusCode = 403;
+        res.end("Forbidden");
+        return;
+      }
+
+      let target = filePath;
+      if (fs.existsSync(target) && fs.statSync(target).isDirectory()) {
+        target = path.join(target, "index.html");
+      }
+
+      if (!fs.existsSync(target)) {
+        res.statusCode = 404;
+        res.end("Not found");
+        return;
+      }
+
+      const ext = path.extname(target);
+      res.setHeader("Content-Type", mimeTypes[ext] || "application/octet-stream");
+      fs.createReadStream(target).pipe(res);
+    });
+
+    server.listen(0, "127.0.0.1", () => resolve(server));
+  });
+
+const puppeteerLaunchOptions = () => {
+  const options = {
+    args: ["--no-sandbox", "--disable-setuid-sandbox"]
+  };
+
+  if (process.platform === "darwin" && process.arch === "arm64" && fs.existsSync(macOSChromePath)) {
+    options.executablePath = macOSChromePath;
+  }
+
+  return options;
+};
 
 const readPage = (slug, filename = "index.html") => {
   const filePath = path.join(publicDir, normalizeSlug(slug), filename);
@@ -82,6 +143,66 @@ describe("Gatsby build output", () => {
     const html = readPage("/");
     expect(html.toLowerCase()).not.toContain("not found");
     expect(html.length).toBeGreaterThan(1000);
+  });
+
+  test("home page hydrates without clearing rendered content", async () => {
+    const server = await servePublic();
+    const address = server.address();
+    const port = typeof address === "object" ? address.port : 9000;
+    let browser;
+
+    try {
+      browser = await puppeteer.launch(puppeteerLaunchOptions());
+      const page = await browser.newPage();
+      const runtimeErrors = [];
+
+      page.on("pageerror", error => {
+        if (
+          /element type is invalid|minified react error #130|invariant=130/i.test(error.message)
+        ) {
+          runtimeErrors.push(error.message);
+        }
+      });
+      page.on("console", message => {
+        const text = message.text();
+        if (
+          message.type() === "error" &&
+          /element type is invalid|minified react error #130|invariant=130/i.test(text)
+        ) {
+          runtimeErrors.push(text);
+        }
+      });
+
+      await page.setViewport({ width: 1280, height: 720 });
+      const response = await page.goto(`http://127.0.0.1:${port}/`, {
+        waitUntil: "networkidle2",
+        timeout: 60000
+      });
+
+      expect(response && response.status()).toBeLessThan(400);
+      await page.waitForFunction(
+        () => document.querySelector("#___gatsby")?.innerText.trim().length > 20,
+        { timeout: 10000 }
+      );
+      await page.waitForTimeout(1000);
+
+      const hydratedState = await page.evaluate(() => {
+        const root = document.querySelector("#___gatsby");
+        return {
+          bodyText: document.body.innerText.replace(/\s+/g, " ").trim(),
+          rootChildCount: root ? root.children.length : 0
+        };
+      });
+
+      expect(runtimeErrors).toEqual([]);
+      expect(hydratedState.rootChildCount).toBeGreaterThan(0);
+      expect(hydratedState.bodyText.toLowerCase()).toContain("stability and reliability");
+    } finally {
+      if (browser) {
+        await browser.close();
+      }
+      server.close();
+    }
   });
 });
 

@@ -11,7 +11,7 @@
     "build": "node scripts/run-gatsby.js build",
     "serve": "node scripts/run-gatsby.js serve",
     "test": "npm run build && npm run test:ci",
-    "test:ci": "jest --runInBand",
+    "test:ci": "jest --runInBand --watchman=false",
     "screenshot:ci": "node scripts/capture-screenshots.js",
     "format-output": "prettier src/**/*.{js,jsx}",
     "format": "prettier --write src/**/*.{js,jsx}",
