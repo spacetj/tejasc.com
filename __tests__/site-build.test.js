@@ -192,6 +192,18 @@ describe("Gatsby build output", () => {
     expect($("title").text()).toContain("Tejas C");
   });
 
+  test("service worker retires stale offline app-shell caches", () => {
+    const swPath = path.join(publicDir, "sw.js");
+    expect(fs.existsSync(swPath)).toBe(true);
+
+    const sw = fs.readFileSync(swPath, "utf8");
+    expect(sw).toContain("registration.unregister");
+    expect(sw).toContain("caches.delete");
+    expect(sw).not.toContain("precacheManifest");
+    expect(sw).not.toContain("offline-plugin-app-shell-fallback");
+    expect(fs.existsSync(path.join(publicDir, "offline-plugin-app-shell-fallback"))).toBe(false);
+  });
+
   test("home page hydrates without clearing rendered content", async () => {
     const server = await servePublic();
     const address = server.address();
@@ -363,6 +375,15 @@ describe("Static page SEO", () => {
       expectSeoMetadata($, page.slug);
       expect($("title").text().toLowerCase()).toContain(page.title.toLowerCase());
     });
+  });
+});
+
+describe("Deployment guardrails", () => {
+  test("GCS deploy removes stale destination objects", () => {
+    const deployScript = fs.readFileSync(path.join(projectRoot, "scripts/deploy-gcs.sh"), "utf8");
+
+    expect(deployScript).toMatch(/rm -rf \.\/public/);
+    expect(deployScript).toMatch(/gsutil -m rsync -d -R \. "\$\{BUCKET_NAME\}"/);
   });
 });
 

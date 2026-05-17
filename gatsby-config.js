@@ -99,7 +99,6 @@ const plugins = [
       ]
     }
   },
-  `gatsby-plugin-offline`,
   process.env.GOOGLE_ANALYTICS_ID && {
     resolve: `gatsby-plugin-google-analytics`,
     options: {

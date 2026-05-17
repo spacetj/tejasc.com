@@ -4,9 +4,10 @@ set -euo pipefail
 
 BUCKET_NAME="${BUCKET_NAME:-gs://tejasc.com}"
 
+rm -rf ./public
 npm run build
 
-cd ./public && gsutil -m rsync -R . "${BUCKET_NAME}"
+cd ./public && gsutil -m rsync -d -R . "${BUCKET_NAME}"
 
 gsutil ls \
   "${BUCKET_NAME}/*.html" \
