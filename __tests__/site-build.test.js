@@ -8,6 +8,8 @@ const projectRoot = path.join(__dirname, "..");
 const publicDir = path.join(projectRoot, "public");
 const postsDir = path.join(projectRoot, "content/posts");
 const pagesDir = path.join(projectRoot, "content/pages");
+const siteUrl = "https://tejasc.com";
+const genericDescription = "Tejas C: Talks, Adventures, Blogs.";
 
 const normalizeSlug = slug => slug.replace(/^\//, "");
 
@@ -50,6 +52,33 @@ const parseHtml = html => cheerio.load(html);
 const macOSChromePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 let puppeteerModule;
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+const canonicalPath = slug => {
+  const pathWithSlash = slug.startsWith("/") ? slug : `/${slug}`;
+  return pathWithSlash === "/" ? "/" : pathWithSlash.replace(/\/+$/, "");
+};
+
+const canonicalUrl = slug => `${siteUrl}${canonicalPath(slug)}`;
+
+const metaContent = ($, selector) => $(selector).attr("content") || "";
+
+const expectSeoMetadata = ($, slug, options = {}) => {
+  const description = metaContent($, "meta[name='description']");
+  const ogUrl = metaContent($, "meta[property='og:url']");
+  const ogImage = metaContent($, "meta[property='og:image']");
+  const twitterImage = metaContent($, "meta[name='twitter:image']");
+
+  expect($("title").text()).not.toContain("undefined");
+  expect(description).not.toContain("undefined");
+  expect(ogUrl).toBe(canonicalUrl(slug));
+  expect(ogImage).toMatch(/^https:\/\/tejasc\.com\//);
+  expect(twitterImage).toBe(ogImage);
+
+  if (!options.allowGenericDescription) {
+    expect(description).not.toBe(genericDescription);
+    expect(description.length).toBeGreaterThan(20);
+  }
+};
 
 const loadPuppeteer = async () => {
   if (!puppeteerModule) {
@@ -155,6 +184,14 @@ describe("Gatsby build output", () => {
     expect(html.length).toBeGreaterThan(1000);
   });
 
+  test("home page includes canonical SEO metadata", () => {
+    const html = readPage("/");
+    const $ = parseHtml(html);
+
+    expectSeoMetadata($, "/", { allowGenericDescription: true });
+    expect($("title").text()).toContain("Tejas C");
+  });
+
   test("home page hydrates without clearing rendered content", async () => {
     const server = await servePublic();
     const address = server.address();
@@ -242,6 +279,16 @@ describe("Markdown-driven pages", () => {
         expect(text.toLowerCase()).toContain(page.title.toLowerCase());
       }
     });
+
+    test(`page ${page.slug} has page-specific SEO metadata`, () => {
+      const html = readPage(page.slug);
+      const $ = parseHtml(html);
+
+      expectSeoMetadata($, page.slug);
+      if (page.title) {
+        expect($("title").text().toLowerCase()).toContain(page.title.toLowerCase());
+      }
+    });
   });
 });
 
@@ -266,6 +313,16 @@ describe("Blog posts", () => {
         expect(bodyText.toLowerCase()).toContain(post.title.toLowerCase());
       }
     });
+
+    test(`post ${post.slug} has page-specific SEO metadata`, () => {
+      const html = readPage(post.slug);
+      const $ = parseHtml(html);
+
+      expectSeoMetadata($, post.slug);
+      if (post.title) {
+        expect($("title").text().toLowerCase()).toContain(post.title.toLowerCase());
+      }
+    });
   });
 
   test("sitemap lists every post", () => {
@@ -280,6 +337,31 @@ describe("Blog posts", () => {
         sitemap.includes(variant)
       );
       expect(matches).toBe(true);
+    });
+  });
+});
+
+describe("Static page SEO", () => {
+  [
+    {
+      slug: "/contact/",
+      title: "$ tejasc contact"
+    },
+    {
+      slug: "/resume/",
+      title: "$ tejasc portfolio --display=changelog"
+    },
+    {
+      slug: "/search/",
+      title: "Search"
+    }
+  ].forEach(page => {
+    test(`${page.slug} has canonical SEO metadata`, () => {
+      const html = readPage(page.slug);
+      const $ = parseHtml(html);
+
+      expectSeoMetadata($, page.slug);
+      expect($("title").text().toLowerCase()).toContain(page.title.toLowerCase());
     });
   });
 });
