@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import injectSheet from "react-jss";
 import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
 import { navigate } from "gatsby";
-import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 
 function encode(data) {
   return Object.keys(data)
@@ -54,15 +54,27 @@ class ContactForm extends React.Component {
     this.setState({ [name]: value });
   };
 
-  handleNetworkError = e => {
+  handleNetworkError = () => {
     this.setState({ submitError: "There was a network error." });
   };
 
   handleSubmit = e => {
+    e.preventDefault();
+
+    if (!e.currentTarget.checkValidity()) {
+      e.currentTarget.reportValidity();
+      return;
+    }
+
     fetch("/", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: encode({ "form-name": "contact", ...this.state })
+      body: encode({
+        "form-name": "contact",
+        name: this.state.name,
+        email: this.state.email,
+        message: this.state.message
+      })
     })
       .then(() => {
         console.log("Form submission success");
@@ -73,7 +85,6 @@ class ContactForm extends React.Component {
         this.handleNetworkError();
       });
 
-    e.preventDefault();
   };
 
   render() {
@@ -81,47 +92,45 @@ class ContactForm extends React.Component {
     const { email, name, message, submitError } = this.state;
 
     return (
-      <ValidatorForm
+      <form
         onSubmit={this.handleSubmit}
-        onError={errors => console.log(errors)}
         name="contact"
-        ref={f => (this.form = f)}
+        method="post"
         data-netlify="true"
         data-netlify-honeypot="bot-field"
       >
+        <input type="hidden" name="form-name" value="contact" />
         {submitError && <p className={classes.submitError}>{submitError}</p>}
-        <TextValidator
+        <TextField
           id="name"
           name="name"
           label="Name"
           value={name}
           onChange={this.handleChange}
-          validators={["required"]}
-          errorMessages={["this field is required"]}
+          required
           fullWidth
           margin="normal"
           className={classes.singleLineInput}
         />
-        <TextValidator
+        <TextField
           id="email"
           name="email"
           label="E-mail"
+          type="email"
           value={email}
           onChange={this.handleChange}
-          validators={["required", "isEmail"]}
-          errorMessages={["this field is required", "email is not valid"]}
+          required
           fullWidth
           margin="normal"
           className={classes.singleLineInput}
         />
-        <TextValidator
+        <TextField
           id="message"
           name="message"
           label="Message"
           value={message}
           onChange={this.handleChange}
-          validators={["required"]}
-          errorMessages={["this field is required"]}
+          required
           multiline
           fullWidth
           margin="normal"
@@ -129,7 +138,7 @@ class ContactForm extends React.Component {
         />
         <input name="bot-field" style={{ display: "none" }} />
         <Button
-          variant="raised"
+          variant="contained"
           color="primary"
           size="large"
           type="submit"
@@ -137,7 +146,7 @@ class ContactForm extends React.Component {
         >
           Send
         </Button>
-      </ValidatorForm>
+      </form>
     );
   }
 }

@@ -4,13 +4,12 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import classNames from 'classnames';
 import { Link } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
 import injectSheet from 'react-jss';
-import {Manager, Popper, Target} from 'react-popper';
 
 const styles = theme => ({
   topMenu: {
@@ -21,8 +20,8 @@ const styles = theme => ({
   open: {
     color: theme.bars.colors.icon
   },
-  popperClose: {
-    pointerEvents: "none"
+  popper: {
+    zIndex: 1
   }
 });
 
@@ -36,8 +35,11 @@ class TopMenu extends React.Component {
     clearTimeout(this.timeout);
   }
 
-  handleClick = () => {
-    this.setState({ open: !this.state.open });
+  handleClick = event => {
+    this.setState(state => ({
+      anchorEl: event.currentTarget,
+      open: !state.open
+    }));
   };
 
   handleClose = () => {
@@ -56,25 +58,25 @@ class TopMenu extends React.Component {
 
     return (
       <nav className={classes.topMenu}>
-        <Manager>
-          <Target>
-            <IconButton
-              aria-label="More"
-              aria-owns={anchorEl ? "long-menu" : null}
-              aria-haspopup="true"
-              onClick={this.handleClick}
-              className={classes.open}
-            >
-              <MoreVertIcon />
-            </IconButton>
-          </Target>
-          <Popper
-            placement="bottom-end"
-            eventsEnabled={open}
-            className={classNames({ [classes.popperClose]: !open })}
-          >
+        <IconButton
+          aria-label="More"
+          aria-owns={open ? "menu-list" : undefined}
+          aria-haspopup="true"
+          onClick={this.handleClick}
+          className={classes.open}
+        >
+          <MoreVertIcon />
+        </IconButton>
+        <Popper
+          open={open}
+          anchorEl={anchorEl}
+          placement="bottom-end"
+          transition
+          className={classes.popper}
+        >
+          {({ TransitionProps }) => (
             <ClickAwayListener onClickAway={this.handleClose}>
-              <Grow in={open} id="menu-list" style={{ transformOrigin: "0 0 0" }}>
+              <Grow {...TransitionProps} id="menu-list" style={{ transformOrigin: "0 0 0" }}>
                 <Paper>
                   <MenuList role="menu">
                     <MenuItem
@@ -115,8 +117,8 @@ class TopMenu extends React.Component {
                 </Paper>
               </Grow>
             </ClickAwayListener>
-          </Popper>
-        </Manager>
+          )}
+        </Popper>
       </nav>
     );
   }

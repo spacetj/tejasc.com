@@ -18,7 +18,7 @@ export const wrapPageElement = ({ element, props }) => {
   return (
     <JssProvider
       registry={muiPageContext.sheetsRegistry}
-      generateClassName={muiPageContext.generateClassName}
+      generateId={muiPageContext.generateId}
     >
       <Layout {...props} muiPageContext={muiPageContext}>
         {element}

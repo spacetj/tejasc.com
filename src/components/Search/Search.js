@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import injectSheet from "react-jss";
-import { InstantSearch, SearchBox, Hits, Stats, Pagination } from "react-instantsearch/dom";
+import { liteClient as algoliasearch } from "algoliasearch/lite";
+import { InstantSearch, SearchBox, Hits, Stats, Pagination } from "react-instantsearch";
 
 import Hit from "./Hit";
 
@@ -79,17 +80,21 @@ const styles = theme => ({
 
 const Search = props => {
   const { classes, algolia } = props;
+  const { appId, searchOnlyApiKey, indexName } = algolia || {};
+  const searchClient = React.useMemo(() => {
+    if (!appId || !searchOnlyApiKey) {
+      return null;
+    }
+
+    return algoliasearch(appId, searchOnlyApiKey);
+  }, [appId, searchOnlyApiKey]);
 
   return (
     <div className={classes.search}>
-      {algolia &&
-        algolia.appId && (
-          <InstantSearch
-            appId={algolia.appId}
-            apiKey={algolia.searchOnlyApiKey}
-            indexName={algolia.indexName}
-          >
-            <SearchBox translations={{ placeholder: "Search" }} />
+      {searchClient &&
+        indexName && (
+          <InstantSearch searchClient={searchClient} indexName={indexName}>
+            <SearchBox placeholder="Search" />
             <Stats />
             <Hits hitComponent={Hit} />
             <Pagination />
