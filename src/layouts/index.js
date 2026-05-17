@@ -86,6 +86,7 @@ class Layout extends React.Component {
 
   render() {
     const { children, data } = this.props;
+    const menuPages = data.pages.edges.filter(({ node }) => node.frontmatter.menu !== false);
 
     // TODO: dynamic management of tabindexes for keybord navigation
     return (
@@ -93,8 +94,8 @@ class Layout extends React.Component {
         {children}
         <Navigator posts={data.posts.edges} />
         <ActionsBar categories={this.categories} />
-        <InfoBar pages={data.pages.edges} parts={data.parts.edges} />
-        {this.props.isWideScreen && <InfoBox pages={data.pages.edges} parts={data.parts.edges} />}
+        <InfoBar pages={menuPages} parts={data.parts.edges} />
+        {this.props.isWideScreen && <InfoBox pages={menuPages} parts={data.parts.edges} />}
       </LayoutWrapper>
     );
   }
@@ -174,6 +175,7 @@ const LayoutWithData = props => {
             frontmatter {
               title
               menuTitle
+              menu
             }
           }
         }

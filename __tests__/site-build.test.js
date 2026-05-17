@@ -211,6 +211,7 @@ describe("Gatsby build output", () => {
       ["projects", "talks", "blog"].forEach(label => {
         expect(hydratedState.bodyText.toLowerCase()).toContain(label);
       });
+      expect(hydratedState.bodyText.toLowerCase()).not.toContain("success");
     } finally {
       if (browser) {
         await browser.close();
