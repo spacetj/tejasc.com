@@ -268,6 +268,57 @@ describe("Gatsby build output", () => {
       server.close();
     }
   });
+
+  test("talks page renders a visible content panel after hydration", async () => {
+    const server = await servePublic();
+    const address = server.address();
+    const port = typeof address === "object" ? address.port : 9000;
+    let browser;
+
+    try {
+      const puppeteer = await loadPuppeteer();
+      browser = await puppeteer.launch(puppeteerLaunchOptions());
+      const page = await browser.newPage();
+
+      await page.setViewport({ width: 1280, height: 720 });
+      const response = await page.goto(`http://127.0.0.1:${port}/talks/`, {
+        waitUntil: "networkidle2",
+        timeout: 60000
+      });
+
+      expect(response && response.status()).toBeLessThan(400);
+      await page.waitForFunction(
+        () => document.body.innerText.includes("KubeSummit Sydney 2019"),
+        { timeout: 10000 }
+      );
+
+      const layoutState = await page.evaluate(() => {
+        const main = document.querySelector("main");
+        const article = document.querySelector("article");
+        const mainRect = main && main.getBoundingClientRect();
+        const articleRect = article && article.getBoundingClientRect();
+
+        return {
+          mainHeight: mainRect ? mainRect.height : 0,
+          mainLeft: mainRect ? mainRect.left : 0,
+          articleHeight: articleRect ? articleRect.height : 0,
+          articleLeft: articleRect ? articleRect.left : 0,
+          articleWidth: articleRect ? articleRect.width : 0
+        };
+      });
+
+      expect(layoutState.mainHeight).toBeGreaterThan(600);
+      expect(layoutState.mainLeft).toBeGreaterThan(250);
+      expect(layoutState.articleHeight).toBeGreaterThan(600);
+      expect(layoutState.articleLeft).toBeGreaterThan(300);
+      expect(layoutState.articleWidth).toBeGreaterThan(300);
+    } finally {
+      if (browser) {
+        await browser.close();
+      }
+      server.close();
+    }
+  });
 });
 
 describe("Markdown-driven pages", () => {
@@ -384,6 +435,8 @@ describe("Deployment guardrails", () => {
 
     expect(deployScript).toMatch(/rm -rf \.\/public/);
     expect(deployScript).toMatch(/gcloud storage rsync \. "\$\{BUCKET_NAME\}" --recursive/);
+    expect(deployScript).toMatch(/gcloud storage cp \.\/talks\/index\.html "\$\{BUCKET_NAME\}\/talks"/);
+    expect(deployScript).toContain('${BUCKET_NAME}/**/*.html');
     expect(deployScript).not.toMatch(/--delete-unmatched-destination-objects/);
   });
 });

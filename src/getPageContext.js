@@ -1,9 +1,23 @@
 /* eslint-disable no-underscore-dangle */
 
 import { SheetsRegistry } from "jss";
-import { createGenerateId } from "react-jss";
 
 import theme from "./styles/theme";
+
+function createStableGenerateId() {
+  let ruleCounter = 0;
+
+  return (rule, sheet) => {
+    ruleCounter += 1;
+
+    const jssId =
+      sheet && sheet.options && sheet.options.jss && sheet.options.jss.id != null
+        ? String(sheet.options.jss.id)
+        : "0";
+
+    return `jss-${jssId}-${ruleCounter}`;
+  };
+}
 
 function createPageContext() {
   return {
@@ -12,8 +26,8 @@ function createPageContext() {
     sheetsManager: new Map(),
     // This is needed in order to inject the critical CSS.
     sheetsRegistry: new SheetsRegistry(),
-    // The standard class name generator.
-    generateId: createGenerateId()
+    // Keep production SSR and client hydration class names stable across Gatsby bundles.
+    generateId: createStableGenerateId()
   };
 }
 
