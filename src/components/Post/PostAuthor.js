@@ -1,9 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import injectSheet from "react-jss";
-import Avatar from "@material-ui/core/Avatar";
 
-import config from "../../../content/meta/config";
 import avatar from "../../images/jpg/avatar.jpg";
 
 const styles = theme => ({
@@ -46,7 +44,13 @@ const PostAuthor = props => {
 
   return (
     <div className={classes.author}>
-      <Avatar src={avatar} className={classes.avatar} alt={config.authorName} />
+      <img
+        src={avatar}
+        className={classes.avatar}
+        alt=""
+        role="presentation"
+        aria-hidden="true"
+      />
       <div className={classes.box} dangerouslySetInnerHTML={{ __html: author.html }} />
     </div>
   );

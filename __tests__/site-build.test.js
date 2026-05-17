@@ -48,6 +48,22 @@ const buildMarkdownIndex = baseDir => {
     }));
 };
 
+const listBuiltHtmlFiles = dir => {
+  if (!fs.existsSync(dir)) {
+    return [];
+  }
+
+  return fs
+    .readdirSync(dir, { withFileTypes: true })
+    .flatMap(entry => {
+      const filePath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        return listBuiltHtmlFiles(filePath);
+      }
+      return entry.isFile() && entry.name.endsWith(".html") ? [filePath] : [];
+    });
+};
+
 const parseHtml = html => cheerio.load(html);
 const macOSChromePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 let puppeteerModule;
@@ -446,6 +462,78 @@ describe("Contact page", () => {
     expect($("a[href^='mailto:contact@tejasc.com']").length).toBeGreaterThan(0);
     expect($("a[href*='github.com/spacetj']").length).toBeGreaterThan(0);
     expect($("a[href*='linkedin.com/in/tejasc']").length).toBeGreaterThan(0);
+  });
+});
+
+describe("Accessibility attributes", () => {
+  test("built images either have meaningful alt text or are explicitly decorative", () => {
+    const offenders = [];
+
+    listBuiltHtmlFiles(publicDir).forEach(filePath => {
+      const $ = parseHtml(fs.readFileSync(filePath, "utf8"));
+      $("img").each((index, element) => {
+        const image = $(element);
+        const alt = image.attr("alt");
+        const isDecorative =
+          alt === "" &&
+          (image.attr("aria-hidden") === "true" ||
+            ["presentation", "none"].includes(image.attr("role")));
+
+        if (typeof alt === "undefined") {
+          offenders.push(`${path.relative(publicDir, filePath)} img ${index} is missing alt`);
+        } else if (alt.trim() === "" && !isDecorative) {
+          offenders.push(
+            `${path.relative(publicDir, filePath)} img ${index} has empty alt without decorative intent`
+          );
+        }
+      });
+    });
+
+    expect(offenders).toEqual([]);
+  });
+
+  test("embedded frames have accessible titles", () => {
+    const offenders = [];
+
+    listBuiltHtmlFiles(publicDir).forEach(filePath => {
+      const $ = parseHtml(fs.readFileSync(filePath, "utf8"));
+      $("iframe").each((index, element) => {
+        const title = ($(element).attr("title") || "").trim();
+        if (!title) {
+          offenders.push(`${path.relative(publicDir, filePath)} iframe ${index} is missing title`);
+        }
+      });
+    });
+
+    expect(offenders).toEqual([]);
+  });
+
+  test("icon-only links and buttons expose accessible names", () => {
+    const offenders = [];
+
+    listBuiltHtmlFiles(publicDir).forEach(filePath => {
+      const $ = parseHtml(fs.readFileSync(filePath, "utf8"));
+      $("a, button").each((index, element) => {
+        const control = $(element);
+        const hasIcon = control.find("svg").length > 0;
+        const visibleText = control.text().replace(/\s+/g, " ").trim();
+        const hasNamedImage = control.find("img").toArray().some(img => {
+          const alt = ($(img).attr("alt") || "").trim();
+          return alt.length > 0;
+        });
+        const hasAccessibleName =
+          Boolean((control.attr("aria-label") || "").trim()) ||
+          Boolean((control.attr("aria-labelledby") || "").trim());
+
+        if (hasIcon && !visibleText && !hasNamedImage && !hasAccessibleName) {
+          offenders.push(
+            `${path.relative(publicDir, filePath)} ${element.tagName} ${index} has only an icon`
+          );
+        }
+      });
+    });
+
+    expect(offenders).toEqual([]);
   });
 });
 

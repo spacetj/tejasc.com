@@ -108,7 +108,7 @@ ko does the following:
 - Push the new image to the remote container registry
 - Replaces your `image:` references in YAML automatically with the image it builds
 
-![](./assets/image-build.jpeg)
+![Distracted boyfriend meme comparing application developers, Docker, and Kubernetes build tools such as ko, Buildpack, and Kaniko](./assets/image-build.jpeg)
 
 ### Helm 
 
@@ -187,7 +187,7 @@ Skaffold handles the workflow for building, pushing and deploying your applicati
 
 A UI for developers which helps developers understand the Kubernetes resources deployed in a cluster. Allows for easy navigation of cluster and resources management. The pluggable nature of the UI makes it ideal for writing devex extensions.
 
-![](./assets/octant.png)
+![Octant dashboard showing Kubernetes workload details for a hello-node deployment](./assets/octant.png)
 
 ---
 

@@ -1,7 +1,6 @@
 import React from "react";
 import injectSheet from "react-jss";
 import PropTypes from "prop-types";
-import Avatar from "@material-ui/core/Avatar";
 import { Link } from "gatsby";
 import { connect } from "react-redux";
 
@@ -65,8 +64,19 @@ class InfoBar extends React.Component {
 
     return (
       <aside className={classes.infoBar}>
-        <Link to="/" className={classes.avatarLink} onClick={this.homeLinkOnClick}>
-          <Avatar alt={config.infoTitle} src={avatar} className={classes.avatar} />
+        <Link
+          to="/"
+          className={classes.avatarLink}
+          onClick={this.homeLinkOnClick}
+          aria-label="Back to home page"
+        >
+          <img
+            src={avatar}
+            className={classes.avatar}
+            alt=""
+            role="presentation"
+            aria-hidden="true"
+          />
         </Link>
         <h3 className={classes.title}>
           {config.infoTitle}
