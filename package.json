@@ -8,7 +8,7 @@
   "scripts": {
     "develop": "node scripts/run-gatsby.js develop",
     "develop-host": "node scripts/run-gatsby.js develop --host 192.168.0.112",
-    "build": "node scripts/run-gatsby.js build",
+    "build": "GATSBY_CPU_COUNT=1 node scripts/run-gatsby.js build",
     "serve": "node scripts/run-gatsby.js serve",
     "test": "npm run build && npm run test:ci",
     "test:ci": "NODE_OPTIONS=--experimental-vm-modules jest --runInBand --watchman=false",
