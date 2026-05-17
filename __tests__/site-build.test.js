@@ -383,8 +383,8 @@ describe("Deployment guardrails", () => {
     const deployScript = fs.readFileSync(path.join(projectRoot, "scripts/deploy-gcs.sh"), "utf8");
 
     expect(deployScript).toMatch(/rm -rf \.\/public/);
-    expect(deployScript).toMatch(/gsutil -m rsync -R \. "\$\{BUCKET_NAME\}"/);
-    expect(deployScript).not.toMatch(/gsutil -m rsync -d/);
+    expect(deployScript).toMatch(/gcloud storage rsync \. "\$\{BUCKET_NAME\}" --recursive/);
+    expect(deployScript).not.toMatch(/--delete-unmatched-destination-objects/);
   });
 });
 

@@ -7,9 +7,9 @@ BUCKET_NAME="${BUCKET_NAME:-gs://tejasc.com}"
 rm -rf ./public
 npm run build
 
-cd ./public && gsutil -m rsync -R . "${BUCKET_NAME}"
+cd ./public && gcloud storage rsync . "${BUCKET_NAME}" --recursive
 
-gsutil ls \
+gcloud storage ls \
   "${BUCKET_NAME}/*.html" \
   "${BUCKET_NAME}/_gatsby/slices/*.html" \
   "${BUCKET_NAME}/page-data/*.json" \
@@ -17,6 +17,8 @@ gsutil ls \
   "${BUCKET_NAME}/chunk-map.json" \
   "${BUCKET_NAME}/sw.js" \
   | sort -u \
-  | xargs gsutil -m setmeta -h "Cache-Control:no-cache, max-age=0, must-revalidate"
+  | gcloud storage objects update \
+    --read-paths-from-stdin \
+    --cache-control="no-cache, max-age=0, must-revalidate"
 
 echo "Deployed successfully to ${BUCKET_NAME}"
