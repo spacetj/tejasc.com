@@ -156,7 +156,10 @@ class ListItem extends React.Component {
           {coverImage && (
             <div className={`${classes.listItemPointer} pointer`}>
               <LazyLoad height={60} overflow={true} throttle={300} once={true} offset={100}>
-                <GatsbyImage image={coverImage} alt="" />
+                <GatsbyImage
+                  image={coverImage}
+                  alt={`${post.node.frontmatter.title} post thumbnail`}
+                />
               </LazyLoad>
             </div>
           )}

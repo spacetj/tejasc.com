@@ -52,8 +52,9 @@ const Header = props => {
           href="https://www.algolia.com"
           rel="noopener noreferrer"
           target="_blank"
+          aria-label="Open Algolia website"
         >
-          <AlgoliaIcon />
+          <AlgoliaIcon aria-hidden="true" focusable="false" />
         </a>
       )}
     </header>

@@ -1,149 +1,155 @@
 import React from "react";
 import PropTypes from "prop-types";
 import injectSheet from "react-jss";
-import Button from "@material-ui/core/Button";
-import { navigate } from "gatsby";
-import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 
-function encode(data) {
-  return Object.keys(data)
-    .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
-    .join("&");
-}
+import config from "../../../content/meta/config";
+
+const mailSubject = encodeURIComponent("Hello from tejasc.com");
+const mailtoHref = `mailto:${config.contactEmail}?subject=${mailSubject}`;
+const socialLabels = {
+  github: "GitHub",
+  linkedin: "LinkedIn",
+  twitter: "Twitter"
+};
 
 const styles = theme => ({
-  submit: {
-    margin: "3em 0"
-    //width: "100%"
-  },
-  multilineInput: {
-    lineHeight: 1.4,
-    fontSize: "1.2em"
-  },
-  singleLineInput: {
-    lineHeight: 1.4,
-    fontSize: "1.2em",
+  card: {
+    border: `1px solid ${theme.base.colors.lines}`,
+    borderLeft: `5px solid ${theme.base.colors.accent}`,
+    color: theme.main.colors.content,
+    margin: "0 0 2.5rem",
+    padding: "1.5rem",
     [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
-      width: "47%",
-      marginLeft: "3%",
-      "&:first-child": {
-        marginRight: "3%",
-        marginLeft: 0
-      }
+      padding: "2rem"
     }
   },
-  submitError: {
-    background: "red",
-    color: "white"
+  eyebrow: {
+    color: theme.base.colors.accent,
+    fontSize: ".85em",
+    fontWeight: 600,
+    letterSpacing: ".08em",
+    margin: "0 0 .75rem",
+    textTransform: "uppercase"
+  },
+  title: {
+    color: theme.main.colors.title,
+    fontSize: "1.55em",
+    fontWeight: 600,
+    lineHeight: 1.2,
+    margin: "0 0 1rem"
+  },
+  body: {
+    fontSize: "1.05em",
+    lineHeight: 1.65,
+    margin: "0 0 1.5rem"
+  },
+  primaryLink: {
+    background: theme.base.colors.accent,
+    color: theme.base.colors.background,
+    display: "inline-block",
+    fontWeight: 600,
+    margin: "0 0 1.75rem",
+    padding: ".85rem 1rem",
+    textDecoration: "none",
+    transition: "background .2s ease, color .2s ease",
+    "&:hover": {
+      background: theme.base.colors.linkHover,
+      color: theme.base.colors.background,
+      textDecoration: "none"
+    }
+  },
+  detailList: {
+    display: "grid",
+    gap: "1.25rem",
+    margin: 0,
+    [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
+      gridTemplateColumns: "1fr 1fr"
+    }
+  },
+  detailGroup: {
+    margin: 0
+  },
+  detailTitle: {
+    color: theme.main.colors.title,
+    fontSize: ".85em",
+    fontWeight: 600,
+    letterSpacing: ".04em",
+    margin: "0 0 .4rem",
+    textTransform: "uppercase"
+  },
+  detailValue: {
+    lineHeight: 1.55,
+    margin: 0
+  },
+  socialList: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: ".5rem .8rem",
+    listStyle: "none",
+    margin: 0,
+    padding: 0
+  },
+  socialLink: {
+    color: theme.base.colors.link,
+    fontWeight: 600,
+    textDecoration: "none",
+    "&:hover": {
+      color: theme.base.colors.linkHover,
+      textDecoration: "underline"
+    }
   }
 });
 
-class ContactForm extends React.Component {
-  state = {
-    name: "",
-    email: "",
-    message: "",
-    submitError: ""
-  };
+const ContactCard = props => {
+  const { classes } = props;
 
-  handleChange = event => {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
+  return (
+    <section className={classes.card} aria-labelledby="contact-card-title">
+      <p className={classes.eyebrow}>Direct contact</p>
+      <h2 className={classes.title} id="contact-card-title">
+        Start with email
+      </h2>
+      <p className={classes.body}>
+        For cloud engineering, Kubernetes, Terraform, platform reliability, talks,
+        or technical reviews, send a short note and the most useful context.
+      </p>
+      <a className={classes.primaryLink} href={mailtoHref}>
+        Email {config.contactEmail}
+      </a>
+      <dl className={classes.detailList}>
+        <div className={classes.detailGroup}>
+          <dt className={classes.detailTitle}>Best for</dt>
+          <dd className={classes.detailValue}>
+            Platform engineering work, cloud-native delivery, production readiness,
+            and speaking opportunities.
+          </dd>
+        </div>
+        <div className={classes.detailGroup}>
+          <dt className={classes.detailTitle}>Elsewhere</dt>
+          <dd className={classes.detailValue}>
+            <ul className={classes.socialList}>
+              {config.authorSocialLinks.map(item => (
+                <li key={item.name}>
+                  <a
+                    className={classes.socialLink}
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {socialLabels[item.name] || item.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </dd>
+        </div>
+      </dl>
+    </section>
+  );
+};
 
-    this.setState({ [name]: value });
-  };
-
-  handleNetworkError = e => {
-    this.setState({ submitError: "There was a network error." });
-  };
-
-  handleSubmit = e => {
-    fetch("/", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: encode({ "form-name": "contact", ...this.state })
-    })
-      .then(() => {
-        console.log("Form submission success");
-        navigate("/success");
-      })
-      .catch(error => {
-        console.error("Form submission error:", error);
-        this.handleNetworkError();
-      });
-
-    e.preventDefault();
-  };
-
-  render() {
-    const { classes } = this.props;
-    const { email, name, message, submitError } = this.state;
-
-    return (
-      <ValidatorForm
-        onSubmit={this.handleSubmit}
-        onError={errors => console.log(errors)}
-        name="contact"
-        ref={f => (this.form = f)}
-        data-netlify="true"
-        data-netlify-honeypot="bot-field"
-      >
-        {submitError && <p className={classes.submitError}>{submitError}</p>}
-        <TextValidator
-          id="name"
-          name="name"
-          label="Name"
-          value={name}
-          onChange={this.handleChange}
-          validators={["required"]}
-          errorMessages={["this field is required"]}
-          fullWidth
-          margin="normal"
-          className={classes.singleLineInput}
-        />
-        <TextValidator
-          id="email"
-          name="email"
-          label="E-mail"
-          value={email}
-          onChange={this.handleChange}
-          validators={["required", "isEmail"]}
-          errorMessages={["this field is required", "email is not valid"]}
-          fullWidth
-          margin="normal"
-          className={classes.singleLineInput}
-        />
-        <TextValidator
-          id="message"
-          name="message"
-          label="Message"
-          value={message}
-          onChange={this.handleChange}
-          validators={["required"]}
-          errorMessages={["this field is required"]}
-          multiline
-          fullWidth
-          margin="normal"
-          className={classes.multilineInput}
-        />
-        <input name="bot-field" style={{ display: "none" }} />
-        <Button
-          variant="raised"
-          color="primary"
-          size="large"
-          type="submit"
-          className={classes.submit}
-        >
-          Send
-        </Button>
-      </ValidatorForm>
-    );
-  }
-}
-
-ContactForm.propTypes = {
+ContactCard.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default injectSheet(styles)(ContactForm);
+export default injectSheet(styles)(ContactCard);

@@ -32,6 +32,13 @@ const styles = theme => ({
   }
 });
 
+const socialLabels = {
+  facebook: "Facebook",
+  github: "GitHub",
+  linkedin: "LinkedIn",
+  twitter: "Twitter"
+};
+
 const Socialcons = props => {
   const { classes } = props;
   const items = config.authorSocialLinks;
@@ -46,6 +53,8 @@ const Socialcons = props => {
     <div className={classes.social}>
       {items.map(item => {
         const Icon = icons[item.name];
+        const label = socialLabels[item.name] || item.name;
+
         return (
           <a
             href={item.url}
@@ -53,9 +62,10 @@ const Socialcons = props => {
             className={classes.link}
             target="_blank"
             rel="noopener noreferrer"
-            title={item.name}
+            title={label}
+            aria-label={`Open ${label} profile`}
           >
-            <Icon className={classes.svg} />
+            <Icon className={classes.svg} aria-hidden="true" focusable="false" />
           </a>
         );
       })}

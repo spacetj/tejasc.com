@@ -48,6 +48,19 @@ const styles = theme => ({
   }
 });
 
+const stackLabels = {
+  algolia: "Algolia",
+  babel: "Babel",
+  gatsby: "Gatsby",
+  graphql: "GraphQL",
+  jss: "JSS",
+  "material-ui": "Material UI",
+  netlify: "Netlify",
+  react: "React",
+  redux: "Redux",
+  webpack: "Webpack"
+};
+
 const StackIcons = props => {
   const { classes } = props;
 
@@ -70,6 +83,8 @@ const StackIcons = props => {
       <div className={classes.box}>
         {items.map(item => {
           const Icon = item.comp;
+          const label = stackLabels[item.name] || item.name;
+
           return (
             <a
               href={item.url}
@@ -77,9 +92,10 @@ const StackIcons = props => {
               className={classes.link}
               target="_blank"
               rel="noopener noreferrer"
-              title={item.name}
+              title={label}
+              aria-label={`Open ${label} website`}
             >
-              <Icon className={classes.svg} />
+              <Icon className={classes.svg} aria-hidden="true" focusable="false" />
             </a>
           );
         })}

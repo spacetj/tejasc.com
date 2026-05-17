@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import injectSheet from "react-jss";
-import FacebookProvider, { Comments } from "react-facebook";
+import { FacebookProvider, Comments } from "react-facebook";
 require("core-js/es/array/find");
 
 import config from "../../../content/meta/config";
@@ -38,4 +38,4 @@ PostComments.propTypes = {
   facebook: PropTypes.object.isRequired
 };
 
-export default injectSheet(styles)(PostComments);
+export default injectSheet(styles, { injectTheme: true })(PostComments);

@@ -111,9 +111,15 @@ const InfoHeader = props => {
 
   return (
     <header className={classes.header}>
-      <Link className={classes.avatarLink} onClick={avatarOnClick} to="/" title="back to Home page">
+      <Link
+        className={classes.avatarLink}
+        onClick={avatarOnClick}
+        to="/"
+        title="Back to home page"
+        aria-label="Back to home page"
+      >
         <div className={classes.avatar}>
-          <img src={avatar} alt="" />
+          <img src={avatar} alt="" role="presentation" aria-hidden="true" />
         </div>
       </Link>
       <h1 className={classes.title}>

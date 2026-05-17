@@ -6,7 +6,7 @@ module.exports = {
   siteDescription: "Tejas C: Talks, Adventures, Blogs.",
   siteUrl: "https://tejasc.com",
   pathPrefix: "",
-  siteImage: "preview.jpg",
+  siteImage: "/preview.png",
   siteLanguage: "en",
   // author
   authorName: "tejas c",
