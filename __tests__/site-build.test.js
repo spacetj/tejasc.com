@@ -429,6 +429,26 @@ describe("Static page SEO", () => {
   });
 });
 
+describe("Contact page", () => {
+  test("uses a static contact card instead of an unsupported hosted form", () => {
+    const html = readPage("/contact/");
+    const $ = parseHtml(html);
+    const bodyText = $("body")
+      .text()
+      .replace(/\s+/g, " ")
+      .trim();
+
+    expect(bodyText).toContain("Start with email");
+    expect(bodyText).toContain("contact@tejasc.com");
+    expect(bodyText).not.toContain("Coming Soon");
+    expect($("form").length).toBe(0);
+    expect($("[data-netlify]").length).toBe(0);
+    expect($("a[href^='mailto:contact@tejasc.com']").length).toBeGreaterThan(0);
+    expect($("a[href*='github.com/spacetj']").length).toBeGreaterThan(0);
+    expect($("a[href*='linkedin.com/in/tejasc']").length).toBeGreaterThan(0);
+  });
+});
+
 describe("Deployment guardrails", () => {
   test("GCS deploy preserves historical hashed assets", () => {
     const deployScript = fs.readFileSync(path.join(projectRoot, "scripts/deploy-gcs.sh"), "utf8");
