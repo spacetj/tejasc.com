@@ -379,11 +379,12 @@ describe("Static page SEO", () => {
 });
 
 describe("Deployment guardrails", () => {
-  test("GCS deploy removes stale destination objects", () => {
+  test("GCS deploy preserves historical hashed assets", () => {
     const deployScript = fs.readFileSync(path.join(projectRoot, "scripts/deploy-gcs.sh"), "utf8");
 
     expect(deployScript).toMatch(/rm -rf \.\/public/);
-    expect(deployScript).toMatch(/gsutil -m rsync -d -R \. "\$\{BUCKET_NAME\}"/);
+    expect(deployScript).toMatch(/gsutil -m rsync -R \. "\$\{BUCKET_NAME\}"/);
+    expect(deployScript).not.toMatch(/gsutil -m rsync -d/);
   });
 });
 
