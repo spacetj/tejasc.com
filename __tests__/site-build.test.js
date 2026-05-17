@@ -581,6 +581,7 @@ describe("Deployment guardrails", () => {
     expect(runner).toContain("pruneProductionArtifacts");
     expect(deployScript).toContain('find ./public -type f -name "*.map"');
     expect(deployScript).toContain('${BUCKET_NAME}/**/*.map');
+    expect(deployScript).toContain("sort -u");
     expect(deployScript).toContain('gcloud storage rm "${object}"');
     expect(deployScript).toMatch(/gcloud storage rsync \. "\$\{BUCKET_NAME\}"/);
     expect(deployScript).toContain("--delete-unmatched-destination-objects");

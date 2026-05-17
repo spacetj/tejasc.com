@@ -18,7 +18,9 @@ map_objects="$(mktemp)"
 gcloud storage ls \
   "${BUCKET_NAME}/*.map" \
   "${BUCKET_NAME}/**/*.map" \
-  > "${map_objects}" 2>/dev/null || true
+  2>/dev/null \
+  | sort -u \
+  > "${map_objects}" || true
 
 if [[ -s "${map_objects}" ]]; then
   while IFS= read -r object; do
