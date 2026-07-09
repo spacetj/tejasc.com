@@ -2,42 +2,42 @@ import injectSheet from "react-jss";
 import PropTypes from "prop-types";
 import React from "react";
 
-//import { MenuItem, MenuList } from "@material-ui/core/Menu";
-import Popper from "@material-ui/core/Popper";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import Grow from "@material-ui/core/Grow";
-import Paper from "@material-ui/core/Paper";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuList from "@material-ui/core/MenuList";
-import IconButton from "@material-ui/core/IconButton";
-import FormatSizeIcon from "@material-ui/icons/FormatSize";
+//import { MenuItem, MenuList } from "@mui/material/Menu";
+import Popper from "@mui/material/Popper";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Grow from "@mui/material/Grow";
+import Paper from "@mui/material/Paper";
+import MenuItem from "@mui/material/MenuItem";
+import MenuList from "@mui/material/MenuList";
+import IconButton from "@mui/material/IconButton";
+import FormatSizeIcon from "@mui/icons-material/FormatSize";
 
-const styles = theme => ({
+const styles = (theme) => ({
   fontSizeSetter: {
-    [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {}
+    [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {},
   },
   open: {
-    color: theme.bars.colors.icon
+    color: theme.bars.colors.icon,
   },
   popper: {
-    zIndex: 1
-  }
+    zIndex: 1,
+  },
 });
 
 class FontSetter extends React.Component {
   state = {
     anchorEl: null,
-    open: false
+    open: false,
   };
 
   componentWillUnmount() {
     clearTimeout(this.timeout);
   }
 
-  handleClick = event => {
-    this.setState(state => ({
+  handleClick = (event) => {
+    this.setState((state) => ({
       anchorEl: event.currentTarget,
-      open: !state.open
+      open: !state.open,
     }));
   };
 
@@ -51,7 +51,7 @@ class FontSetter extends React.Component {
     });
   };
 
-  handleSetting = e => {
+  handleSetting = (e) => {
     const val = e.target.innerText.replace("%", "");
     const factor = +val / 100;
     this.props.increaseFont(factor);
@@ -102,7 +102,7 @@ class FontSetter extends React.Component {
 
 FontSetter.propTypes = {
   classes: PropTypes.object.isRequired,
-  increaseFont: PropTypes.func.isRequired
+  increaseFont: PropTypes.func.isRequired,
 };
 
 export default injectSheet(styles)(FontSetter);

@@ -4,13 +4,13 @@ import injectSheet from "react-jss";
 
 import AlgoliaIcon from "!svg-react-loader!../../images/svg-icons/algolia-full.svg?name=AlgoliaIcon";
 
-const styles = theme => ({
+const styles = (theme) => ({
   header: {
     margin: "0 0 3em",
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-start",
-    alignContent: "center"
+    alignContent: "center",
   },
   title: {
     color: theme.main.colors.title,
@@ -20,27 +20,27 @@ const styles = theme => ({
     lineHeight: theme.main.fonts.title.lineHeight,
     margin: "0 0 0.4em",
     [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
-      fontSize: `${theme.main.fonts.title.sizeM}em`
+      fontSize: `${theme.main.fonts.title.sizeM}em`,
     },
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
       fontSize: `${theme.main.fonts.title.sizeL}em`,
-      letterSpacing: "-0.05em"
-    }
+      letterSpacing: "-0.05em",
+    },
   },
   mark: {
     width: "130px",
     display: "block",
     margin: "0 0 0 10px",
     [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
-      width: "170px"
+      width: "170px",
     },
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
-      width: "190px"
-    }
-  }
+      width: "190px",
+    },
+  },
 });
 
-const Header = props => {
+const Header = (props) => {
   const { classes, title, algolia } = props;
 
   return (
@@ -64,7 +64,7 @@ const Header = props => {
 Header.propTypes = {
   classes: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
-  algolia: PropTypes.bool
+  algolia: PropTypes.bool,
 };
 
 export default injectSheet(styles)(Header);

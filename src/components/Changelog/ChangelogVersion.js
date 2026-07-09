@@ -16,13 +16,11 @@ const ChangelogVersion = ({ version, date, work, education, portfolio }) => {
       <div className="changelog-update-descriptions">
         {education &&
           education.length > 0 &&
-          education.map(item => <FeatureItem type={2} description={item} />)}
+          education.map((item) => <FeatureItem type={2} description={item} />)}
         {portfolio &&
           portfolio.length > 0 &&
-          portfolio.map(item => <FeatureItem type={3} description={item} />)}
-        {work &&
-          work.length > 0 &&
-          work.map(item => <FeatureItem type={1} description={item} />)}
+          portfolio.map((item) => <FeatureItem type={3} description={item} />)}
+        {work && work.length > 0 && work.map((item) => <FeatureItem type={1} description={item} />)}
       </div>
       <div className="changelog-link" />
     </div>
@@ -34,7 +32,7 @@ ChangelogVersion.propTypes = {
   date: PropTypes.string,
   work: PropTypes.array,
   education: PropTypes.array,
-  portfolio: PropTypes.array
+  portfolio: PropTypes.array,
 };
 
 export default ChangelogVersion;

@@ -1,32 +1,34 @@
-# Website 
+# Website
 
 ## Prerequisites
 
-Use Node.js 22 (see `.nvmrc`) to match the build toolchain. If you use `nvm`, run `nvm use` to switch automatically.
-
-If you do not have Gatsby Cli installed yet, do it first.
+Use Node.js 22 (see `.nvmrc`) to match the build toolchain. If you use `nvm`, run:
 
 ```text
-npm install --global gatsby-cli
+nvm use
 ```
 
-More information on [GatsbyJS.org](https://www.gatsbyjs.org/tutorial/part-one)
+Install dependencies with the npm version bundled with Node 22:
+
+```text
+npm install
+```
 
 ## Getting started
 
 ```text
-gatsby develop
+npm run develop
 ```
 
 to hot-serve your website on http://localhost:8000 or
 
 ```text
-gatsby build
+npm run build
 ```
 
 to create static site ready to host (/public).
 
-## Overview 
+## Overview
 
 The site is created by the PersonalBlog Gatsby template. For more information checkout the [docs](https://www.gatsbyjs.com/starters/greglobinski/gatsby-starter-personal-blog).
 

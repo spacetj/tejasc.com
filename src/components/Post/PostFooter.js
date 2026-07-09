@@ -7,23 +7,23 @@ import asyncComponent from "../common/AsyncComponent/";
 import PostAuthor from "./PostAuthor";
 import PostComments from "./PostComments";
 
-const styles = theme => ({
+const styles = (theme) => ({
   footer: {
     color: theme.main.colors.footer,
     fontSize: `${theme.main.fonts.footer.size}em`,
     lineHeight: theme.main.fonts.footer.lineHeight,
     "& p": {
-      margin: 0
-    }
-  }
+      margin: 0,
+    },
+  },
 });
 
 const PostShare = asyncComponent(() =>
   import("./PostShare")
-    .then(module => {
+    .then((module) => {
       return module;
     })
-    .catch(error => {})
+    .catch((error) => {}),
 );
 
 const PostFooter = ({ classes, author, post, slug, facebook }) => {
@@ -41,7 +41,7 @@ PostFooter.propTypes = {
   author: PropTypes.object.isRequired,
   post: PropTypes.object.isRequired,
   slug: PropTypes.string.isRequired,
-  facebook: PropTypes.object.isRequired
+  facebook: PropTypes.object.isRequired,
 };
 
 export default injectSheet(styles)(PostFooter);

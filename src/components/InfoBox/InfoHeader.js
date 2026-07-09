@@ -2,17 +2,17 @@ import React from "react";
 import PropTypes from "prop-types";
 import injectSheet from "react-jss";
 import { Link } from "gatsby";
-import IconButton from "@material-ui/core/IconButton";
+import IconButton from "@mui/material/IconButton";
 
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import avatar from "../../images/jpg/avatar.jpg";
 import config from "../../../content/meta/config";
 
-const styles = theme => ({
+const styles = (theme) => ({
   header: {
     lineHeight: 1,
-    position: "relative"
+    position: "relative",
   },
   avatarLink: {
     willChange: "left, top",
@@ -21,7 +21,7 @@ const styles = theme => ({
     position: "relative",
     margin: "0 12px 0 0",
     [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
-      margin: "0 20px 0 0"
+      margin: "0 20px 0 0",
     },
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
       position: "absolute",
@@ -31,13 +31,13 @@ const styles = theme => ({
       transition: "all .5s",
       transitionTimingFunction: "ease",
       ".navigator-in-transition-from.navigator-is-opened &": {
-        left: "50%"
+        left: "50%",
       },
       ".is-aside.open &": {
         left: "8%",
-        top: "0"
-      }
-    }
+        top: "0",
+      },
+    },
   },
   avatar: {
     width: "36px",
@@ -49,21 +49,21 @@ const styles = theme => ({
     display: "inline-block",
     overflow: "hidden",
     "& img": {
-      maxWidth: "100%"
+      maxWidth: "100%",
     },
     [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
       width: "44px",
-      height: "44px"
+      height: "44px",
     },
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
       width: "60px",
-      height: "60px"
+      height: "60px",
     },
     "@media (hover: hover)": {
       "&:hover": {
-        borderRadius: "75% 65%"
-      }
-    }
+        borderRadius: "75% 65%",
+      },
+    },
   },
   title: {
     willChange: "transform, left, top",
@@ -74,10 +74,10 @@ const styles = theme => ({
     "& small": {
       display: "block",
       fontSize: ".6em",
-      marginTop: ".3em"
+      marginTop: ".3em",
     },
     [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
-      fontSize: `${theme.info.fonts.boxTitleSizeM}em`
+      fontSize: `${theme.info.fonts.boxTitleSizeM}em`,
     },
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
       fontSize: `${theme.info.fonts.boxTitleSizeL}em`,
@@ -90,9 +90,9 @@ const styles = theme => ({
       ".is-aside.open &": {
         left: "60%",
         top: `${1.9 - theme.info.fonts.boxTitleSizeL}em`,
-        textAlign: "left"
-      }
-    }
+        textAlign: "left",
+      },
+    },
   },
   expand: {
     position: "absolute",
@@ -101,12 +101,12 @@ const styles = theme => ({
     display: "none",
     color: theme.info.colors.text,
     ".is-aside.open &": {
-      display: "block"
-    }
-  }
+      display: "block",
+    },
+  },
 });
 
-const InfoHeader = props => {
+const InfoHeader = (props) => {
   const { classes, avatarOnClick, expandOnClick } = props;
 
   return (
@@ -141,7 +141,7 @@ const InfoHeader = props => {
 InfoHeader.propTypes = {
   classes: PropTypes.object.isRequired,
   avatarOnClick: PropTypes.func.isRequired,
-  expandOnClick: PropTypes.func.isRequired
+  expandOnClick: PropTypes.func.isRequired,
 };
 
 export default injectSheet(styles)(InfoHeader);

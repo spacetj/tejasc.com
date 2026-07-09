@@ -2,4 +2,4 @@
 title: info
 ---
 
-Lead Cloud Engineer with a keen focus on all things Kubernetes, Istio, Terraform and Cloud Native Landspace.
+Founder of Logit Social, building private journaling and trusted-circle software with a strong reliability, cloud-native, and platform engineering foundation.

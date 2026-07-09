@@ -5,7 +5,7 @@ import ChangelogFilter from "./ChangelogFilter.js";
 
 export default class ChangelogContainer extends Component {
   static propTypes = {
-    endpoint: PropTypes.string
+    endpoint: PropTypes.string,
   };
   constructor(props) {
     super(props);
@@ -16,8 +16,8 @@ export default class ChangelogContainer extends Component {
       filter: {
         work: false,
         education: false,
-        portfolio: false
-      }
+        portfolio: false,
+      },
     };
   }
 
@@ -25,18 +25,18 @@ export default class ChangelogContainer extends Component {
     const { endpoint } = this.props;
     // TODO: Add error handling and bad format
     fetch(endpoint)
-      .then(response => response.json())
+      .then((response) => response.json())
       .then(({ title, list }) => {
         const versions = list.map(({ version }) => {
           return {
             version,
-            slug: version.replaceAll(".", "")
+            slug: version.replaceAll(".", ""),
           };
         });
         this.setState({
           list,
           title,
-          versions
+          versions,
         });
       });
   }
@@ -46,7 +46,7 @@ export default class ChangelogContainer extends Component {
     const filter = this.state.filter;
     filter[e.target.value] = !filter[e.target.value];
     this.setState({
-      filter
+      filter,
     });
   }
 
@@ -57,14 +57,8 @@ export default class ChangelogContainer extends Component {
           <div className="col-md-12">
             <div className="changelog-wrapper js-changelog">
               <h1 className="changelog-title">{this.state.title}</h1>
-              <ChangelogFilter
-                versions={this.state.versions}
-                onChange={this.onChange.bind(this)}
-              />
-              <ChangelogList
-                list={this.state.list}
-                filter={this.state.filter}
-              />
+              <ChangelogFilter versions={this.state.versions} onChange={this.onChange.bind(this)} />
+              <ChangelogList list={this.state.list} filter={this.state.filter} />
             </div>
           </div>
         </div>

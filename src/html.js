@@ -1,7 +1,7 @@
 /* eslint  react/prop-types: 0 */
 import React from "react";
 
-const HTML = props => {
+const HTML = (props) => {
   return (
     <html {...props.htmlAttributes}>
       <head>
@@ -33,7 +33,7 @@ const HTML = props => {
             gtag('js', new Date());
 
             gtag('config', 'G-3EHWP6ZE8V');
-          `
+          `,
           }}
         />
       </head>

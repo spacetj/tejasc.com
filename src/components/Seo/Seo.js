@@ -5,7 +5,7 @@ import config from "../../../content/meta/config";
 
 const siteRoot = `${config.siteUrl}${config.pathPrefix || ""}`.replace(/\/+$/, "");
 
-const normalizePath = value => {
+const normalizePath = (value) => {
   if (!value) {
     return "/";
   }
@@ -14,7 +14,7 @@ const normalizePath = value => {
   return path === "/" ? path : path.replace(/\/+$/, "");
 };
 
-const toAbsoluteUrl = value => {
+const toAbsoluteUrl = (value) => {
   if (!value) {
     return `${siteRoot}/`;
   }
@@ -27,13 +27,13 @@ const toAbsoluteUrl = value => {
   return `${siteRoot}${path}`;
 };
 
-const Seo = props => {
+const Seo = (props) => {
   const { data, facebook, image: imageOverride, path, title: titleOverride, type } = props;
-  const frontmatter = ((data || {}).frontmatter || {});
+  const frontmatter = (data || {}).frontmatter || {};
   const postTitle = titleOverride || frontmatter.title;
   const postDescription = props.description || frontmatter.description || (data || {}).excerpt;
   const postCover = frontmatter.cover;
-  const postCoverImage = ((((postCover || {}).childImageSharp || {}).resize || {}).src);
+  const postCoverImage = (((postCover || {}).childImageSharp || {}).resize || {}).src;
   const postSlug = path || ((data || {}).fields || {}).slug || "/";
 
   const title = postTitle ? `${postTitle} - ${config.shortSiteTitle}` : config.siteTitle;
@@ -48,7 +48,7 @@ const Seo = props => {
     <Helmet
       htmlAttributes={{
         lang: config.siteLanguage,
-        prefix: "og: http://ogp.me/ns#"
+        prefix: "og: http://ogp.me/ns#",
       }}
     >
       {/* General tags */}
@@ -78,7 +78,7 @@ Seo.propTypes = {
   image: PropTypes.string,
   path: PropTypes.string,
   title: PropTypes.string,
-  type: PropTypes.string
+  type: PropTypes.string,
 };
 
 Seo.defaultProps = {
@@ -88,7 +88,7 @@ Seo.defaultProps = {
   image: "",
   path: "",
   title: "",
-  type: "website"
+  type: "website",
 };
 
 export default Seo;

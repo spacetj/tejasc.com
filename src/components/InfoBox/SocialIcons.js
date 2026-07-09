@@ -9,49 +9,49 @@ import FacebookIcon from "!svg-react-loader!../../images/svg-icons/facebook.svg?
 import TwitterIcon from "!svg-react-loader!../../images/svg-icons/twitter.svg?name=TwitterIcon";
 import LinkedinIcon from "!svg-react-loader!../../images/svg-icons/linkedin.svg?name=LinkedinIcon";
 
-const styles = theme => ({
+const styles = (theme) => ({
   social: {
     display: "flex",
     justifyContent: "center",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
   },
   link: {
     display: "inline-block",
     padding: "5px",
     "&:hover": {
       "& svg": {
-        fill: theme.info.colors.socialIconsHover
-      }
-    }
+        fill: theme.info.colors.socialIconsHover,
+      },
+    },
   },
   svg: {
     width: "40px",
     height: "40px",
     fill: theme.info.colors.socialIcons,
-    transition: "all .5s"
-  }
+    transition: "all .5s",
+  },
 });
 
 const socialLabels = {
   facebook: "Facebook",
   github: "GitHub",
   linkedin: "LinkedIn",
-  twitter: "Twitter"
+  twitter: "Twitter",
 };
 
-const Socialcons = props => {
+const Socialcons = (props) => {
   const { classes } = props;
   const items = config.authorSocialLinks;
   const icons = {
     twitter: TwitterIcon,
     facebook: FacebookIcon,
     github: GithubIcon,
-    linkedin: LinkedinIcon
+    linkedin: LinkedinIcon,
   };
 
   return (
     <div className={classes.social}>
-      {items.map(item => {
+      {items.map((item) => {
         const Icon = icons[item.name];
         const label = socialLabels[item.name] || item.name;
 
@@ -74,7 +74,7 @@ const Socialcons = props => {
 };
 
 Socialcons.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default injectSheet(styles)(Socialcons);

@@ -22,10 +22,9 @@ module.exports = {
   manifestThemeColor: colors.background,
   manifestDisplay: "standalone",
   // contact
-  contactEmail: "contact@tejasc.com",
+  contactEmail: "tejas@logit.social",
   // social
   authorSocialLinks: [
-    { name: "github", url: "https://github.com/spacetj" },
     { name: "linkedin", url: "https://www.linkedin.com/in/tejasc/" },
     { name: "twitter", url: "https://twitter.com/space_tj" },
   ]

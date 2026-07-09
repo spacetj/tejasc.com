@@ -1,30 +1,30 @@
 import React from "react";
 import PropTypes from "prop-types";
 import injectSheet from "react-jss";
-import IconButton from "@material-ui/core/IconButton";
+import IconButton from "@mui/material/IconButton";
 
 import { Link } from "gatsby";
 import { connect } from "react-redux";
 import screenfull from "screenfull";
 
-import HomeIcon from "@material-ui/icons/Home";
-import SearchIcon from "@material-ui/icons/Search";
-import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
-import FullscreenIcon from "@material-ui/icons/Fullscreen";
-import FullscreenExitIcon from "@material-ui/icons/FullscreenExit";
+import HomeIcon from "@mui/icons-material/Home";
+import SearchIcon from "@mui/icons-material/Search";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import FullscreenIcon from "@mui/icons-material/Fullscreen";
+import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 
 import {
   setNavigatorPosition,
   setNavigatorShape,
   setScrollToTop,
   setFontSizeIncrease,
-  setCategoryFilter
+  setCategoryFilter,
 } from "../../state/store";
 import { featureNavigator, moveNavigatorAside } from "./../../utils/shared";
 import FontSetter from "./FontSetter";
 import CategoryFilter from "./CategoryFilter";
 
-const styles = theme => ({
+const styles = (theme) => ({
   actionsBar: {
     position: "absolute",
     background: theme.bars.colors.background,
@@ -44,10 +44,10 @@ const styles = theme => ({
       right: theme.base.sizes.linesMargin,
       height: 0,
       top: 0,
-      borderTop: `1px solid ${theme.base.colors.lines}`
+      borderTop: `1px solid ${theme.base.colors.lines}`,
     },
     [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
-      padding: `0 calc(${theme.base.sizes.linesMargin} * 1.5)`
+      padding: `0 calc(${theme.base.sizes.linesMargin} * 1.5)`,
     },
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
       flexDirection: "column",
@@ -64,33 +64,33 @@ const styles = theme => ({
         right: "auto",
         width: 0,
         height: "auto",
-        borderLeft: `1px solid ${theme.base.colors.lines}`
-      }
-    }
+        borderLeft: `1px solid ${theme.base.colors.lines}`,
+      },
+    },
   },
   group: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
-      flexDirection: "column"
-    }
+      flexDirection: "column",
+    },
   },
   button: {
-    color: theme.bars.colors.icon
-  }
+    color: theme.bars.colors.icon,
+  },
 });
 
 class ActionsBar extends React.Component {
   state = {
-    fullscreen: false
+    fullscreen: false,
   };
 
   componentDidMount() {
     if (screenfull.enabled) {
       screenfull.on("change", () => {
         this.setState({
-          fullscreen: screenfull.isFullscreen
+          fullscreen: screenfull.isFullscreen,
         });
       });
     }
@@ -109,7 +109,7 @@ class ActionsBar extends React.Component {
     this.props.setScrollToTop(true);
   };
 
-  fontSetterOnClick = val => {
+  fontSetterOnClick = (val) => {
     this.props.setFontSizeIncrease(val);
 
     if (typeof localStorage !== "undefined") {
@@ -117,7 +117,7 @@ class ActionsBar extends React.Component {
     }
   };
 
-  categoryFilterOnClick = val => {
+  categoryFilterOnClick = (val) => {
     this.props.setCategoryFilter(val);
   };
 
@@ -180,7 +180,7 @@ ActionsBar.propTypes = {
   setFontSizeIncrease: PropTypes.func.isRequired,
   categories: PropTypes.array.isRequired,
   setCategoryFilter: PropTypes.func.isRequired,
-  categoryFilter: PropTypes.string.isRequired
+  categoryFilter: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -188,7 +188,7 @@ const mapStateToProps = (state, ownProps) => {
     navigatorPosition: state.navigatorPosition,
     navigatorShape: state.navigatorShape,
     isWideScreen: state.isWideScreen,
-    categoryFilter: state.categoryFilter
+    categoryFilter: state.categoryFilter,
   };
 };
 
@@ -197,10 +197,7 @@ const mapDispatchToProps = {
   setNavigatorShape,
   setScrollToTop,
   setFontSizeIncrease,
-  setCategoryFilter
+  setCategoryFilter,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(injectSheet(styles)(ActionsBar));
+export default connect(mapStateToProps, mapDispatchToProps)(injectSheet(styles)(ActionsBar));

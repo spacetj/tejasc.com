@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import injectSheet from "react-jss";
 
-const styles = theme => ({
+const styles = (theme) => ({
   text: {
     display: "block",
     fontWeight: 300,
@@ -11,15 +11,15 @@ const styles = theme => ({
     textAlign: "left",
     marginBottom: ".8em",
     "& p:first-child": {
-      marginTop: 0
+      marginTop: 0,
     },
     "& p:last-child": {
-      marginBottom: 0
-    }
-  }
+      marginBottom: 0,
+    },
+  },
 });
 
-const InfoText = props => {
+const InfoText = (props) => {
   const { classes, info } = props;
   const text = info.node.html;
 
@@ -28,7 +28,7 @@ const InfoText = props => {
 
 InfoText.propTypes = {
   classes: PropTypes.object.isRequired,
-  info: PropTypes.object.isRequired
+  info: PropTypes.object.isRequired,
 };
 
 export default injectSheet(styles)(InfoText);

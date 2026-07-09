@@ -13,7 +13,7 @@ const ScrollVersionItem = ({ version, slug }) => (
 
 ScrollVersionItem.propTypes = {
   version: PropTypes.string,
-  slug: PropTypes.string
+  slug: PropTypes.string,
 };
 
 export default ScrollVersionItem;

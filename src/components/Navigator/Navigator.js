@@ -2,13 +2,14 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import injectSheet from "react-jss";
-import { forceCheck } from "react-lazyload";
 
 import { setNavigatorPosition, setNavigatorShape, setCategoryFilter } from "../../state/store";
 import { moveNavigatorAside } from "./../../utils/shared";
 import List from "./List";
 
-const styles = theme => ({
+const forceCheck = () => {};
+
+const styles = (theme) => ({
   navigator: {
     transform: "translate3d(0, 0, 0)",
     willChange: "left, top, bottom, width",
@@ -22,18 +23,18 @@ const styles = theme => ({
     width: "100%",
     [`@media (max-width: ${theme.mediaQueryTresholds.L - 1}px)`]: {
       "&.is-aside": {
-        left: "-100%"
+        left: "-100%",
       },
       "&.is-featured": {
-        left: 0
-      }
+        left: 0,
+      },
     },
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
       "&.is-featured": {
         transition: "left .9s",
         width: `calc(100vw - ${theme.info.sizes.width}px - ${theme.bars.sizes.actionsBar}px)`,
         left: `${theme.info.sizes.width}px`,
-        top: 0
+        top: 0,
       },
       "&.is-aside": {
         transition: "none, bottom 0.5s",
@@ -43,11 +44,11 @@ const styles = theme => ({
         top: "auto",
         "&.closed": {
           bottom: `calc(-100% + 100px + ${theme.navigator.sizes.closedHeight}px)`,
-          height: `calc(100% - 100px)`
+          height: `calc(100% - 100px)`,
         },
         "&.open": {
           bottom: 0,
-          height: `calc(100% - 100px)`
+          height: `calc(100% - 100px)`,
         },
         "&::after": {
           content: `""`,
@@ -56,14 +57,14 @@ const styles = theme => ({
           left: theme.base.sizes.linesMargin,
           right: theme.base.sizes.linesMargin,
           height: 0,
-          borderTop: `1px solid ${theme.base.colors.lines}`
-        }
+          borderTop: `1px solid ${theme.base.colors.lines}`,
+        },
       },
       "&.moving-aside": {
         transition: "left 0.9s",
         left: `calc(-100vw + ${2 * theme.info.sizes.width + 60}px)`,
         width: `calc(100vw - ${theme.info.sizes.width}px - 60px)`,
-        top: 0
+        top: 0,
       },
       "&.resizing-aside": {
         transition: "none",
@@ -72,12 +73,12 @@ const styles = theme => ({
         left: 0,
         "&.closed": {
           bottom: `calc(-100% + 100px)`,
-          height: `calc(100% - 100px)`
+          height: `calc(100% - 100px)`,
         },
         "&.open": {
           bottom: `calc(-100% + 100px)`,
-          height: `calc(100% - 100px)`
-        }
+          height: `calc(100% - 100px)`,
+        },
       },
       "&.moving-featured": {
         transition: "bottom .3s",
@@ -86,28 +87,28 @@ const styles = theme => ({
         top: "auto",
         left: 0,
         zIndex: 1,
-        width: `${theme.info.sizes.width - 1}px`
+        width: `${theme.info.sizes.width - 1}px`,
       },
       "&.resizing-featured": {
         transition: "none",
         top: 0,
         bottom: "auto",
         left: `calc(-100vw + ${2 * theme.info.sizes.width + 60}px)`,
-        width: `calc(100vw - ${theme.info.sizes.width}px - 60px)`
-      }
-    }
-  }
+        width: `calc(100vw - ${theme.info.sizes.width}px - 60px)`,
+      },
+    },
+  },
 });
 
 class Navigator extends React.Component {
   linkOnClick = moveNavigatorAside.bind(this);
 
-  expandOnClick = e => {
+  expandOnClick = (e) => {
     this.props.setNavigatorShape("open");
     setTimeout(forceCheck, 600);
   };
 
-  removefilterOnClick = e => {
+  removefilterOnClick = (e) => {
     this.props.setCategoryFilter("all posts");
   };
 
@@ -145,7 +146,7 @@ Navigator.propTypes = {
   setNavigatorShape: PropTypes.func.isRequired,
   isWideScreen: PropTypes.bool.isRequired,
   categoryFilter: PropTypes.string.isRequired,
-  setCategoryFilter: PropTypes.func.isRequired
+  setCategoryFilter: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -153,14 +154,14 @@ const mapStateToProps = (state, ownProps) => {
     navigatorPosition: state.navigatorPosition,
     navigatorShape: state.navigatorShape,
     isWideScreen: state.isWideScreen,
-    categoryFilter: state.categoryFilter
+    categoryFilter: state.categoryFilter,
   };
 };
 
 const mapDispatchToProps = {
   setNavigatorPosition,
   setNavigatorShape,
-  setCategoryFilter
+  setCategoryFilter,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectSheet(styles)(Navigator));

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { MuiThemeProvider } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider as JssThemeProvider } from "react-jss";
 import getPageContext from "./getPageContext";
 
@@ -22,24 +22,21 @@ function withRoot(Component) {
     }
 
     render() {
-      // MuiThemeProvider makes the theme available down the React tree thanks to React context.
+      // ThemeProvider makes the theme available down the React tree thanks to React context.
       return (
-        <MuiThemeProvider
-          theme={this.muiPageContext.theme}
-          sheetsManager={this.muiPageContext.sheetsManager}
-        >
+        <ThemeProvider theme={this.muiPageContext.theme}>
           <JssThemeProvider theme={this.muiPageContext.theme}>
             {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
             <CssBaseline />
             <Component {...this.props} />
           </JssThemeProvider>
-        </MuiThemeProvider>
+        </ThemeProvider>
       );
     }
   }
 
   WithRoot.propTypes = {
-    muiPageContext: PropTypes.object
+    muiPageContext: PropTypes.object,
   };
 
   return WithRoot;

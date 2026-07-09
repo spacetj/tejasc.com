@@ -35,10 +35,13 @@ cd ./public && gcloud storage rsync . "${BUCKET_NAME}" \
   --delete-unmatched-destination-objects \
   --exclude=".*\\.map$"
 
-# Keep the exact /talks object fresh; it bypasses stale cached redirects to /talks/index.html.
-gcloud storage cp ./talks/index.html "${BUCKET_NAME}/talks" \
-  --content-type="text/html" \
-  --cache-control="no-cache, max-age=0, must-revalidate"
+while IFS= read -r index_file; do
+  object_name="${index_file#./}"
+  object_name="${object_name%/index.html}"
+  gcloud storage cp "${index_file}" "${BUCKET_NAME}/${object_name}" \
+    --content-type="text/html" \
+    --cache-control="no-cache, max-age=0, must-revalidate"
+done < <(find . -mindepth 2 -maxdepth 2 -type f -name "index.html" | sort)
 
 gcloud storage ls \
   "${BUCKET_NAME}/*.html" \

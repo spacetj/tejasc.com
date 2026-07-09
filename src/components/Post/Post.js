@@ -6,7 +6,7 @@ import PostHeader from "./PostHeader";
 import Content from "../Main/Content";
 import PostFooter from "./PostFooter";
 
-const Post = props => {
+const Post = (props) => {
   const { post, author, slug, facebook } = props;
   const frontmatter = (post || {}).frontmatter;
   const title = ((post || {}).frontmatter || {}).title;
@@ -30,7 +30,7 @@ Post.propTypes = {
   post: PropTypes.object.isRequired,
   author: PropTypes.object.isRequired,
   slug: PropTypes.string.isRequired,
-  facebook: PropTypes.object.isRequired
+  facebook: PropTypes.object.isRequired,
 };
 
 export default Post;

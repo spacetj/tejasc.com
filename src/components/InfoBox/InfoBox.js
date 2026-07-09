@@ -13,7 +13,7 @@ import InfoText from "./InfoText";
 import { featureNavigator, moveNavigatorAside } from "./../../utils/shared";
 import { setNavigatorPosition, setNavigatorShape } from "../../state/store";
 
-const styles = theme => ({
+const styles = (theme) => ({
   infoBox: {
     display: "none",
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
@@ -33,9 +33,9 @@ const styles = theme => ({
         top: "20px",
         bottom: "20px",
         width: "1px",
-        borderRight: `1px solid ${theme.base.colors.lines}`
-      }
-    }
+        borderRight: `1px solid ${theme.base.colors.lines}`,
+      },
+    },
   },
   wrapper: {
     position: "absolute",
@@ -49,25 +49,25 @@ const styles = theme => ({
     opacity: 1,
     transitionTimingFunction: "ease",
     ".is-aside.closed &": {
-      bottom: `${theme.navigator.sizes.closedHeight}px`
+      bottom: `${theme.navigator.sizes.closedHeight}px`,
     },
     ".moving-featured &": {
-      bottom: 0
-    }
-  }
+      bottom: 0,
+    },
+  },
 });
 
 class InfoBox extends React.Component {
   avatarOnClick = featureNavigator.bind(this);
   menulinkOnClick = moveNavigatorAside.bind(this);
 
-  expandOnClick = e => {
+  expandOnClick = (e) => {
     this.props.setNavigatorShape("closed");
   };
 
   render() {
     const { classes, parts, pages, navigatorPosition, navigatorShape } = this.props;
-    const info = parts.find(el => el.node.frontmatter.title === "info");
+    const info = parts.find((el) => el.node.frontmatter.title === "info");
 
     return (
       <aside
@@ -99,20 +99,20 @@ InfoBox.propTypes = {
   navigatorPosition: PropTypes.string.isRequired,
   navigatorShape: PropTypes.string.isRequired,
   isWideScreen: PropTypes.bool.isRequired,
-  setNavigatorShape: PropTypes.func.isRequired
+  setNavigatorShape: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
   return {
     navigatorPosition: state.navigatorPosition,
     navigatorShape: state.navigatorShape,
-    isWideScreen: state.isWideScreen
+    isWideScreen: state.isWideScreen,
   };
 };
 
 const mapDispatchToProps = {
   setNavigatorPosition,
-  setNavigatorShape
+  setNavigatorShape,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectSheet(styles)(InfoBox));

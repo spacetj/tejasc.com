@@ -1,41 +1,41 @@
 import React from "react";
 import PropTypes from "prop-types";
 import injectSheet from "react-jss";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuList from "@material-ui/core/MenuList";
-import IconButton from "@material-ui/core/IconButton";
-import Popper from "@material-ui/core/Popper";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import Grow from "@material-ui/core/Grow";
-import Paper from "@material-ui/core/Paper";
-import FilterListIcon from "@material-ui/icons/FilterList";
+import MenuItem from "@mui/material/MenuItem";
+import MenuList from "@mui/material/MenuList";
+import IconButton from "@mui/material/IconButton";
+import Popper from "@mui/material/Popper";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Grow from "@mui/material/Grow";
+import Paper from "@mui/material/Paper";
+import FilterListIcon from "@mui/icons-material/FilterList";
 
-const styles = theme => ({
+const styles = (theme) => ({
   fontSizeSetter: {
-    [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {}
+    [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {},
   },
   open: {
-    color: theme.bars.colors.icon
+    color: theme.bars.colors.icon,
   },
   popper: {
-    zIndex: 1
-  }
+    zIndex: 1,
+  },
 });
 
 class CategoryFilter extends React.Component {
   state = {
     anchorEl: null,
-    open: false
+    open: false,
   };
 
   componentWillUnmount() {
     clearTimeout(this.timeout);
   }
 
-  handleClick = event => {
-    this.setState(state => ({
+  handleClick = (event) => {
+    this.setState((state) => ({
       anchorEl: event.currentTarget,
-      open: !state.open
+      open: !state.open,
     }));
   };
 
@@ -49,7 +49,7 @@ class CategoryFilter extends React.Component {
     });
   };
 
-  handleFiltering = e => {
+  handleFiltering = (e) => {
     const category = e.target.innerText.trim();
     this.props.filterCategory(category);
     this.handleClose();
@@ -85,7 +85,7 @@ class CategoryFilter extends React.Component {
                     <MenuItem key="all" onClick={this.handleFiltering}>
                       all posts
                     </MenuItem>
-                    {categories.map(category => (
+                    {categories.map((category) => (
                       <MenuItem key={category} onClick={this.handleFiltering}>
                         {category}
                       </MenuItem>
@@ -104,7 +104,7 @@ class CategoryFilter extends React.Component {
 CategoryFilter.propTypes = {
   classes: PropTypes.object.isRequired,
   categories: PropTypes.array.isRequired,
-  filterCategory: PropTypes.func.isRequired
+  filterCategory: PropTypes.func.isRequired,
 };
 
 export default injectSheet(styles)(CategoryFilter);
