@@ -9,10 +9,10 @@ const mailtoHref = `mailto:${config.contactEmail}?subject=${mailSubject}`;
 const socialLabels = {
   github: "GitHub",
   linkedin: "LinkedIn",
-  twitter: "Twitter"
+  twitter: "Twitter",
 };
 
-const styles = theme => ({
+const styles = (theme) => ({
   card: {
     border: `1px solid ${theme.base.colors.lines}`,
     borderLeft: `5px solid ${theme.base.colors.accent}`,
@@ -20,8 +20,8 @@ const styles = theme => ({
     margin: "0 0 2.5rem",
     padding: "1.5rem",
     [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
-      padding: "2rem"
-    }
+      padding: "2rem",
+    },
   },
   eyebrow: {
     color: theme.base.colors.accent,
@@ -29,19 +29,19 @@ const styles = theme => ({
     fontWeight: 600,
     letterSpacing: ".08em",
     margin: "0 0 .75rem",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   title: {
     color: theme.main.colors.title,
     fontSize: "1.55em",
     fontWeight: 600,
     lineHeight: 1.2,
-    margin: "0 0 1rem"
+    margin: "0 0 1rem",
   },
   body: {
     fontSize: "1.05em",
     lineHeight: 1.65,
-    margin: "0 0 1.5rem"
+    margin: "0 0 1.5rem",
   },
   primaryLink: {
     background: theme.base.colors.accent,
@@ -55,19 +55,19 @@ const styles = theme => ({
     "&:hover": {
       background: theme.base.colors.linkHover,
       color: theme.base.colors.background,
-      textDecoration: "none"
-    }
+      textDecoration: "none",
+    },
   },
   detailList: {
     display: "grid",
     gap: "1.25rem",
     margin: 0,
     [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
-      gridTemplateColumns: "1fr 1fr"
-    }
+      gridTemplateColumns: "1fr 1fr",
+    },
   },
   detailGroup: {
-    margin: 0
+    margin: 0,
   },
   detailTitle: {
     color: theme.main.colors.title,
@@ -75,11 +75,11 @@ const styles = theme => ({
     fontWeight: 600,
     letterSpacing: ".04em",
     margin: "0 0 .4rem",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   detailValue: {
     lineHeight: 1.55,
-    margin: 0
+    margin: 0,
   },
   socialList: {
     display: "flex",
@@ -87,7 +87,7 @@ const styles = theme => ({
     gap: ".5rem .8rem",
     listStyle: "none",
     margin: 0,
-    padding: 0
+    padding: 0,
   },
   socialLink: {
     color: theme.base.colors.link,
@@ -95,12 +95,12 @@ const styles = theme => ({
     textDecoration: "none",
     "&:hover": {
       color: theme.base.colors.linkHover,
-      textDecoration: "underline"
-    }
-  }
+      textDecoration: "underline",
+    },
+  },
 });
 
-const ContactCard = props => {
+const ContactCard = (props) => {
   const { classes } = props;
 
   return (
@@ -110,8 +110,8 @@ const ContactCard = props => {
         Start with email
       </h2>
       <p className={classes.body}>
-        For cloud engineering, Kubernetes, Terraform, platform reliability, talks,
-        or technical reviews, send a short note and the most useful context.
+        For cloud engineering, Kubernetes, Terraform, platform reliability, talks, or technical
+        reviews, send a short note and the most useful context.
       </p>
       <a className={classes.primaryLink} href={mailtoHref}>
         Email {config.contactEmail}
@@ -120,15 +120,15 @@ const ContactCard = props => {
         <div className={classes.detailGroup}>
           <dt className={classes.detailTitle}>Best for</dt>
           <dd className={classes.detailValue}>
-            Platform engineering work, cloud-native delivery, production readiness,
-            and speaking opportunities.
+            Platform engineering work, cloud-native delivery, production readiness, and speaking
+            opportunities.
           </dd>
         </div>
         <div className={classes.detailGroup}>
           <dt className={classes.detailTitle}>Elsewhere</dt>
           <dd className={classes.detailValue}>
             <ul className={classes.socialList}>
-              {config.authorSocialLinks.map(item => (
+              {config.authorSocialLinks.map((item) => (
                 <li key={item.name}>
                   <a
                     className={classes.socialLink}
@@ -149,7 +149,7 @@ const ContactCard = props => {
 };
 
 ContactCard.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default injectSheet(styles)(ContactCard);

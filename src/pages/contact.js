@@ -8,7 +8,7 @@ import PageHeader from "../components/Page/PageHeader";
 import ContactCard from "../components/ContactForm";
 import Seo from "../components/Seo";
 
-const styles = theme => ({});
+const styles = (theme) => ({});
 
 const Contact = () => {
   return (
@@ -27,7 +27,7 @@ const Contact = () => {
 };
 
 Contact.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default injectSheet(styles)(Contact);

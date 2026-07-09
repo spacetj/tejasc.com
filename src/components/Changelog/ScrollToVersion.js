@@ -19,7 +19,7 @@ const ScrollToVersion = ({ versions }) => (
 );
 
 ScrollToVersion.propTypes = {
-  version: PropTypes.array
+  version: PropTypes.array,
 };
 
 export default ScrollToVersion;

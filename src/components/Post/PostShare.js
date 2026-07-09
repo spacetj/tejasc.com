@@ -8,12 +8,12 @@ import {
   FacebookShareCount,
   FacebookIcon,
   TwitterIcon,
-  LinkedinIcon
+  LinkedinIcon,
 } from "react-share";
 
 import config from "../../../content/meta/config";
 
-const styles = theme => ({
+const styles = (theme) => ({
   share: {
     display: "flex",
     flexDirection: "column",
@@ -21,24 +21,24 @@ const styles = theme => ({
     alignItems: "center",
     padding: "1em 0 0",
     [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
-      flexDirection: "row"
-    }
+      flexDirection: "row",
+    },
   },
   links: {
     display: "flex",
     flexDirection: "row",
     "& .SocialMediaShareButton": {
       margin: "0 .8em",
-      cursor: "pointer"
-    }
+      cursor: "pointer",
+    },
   },
   label: {
     fontSize: "1.2em",
     margin: "0 1em 1em",
     [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
-      margin: "0 1em"
-    }
-  }
+      margin: "0 1em",
+    },
+  },
 });
 
 class PostShare extends React.Component {
@@ -49,7 +49,7 @@ class PostShare extends React.Component {
     const url = config.siteUrl + config.pathPrefix + slug;
 
     const iconSize = 36;
-    const filter = count => (count > 0 ? count : "");
+    const filter = (count) => (count > 0 ? count : "");
 
     return (
       <div className={classes.share}>
@@ -65,7 +65,7 @@ class PostShare extends React.Component {
           >
             <FacebookIcon round size={iconSize} />
             <FacebookShareCount url={url}>
-              {count => <div className="share-count">{filter(count)}</div>}
+              {(count) => <div className="share-count">{filter(count)}</div>}
             </FacebookShareCount>
           </FacebookShareButton>
           <LinkedinShareButton
@@ -85,7 +85,7 @@ class PostShare extends React.Component {
 PostShare.propTypes = {
   post: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
-  slug: PropTypes.string.isRequired
+  slug: PropTypes.string.isRequired,
 };
 
 export default injectSheet(styles)(PostShare);

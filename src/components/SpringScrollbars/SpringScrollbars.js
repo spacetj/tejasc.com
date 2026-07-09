@@ -63,7 +63,7 @@ class SpringScrollbars extends Component {
       0,
       scrollHeight,
       scrollHeight * 0.01,
-      scrollHeight * 0.99
+      scrollHeight * 0.99,
     );
     this.spring.setCurrentValue(scrollTop).setAtRest();
     this.spring.setEndValue(val);
@@ -87,7 +87,7 @@ class SpringScrollbars extends Component {
       <div
         style={{ height: "100%", overflow: "auto" }}
         onScroll={forceCheckOnScroll && forceCheck}
-        ref={comp => {
+        ref={(comp) => {
           this.scrollbars = comp;
         }}
       >
@@ -103,21 +103,18 @@ SpringScrollbars.propTypes = {
   setScrollToTop: PropTypes.func.isRequired,
   forceCheckOnScroll: PropTypes.bool,
   navigatorPosition: PropTypes.string.isRequired,
-  isNavigator: PropTypes.bool
+  isNavigator: PropTypes.bool,
 };
 
 const mapStateToProps = (state, ownProps) => {
   return {
     scrollToTop: state.scrollToTop,
-    navigatorPosition: state.navigatorPosition
+    navigatorPosition: state.navigatorPosition,
   };
 };
 
 const mapDispatchToProps = {
-  setScrollToTop
+  setScrollToTop,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SpringScrollbars);
+export default connect(mapStateToProps, mapDispatchToProps)(SpringScrollbars);

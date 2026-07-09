@@ -1,44 +1,44 @@
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Grow from '@mui/material/Grow';
-import IconButton from '@mui/material/IconButton';
-import MenuItem from '@mui/material/MenuItem';
-import MenuList from '@mui/material/MenuList';
-import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Link } from 'gatsby';
-import PropTypes from 'prop-types';
-import React from 'react';
-import injectSheet from 'react-jss';
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Grow from "@mui/material/Grow";
+import IconButton from "@mui/material/IconButton";
+import MenuItem from "@mui/material/MenuItem";
+import MenuList from "@mui/material/MenuList";
+import Paper from "@mui/material/Paper";
+import Popper from "@mui/material/Popper";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { Link } from "gatsby";
+import PropTypes from "prop-types";
+import React from "react";
+import injectSheet from "react-jss";
 
-const styles = theme => ({
+const styles = (theme) => ({
   topMenu: {
     float: "right",
     margin: "5px 10px 0 0",
-    [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {}
+    [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {},
   },
   open: {
-    color: theme.bars.colors.icon
+    color: theme.bars.colors.icon,
   },
   popper: {
-    zIndex: 1
-  }
+    zIndex: 1,
+  },
 });
 
 class TopMenu extends React.Component {
   state = {
     anchorEl: null,
-    open: false
+    open: false,
   };
 
   componentWillUnmount() {
     clearTimeout(this.timeout);
   }
 
-  handleClick = event => {
-    this.setState(state => ({
+  handleClick = (event) => {
+    this.setState((state) => ({
       anchorEl: event.currentTarget,
-      open: !state.open
+      open: !state.open,
     }));
   };
 
@@ -80,7 +80,7 @@ class TopMenu extends React.Component {
                 <Paper>
                   <MenuList role="menu">
                     <MenuItem
-                      onClick={e => {
+                      onClick={(e) => {
                         this.props.homeLinkOnClick(e);
                         this.handleClose();
                       }}
@@ -93,7 +93,7 @@ class TopMenu extends React.Component {
                       return (
                         <Link key={fields.slug} to={fields.slug} style={{ display: "block" }}>
                           <MenuItem
-                            onClick={e => {
+                            onClick={(e) => {
                               this.props.pageLinkOnClick(e);
                               this.handleClose();
                             }}
@@ -105,7 +105,7 @@ class TopMenu extends React.Component {
                     })}
                     <Link to="/contact/" style={{ display: "block" }}>
                       <MenuItem
-                        onClick={e => {
+                        onClick={(e) => {
                           this.props.pageLinkOnClick(e);
                           this.handleClose();
                         }}
@@ -128,7 +128,7 @@ TopMenu.propTypes = {
   pages: PropTypes.array.isRequired,
   classes: PropTypes.object.isRequired,
   pageLinkOnClick: PropTypes.func.isRequired,
-  homeLinkOnClick: PropTypes.func.isRequired
+  homeLinkOnClick: PropTypes.func.isRequired,
 };
 
 export default injectSheet(styles)(TopMenu);

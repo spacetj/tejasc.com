@@ -25,7 +25,7 @@ const ChangelogList = ({ list, filter }) => {
 
 ChangelogList.propTypes = {
   list: PropTypes.array,
-  filter: PropTypes.object
+  filter: PropTypes.object,
 };
 
 export default ChangelogList;

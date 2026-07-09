@@ -14,10 +14,7 @@ const ChangelogFilter = ({ versions, onChange }) => (
         value="work"
         onChange={onChange}
       />
-      <label
-        className="changelog-checkbox-label"
-        htmlFor="changelog-filter-work"
-      >
+      <label className="changelog-checkbox-label" htmlFor="changelog-filter-work">
         work
       </label>
       <input
@@ -27,10 +24,7 @@ const ChangelogFilter = ({ versions, onChange }) => (
         value="education"
         onChange={onChange}
       />
-      <label
-        className="changelog-checkbox-label"
-        htmlFor="changelog-filter-education"
-      >
+      <label className="changelog-checkbox-label" htmlFor="changelog-filter-education">
         education
       </label>
       <input
@@ -40,10 +34,7 @@ const ChangelogFilter = ({ versions, onChange }) => (
         value="portfolio"
         onChange={onChange}
       />
-      <label
-        className="changelog-checkbox-label"
-        htmlFor="changelog-filter-portfolio"
-      >
+      <label className="changelog-checkbox-label" htmlFor="changelog-filter-portfolio">
         portfolio
       </label>
       <ScrollToVersion versions={versions} />
@@ -53,7 +44,7 @@ const ChangelogFilter = ({ versions, onChange }) => (
 
 ChangelogFilter.propTypes = {
   verions: PropTypes.array,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
 };
 
 export default ChangelogFilter;

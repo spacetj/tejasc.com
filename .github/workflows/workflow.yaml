@@ -39,6 +39,12 @@ jobs:
           cp $(command -v pngquant) node_modules/pngquant-bin/vendor/pngquant
           chmod +x node_modules/pngquant-bin/vendor/pngquant
         fi
+    - name: Check formatting
+      run: |
+        npm run format-output
+    - name: Run lint
+      run: |
+        npm run lint-errors
     - name: Dump npm install log on failure
       if: failure() && steps.install.conclusion == 'failure'
       run: |

@@ -29,7 +29,7 @@ const FeatureItem = ({ type, description }) => {
 
 FeatureItem.propTypes = {
   type: PropTypes.number,
-  description: PropTypes.string
+  description: PropTypes.string,
 };
 
 export default FeatureItem;

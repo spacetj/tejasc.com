@@ -23,14 +23,14 @@ import { isWideScreen, timeoutThrottlerHandler } from "../utils/helpers";
 const InfoBox = asyncComponent(
   () =>
     import("../components/InfoBox/")
-      .then(module => {
+      .then((module) => {
         return module;
       })
-      .catch(error => {}),
+      .catch((error) => {}),
   <Loading
     overrides={{ width: `${theme.info.sizes.width}px`, height: "100vh", right: "auto" }}
     afterRight={true}
-  />
+  />,
 );
 
 class Layout extends React.Component {
@@ -107,28 +107,28 @@ Layout.propTypes = {
   setIsWideScreen: PropTypes.func.isRequired,
   isWideScreen: PropTypes.bool.isRequired,
   fontSizeIncrease: PropTypes.number.isRequired,
-  setFontSizeIncrease: PropTypes.func.isRequired
+  setFontSizeIncrease: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
   return {
     pages: state.pages,
     isWideScreen: state.isWideScreen,
-    fontSizeIncrease: state.fontSizeIncrease
+    fontSizeIncrease: state.fontSizeIncrease,
   };
 };
 
 const mapDispatchToProps = {
   setIsWideScreen,
-  setFontSizeIncrease
+  setFontSizeIncrease,
 };
 
 const ConnectedLayout = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withRoot(injectSheet(globals)(Layout)));
 
-const LayoutWithData = props => {
+const LayoutWithData = (props) => {
   const data = useStaticQuery(graphql`
     query LayoutQuery {
       posts: allMarkdownRemark(
@@ -197,7 +197,7 @@ const LayoutWithData = props => {
 };
 
 LayoutWithData.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
 
 export default LayoutWithData;

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import injectSheet from "react-jss";
 
-const styles = theme => ({
+const styles = (theme) => ({
   wrapper: {
     padding: "1px",
     position: "absolute",
@@ -13,12 +13,12 @@ const styles = theme => ({
     overflow: "hidden",
     "@media print": {
       position: "relative",
-      overflow: "visible"
-    }
-  }
+      overflow: "visible",
+    },
+  },
 });
 
-const LayoutWrapper = props => {
+const LayoutWrapper = (props) => {
   const { classes, children } = props;
 
   return <div className={classes.wrapper}>{children}</div>;
@@ -26,7 +26,7 @@ const LayoutWrapper = props => {
 
 LayoutWrapper.propTypes = {
   classes: PropTypes.object.isRequired,
-  children: PropTypes.node
+  children: PropTypes.node,
 };
 
 export default injectSheet(styles)(LayoutWrapper);

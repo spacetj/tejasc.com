@@ -8,7 +8,7 @@ import PageHeader from "../components/Page/PageHeader";
 import Search from "../components/Search";
 import Seo from "../components/Seo";
 
-const SearchPage = props => {
+const SearchPage = (props) => {
   const { data } = props;
 
   return (
@@ -27,7 +27,7 @@ const SearchPage = props => {
 };
 
 SearchPage.propTypes = {
-  data: PropTypes.object.isRequired
+  data: PropTypes.object.isRequired,
 };
 
 export default SearchPage;

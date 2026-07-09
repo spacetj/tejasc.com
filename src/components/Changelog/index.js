@@ -7,7 +7,7 @@ import ChangelogContainer from "./ChangelogContainer";
 
 export default class ReactChangelog extends Component {
   static propTypes = {
-    endpoint: PropTypes.string
+    endpoint: PropTypes.string,
   };
 
   render() {
@@ -21,7 +21,7 @@ export default class ReactChangelog extends Component {
 }
 
 // Adding needed function to String prototype
-String.prototype.replaceAll = function(search, replacement) {
+String.prototype.replaceAll = function (search, replacement) {
   var target = this;
   return target.split(search).join(replacement);
 };

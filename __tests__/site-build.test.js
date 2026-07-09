@@ -84,6 +84,10 @@ const parseHtml = html => cheerio.load(html);
 const macOSChromePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 let puppeteerModule;
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+const smokeViewports = [
+  { name: "desktop", width: 1280, height: 720 },
+  { name: "mobile", width: 390, height: 844 }
+];
 
 const canonicalPath = slug => {
   const pathWithSlash = slug.startsWith("/") ? slug : `/${slug}`;
@@ -179,6 +183,21 @@ const puppeteerLaunchOptions = () => {
   return options;
 };
 
+const captureRuntimeErrors = (page, label) => {
+  const runtimeErrors = [];
+
+  page.on("pageerror", error => {
+    runtimeErrors.push(`${label} pageerror: ${error.message}`);
+  });
+  page.on("console", message => {
+    if (message.type() === "error") {
+      runtimeErrors.push(`${label} console: ${message.text()}`);
+    }
+  });
+
+  return runtimeErrors;
+};
+
 const readPage = (slug, filename = "index.html") => {
   const filePath = path.join(publicDir, normalizeSlug(slug), filename);
   expect(fs.existsSync(filePath)).toBe(true);
@@ -190,6 +209,19 @@ const readPage = (slug, filename = "index.html") => {
 const expectLinkForSlug = ($, slug) => {
   const linkCount = $(`a[href='${slug}']`).length + $(`a[href='${slug.replace(/\/$/, "")}']`).length;
   expect(linkCount).toBeGreaterThan(0);
+};
+
+const builtSmokeRoutes = () => {
+  const routes = [
+    "/",
+    "/contact/",
+    "/resume/",
+    "/search/",
+    ...buildMarkdownIndex(pagesDir).map(page => page.slug),
+    ...buildMarkdownIndex(postsDir).map(post => post.slug)
+  ];
+
+  return Array.from(new Set(routes));
 };
 
 beforeAll(() => {
@@ -246,24 +278,7 @@ describe("Gatsby build output", () => {
       const puppeteer = await loadPuppeteer();
       browser = await puppeteer.launch(puppeteerLaunchOptions());
       const page = await browser.newPage();
-      const runtimeErrors = [];
-
-      page.on("pageerror", error => {
-        if (
-          /element type is invalid|minified react error #130|invariant=130/i.test(error.message)
-        ) {
-          runtimeErrors.push(error.message);
-        }
-      });
-      page.on("console", message => {
-        const text = message.text();
-        if (
-          message.type() === "error" &&
-          /element type is invalid|minified react error #130|invariant=130/i.test(text)
-        ) {
-          runtimeErrors.push(text);
-        }
-      });
+      const runtimeErrors = captureRuntimeErrors(page, "home desktop");
 
       await page.setViewport({ width: 1280, height: 720 });
       const response = await page.goto(`http://127.0.0.1:${port}/`, {
@@ -311,6 +326,7 @@ describe("Gatsby build output", () => {
       const puppeteer = await loadPuppeteer();
       browser = await puppeteer.launch(puppeteerLaunchOptions());
       const page = await browser.newPage();
+      const runtimeErrors = captureRuntimeErrors(page, "talks desktop");
 
       await page.setViewport({ width: 1280, height: 720 });
       const response = await page.goto(`http://127.0.0.1:${port}/talks/`, {
@@ -344,6 +360,75 @@ describe("Gatsby build output", () => {
       expect(layoutState.articleHeight).toBeGreaterThan(600);
       expect(layoutState.articleLeft).toBeGreaterThan(300);
       expect(layoutState.articleWidth).toBeGreaterThan(300);
+      expect(runtimeErrors).toEqual([]);
+    } finally {
+      if (browser) {
+        await browser.close();
+      }
+      server.close();
+    }
+  });
+
+  test("built routes hydrate without browser runtime errors on desktop and mobile", async () => {
+    const server = await servePublic();
+    const address = server.address();
+    const port = typeof address === "object" ? address.port : 9000;
+    let browser;
+    const failures = [];
+
+    try {
+      const puppeteer = await loadPuppeteer();
+      browser = await puppeteer.launch(puppeteerLaunchOptions());
+
+      for (const route of builtSmokeRoutes()) {
+        for (const viewport of smokeViewports) {
+          const page = await browser.newPage();
+          const label = `${route} ${viewport.name}`;
+          const runtimeErrors = captureRuntimeErrors(page, label);
+
+          try {
+            await page.setViewport({ width: viewport.width, height: viewport.height });
+            const response = await page.goto(`http://127.0.0.1:${port}${route}`, {
+              waitUntil: "networkidle2",
+              timeout: 60000
+            });
+
+            if (!response || response.status() >= 400) {
+              failures.push(`${label} returned ${response ? response.status() : "no response"}`);
+              continue;
+            }
+
+            await page.waitForFunction(
+              () => document.querySelector("#___gatsby")?.innerText.trim().length > 20,
+              { timeout: 10000 }
+            );
+            await wait(500);
+
+            const state = await page.evaluate(() => {
+              const root = document.querySelector("#___gatsby");
+              return {
+                bodyTextLength: document.body.innerText.replace(/\s+/g, " ").trim().length,
+                rootChildCount: root ? root.children.length : 0
+              };
+            });
+
+            if (state.rootChildCount < 1) {
+              failures.push(`${label} rendered an empty Gatsby root`);
+            }
+            if (state.bodyTextLength < 20) {
+              failures.push(`${label} rendered too little body text`);
+            }
+            failures.push(...runtimeErrors);
+          } catch (error) {
+            failures.push(`${label} failed: ${error.message}`);
+            failures.push(...runtimeErrors);
+          } finally {
+            await page.close();
+          }
+        }
+      }
+
+      expect(failures).toEqual([]);
     } finally {
       if (browser) {
         await browser.close();
@@ -471,13 +556,32 @@ describe("Contact page", () => {
       .trim();
 
     expect(bodyText).toContain("Start with email");
-    expect(bodyText).toContain("contact@tejasc.com");
+    expect(bodyText).toContain("tejas@logit.social");
     expect(bodyText).not.toContain("Coming Soon");
     expect($("form").length).toBe(0);
     expect($("[data-netlify]").length).toBe(0);
-    expect($("a[href^='mailto:contact@tejasc.com']").length).toBeGreaterThan(0);
-    expect($("a[href*='github.com/spacetj']").length).toBeGreaterThan(0);
+    expect($("a[href^='mailto:tejas@logit.social']").length).toBeGreaterThan(0);
+    expect($("a[href*='github.com/spacetj']").length).toBe(0);
     expect($("a[href*='linkedin.com/in/tejasc']").length).toBeGreaterThan(0);
+  });
+});
+
+describe("Profile content", () => {
+  test("about page shows current Logit Social profile details without GitHub profile link", () => {
+    const html = readPage("/about/");
+    const $ = parseHtml(html);
+    const bodyText = $("body")
+      .text()
+      .replace(/\s+/g, " ")
+      .trim();
+
+    expect(bodyText).toContain("tejas@logit.social");
+    expect(bodyText).toContain("Sydney, NSW");
+    expect(bodyText).toContain("Founder of Logit Social");
+    expect(bodyText).not.toContain("contact@tejasc.com");
+    expect(bodyText).not.toContain("Melbourne, Victoria, Australia");
+    expect(bodyText).not.toContain("Lead Cloud Engineer");
+    expect($("a[href*='github.com/spacetj']").length).toBe(0);
   });
 });
 
@@ -586,15 +690,70 @@ describe("Deployment guardrails", () => {
     expect(deployScript).toMatch(/gcloud storage rsync \. "\$\{BUCKET_NAME\}"/);
     expect(deployScript).toContain("--delete-unmatched-destination-objects");
     expect(deployScript).toContain('--exclude=".*\\\\.map$"');
-    expect(deployScript).toMatch(/gcloud storage cp \.\/talks\/index\.html "\$\{BUCKET_NAME\}\/talks"/);
+    expect(deployScript).toContain('find . -mindepth 2 -maxdepth 2 -type f -name "index.html"');
+    expect(deployScript).toContain('object_name="${object_name%/index.html}"');
+    expect(deployScript).not.toContain("${BUCKET_NAME}/talks");
     expect(deployScript).toContain('${BUCKET_NAME}/**/*.html');
     expect(workflow).toContain('SKIP_BUILD: "1"');
     expect(workflow).toContain("./scripts/deploy-gcs.sh");
     expect(workflow).not.toContain("gsutil -m rsync");
   });
+
+  test("CI runs format and lint checks before build", () => {
+    const workflow = fs.readFileSync(path.join(projectRoot, ".github/workflows/workflow.yaml"), "utf8");
+    const formatIndex = workflow.indexOf("npm run format-output");
+    const lintIndex = workflow.indexOf("npm run lint-errors");
+    const buildIndex = workflow.indexOf("npm run build");
+
+    expect(formatIndex).toBeGreaterThan(-1);
+    expect(lintIndex).toBeGreaterThan(-1);
+    expect(buildIndex).toBeGreaterThan(-1);
+    expect(formatIndex).toBeLessThan(buildIndex);
+    expect(lintIndex).toBeLessThan(buildIndex);
+  });
+
+  test("static serving metadata points at production URLs", () => {
+    const robots = fs.readFileSync(path.join(projectRoot, "static/robots.txt"), "utf8");
+
+    expect(robots).toContain("Sitemap: https://tejasc.com/sitemap.xml");
+    expect(robots).not.toContain("gatsby-starter-personal-blog");
+  });
+
+  test("Terraform uses explicit providers and protects the website bucket", () => {
+    const providerConfig = fs.readFileSync(path.join(projectRoot, "infra/__provider.tf"), "utf8");
+    const bucketConfig = fs.readFileSync(
+      path.join(projectRoot, "infra/modules/static_website/bucket.tf"),
+      "utf8"
+    );
+
+    expect(providerConfig).toContain("required_providers");
+    expect(providerConfig).toContain('source  = "cloudflare/cloudflare"');
+    expect(providerConfig).toContain('source  = "hashicorp/google"');
+    expect(providerConfig).not.toMatch(/provider "cloudflare" \{[^}]*version/s);
+    expect(bucketConfig).toContain("force_destroy               = false");
+    expect(bucketConfig).toContain("uniform_bucket_level_access = true");
+    expect(bucketConfig).toContain("prevent_destroy = true");
+    expect(bucketConfig).not.toContain("bucket_policy_only");
+  });
 });
 
 describe("Featured sections", () => {
+  test("projects page highlights Logit Social as the current focused project", () => {
+    const html = readPage("/projects/");
+    const $ = parseHtml(html);
+    const bodyText = $("body")
+      .text()
+      .replace(/\s+/g, " ")
+      .trim();
+
+    expect($(".project-focus--logit").length).toBe(1);
+    expect(bodyText).toContain("Current focus");
+    expect(bodyText).toContain("Logit Social");
+    expect(bodyText).toContain("private journaling");
+    expect(bodyText).toContain("trusted Circles");
+    expect($("a[href='https://logit.social']").length).toBe(1);
+  });
+
   test("projects page lists multiple repositories", () => {
     const html = readPage("/projects/");
     const $ = parseHtml(html);

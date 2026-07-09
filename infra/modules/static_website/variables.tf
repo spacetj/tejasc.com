@@ -1,3 +1,15 @@
+terraform {
+  required_providers {
+    cloudflare = {
+      source = "cloudflare/cloudflare"
+    }
+
+    google = {
+      source = "hashicorp/google"
+    }
+  }
+}
+
 locals {
   mx_records = [
     "gmr-smtp-in.l.google.com",
@@ -8,18 +20,18 @@ locals {
   ]
 }
 
-variable domain {
+variable "domain" {
   type = string
 }
 
-variable cname {
+variable "cname" {
   type = string
 }
 
-variable location {
+variable "location" {
   type = string
 }
 
-variable class {
+variable "class" {
   type = string
 }

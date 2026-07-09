@@ -13,7 +13,7 @@ import WebpackIcon from "!svg-react-loader!../../images/svg-icons/webpack.svg?na
 import BabelIcon from "!svg-react-loader!../../images/svg-icons/babel.svg?name=BabelIcon";
 import NetlifyIcon from "!svg-react-loader!../../images/svg-icons/netlify.svg?name=NetlifyIcon";
 
-const styles = theme => ({
+const styles = (theme) => ({
   stack: {
     display: "none",
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
@@ -22,21 +22,21 @@ const styles = theme => ({
       left: 0,
       bottom: 0,
       width: "100%",
-      padding: "1em 2em"
-    }
+      padding: "1em 2em",
+    },
   },
   box: {
     display: "flex",
     justifyContent: "center",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
   },
   link: {
     display: "inline-block",
-    padding: "8px"
+    padding: "8px",
   },
   svg: {
     width: "22px",
-    height: "22px"
+    height: "22px",
   },
   header: {
     textAlign: "center",
@@ -44,8 +44,8 @@ const styles = theme => ({
     letterSpacing: ".3em",
     width: "100%",
     margin: "0 0 .8em 0",
-    fontWeight: 300
-  }
+    fontWeight: 300,
+  },
 });
 
 const stackLabels = {
@@ -58,10 +58,10 @@ const stackLabels = {
   netlify: "Netlify",
   react: "React",
   redux: "Redux",
-  webpack: "Webpack"
+  webpack: "Webpack",
 };
 
-const StackIcons = props => {
+const StackIcons = (props) => {
   const { classes } = props;
 
   const items = [
@@ -74,14 +74,14 @@ const StackIcons = props => {
     { name: "algolia", url: "https://www.algolia.com/", comp: AlgoliaIcon },
     { name: "webpack", url: "https://webpack.js.org/", comp: WebpackIcon },
     { name: "babel", url: "https://babeljs.io/", comp: BabelIcon },
-    { name: "netlify", url: "https://www.netlify.com/", comp: NetlifyIcon }
+    { name: "netlify", url: "https://www.netlify.com/", comp: NetlifyIcon },
   ];
 
   return (
     <div className={classes.stack}>
       <h5 className={classes.header}>built with:</h5>
       <div className={classes.box}>
-        {items.map(item => {
+        {items.map((item) => {
           const Icon = item.comp;
           const label = stackLabels[item.name] || item.name;
 
@@ -105,7 +105,7 @@ const StackIcons = props => {
 };
 
 StackIcons.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default injectSheet(styles)(StackIcons);

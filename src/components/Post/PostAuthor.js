@@ -4,7 +4,7 @@ import injectSheet from "react-jss";
 
 import avatar from "../../images/jpg/avatar.jpg";
 
-const styles = theme => ({
+const styles = (theme) => ({
   author: {
     margin: "3em 0 0",
     padding: "3em 0 0",
@@ -13,12 +13,12 @@ const styles = theme => ({
     flexDirection: "column",
     alignItems: "center",
     "& a": {
-      color: theme.base.colors.link
+      color: theme.base.colors.link,
     },
     [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
       flexDirection: "row",
-      justifyContent: "center"
-    }
+      justifyContent: "center",
+    },
   },
   avatar: {
     margin: "0 1em 1em",
@@ -28,29 +28,23 @@ const styles = theme => ({
     border: "1px solid #ddd",
     flexShrink: 0,
     [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
-      margin: "0 1em 0"
-    }
+      margin: "0 1em 0",
+    },
   },
   box: {
     display: "flex",
     flexDirection: "column",
     minHeight: "50px",
-    alignItems: "center"
-  }
+    alignItems: "center",
+  },
 });
 
-const PostAuthor = props => {
+const PostAuthor = (props) => {
   const { classes, author } = props;
 
   return (
     <div className={classes.author}>
-      <img
-        src={avatar}
-        className={classes.avatar}
-        alt=""
-        role="presentation"
-        aria-hidden="true"
-      />
+      <img src={avatar} className={classes.avatar} alt="" role="presentation" aria-hidden="true" />
       <div className={classes.box} dangerouslySetInnerHTML={{ __html: author.html }} />
     </div>
   );
@@ -58,7 +52,7 @@ const PostAuthor = props => {
 
 PostAuthor.propTypes = {
   classes: PropTypes.object.isRequired,
-  author: PropTypes.object.isRequired
+  author: PropTypes.object.isRequired,
 };
 
 export default injectSheet(styles)(PostAuthor);

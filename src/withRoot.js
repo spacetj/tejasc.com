@@ -36,7 +36,7 @@ function withRoot(Component) {
   }
 
   WithRoot.propTypes = {
-    muiPageContext: PropTypes.object
+    muiPageContext: PropTypes.object,
   };
 
   return WithRoot;

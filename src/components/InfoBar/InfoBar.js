@@ -11,7 +11,7 @@ import config from "../../../content/meta/config";
 import avatar from "../../images/jpg/avatar.jpg";
 import TopMenu from "./TopMenu";
 
-const styles = theme => ({
+const styles = (theme) => ({
   infoBar: {
     position: "absolute",
     background: theme.bars.colors.background,
@@ -26,11 +26,11 @@ const styles = theme => ({
       right: theme.base.sizes.linesMargin,
       height: 0,
       bottom: 0,
-      borderTop: `1px solid ${theme.base.colors.lines}`
+      borderTop: `1px solid ${theme.base.colors.lines}`,
     },
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
-      display: "none"
-    }
+      display: "none",
+    },
   },
   title: {
     float: "left",
@@ -39,20 +39,20 @@ const styles = theme => ({
     "& small": {
       display: "block",
       fontSize: ".65em",
-      margin: "2px 0 0 0"
-    }
+      margin: "2px 0 0 0",
+    },
   },
   avatarLink: {
     display: "block",
     float: "left",
-    margin: "13px 0 0 30px"
+    margin: "13px 0 0 30px",
   },
   avatar: {
     width: "36px",
     borderRadius: "65% 75%",
     border: "1px solid #ddd",
-    height: "36px"
-  }
+    height: "36px",
+  },
 });
 
 class InfoBar extends React.Component {
@@ -94,21 +94,18 @@ class InfoBar extends React.Component {
 
 InfoBar.propTypes = {
   classes: PropTypes.object.isRequired,
-  pages: PropTypes.array.isRequired
+  pages: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
   return {
     navigatorPosition: state.navigatorPosition,
-    navigatorShape: state.navigatorShape
+    navigatorShape: state.navigatorShape,
   };
 };
 
 const mapDispatchToProps = {
-  setNavigatorPosition
+  setNavigatorPosition,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(injectSheet(styles)(InfoBar));
+export default connect(mapStateToProps, mapDispatchToProps)(injectSheet(styles)(InfoBar));

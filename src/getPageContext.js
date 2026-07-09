@@ -27,7 +27,7 @@ function createPageContext() {
     // This is needed in order to inject the critical CSS.
     sheetsRegistry: new SheetsRegistry(),
     // Keep production SSR and client hydration class names stable across Gatsby bundles.
-    generateId: createStableGenerateId()
+    generateId: createStableGenerateId(),
   };
 }
 

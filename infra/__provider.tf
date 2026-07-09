@@ -1,22 +1,31 @@
-# Configure the Cloudflare provider.
-provider "cloudflare" {
-  version = "~> 2.0"
-}
-
-provider "google" {
-  project     = "sandbox-project-tc"
-  region      = "australia-southeast1"
-}
-
 terraform {
-  required_version = ">= 0.12.24"
+  required_version = ">= 1.5.0"
+
+  required_providers {
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 2.0"
+    }
+
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 5.0"
+    }
+  }
 
   backend "remote" {
-    hostname      = "app.terraform.io"
-    organization  = "tejasc"
+    hostname     = "app.terraform.io"
+    organization = "tejasc"
 
     workspaces {
       name = "website"
     }
   }
+}
+
+provider "cloudflare" {}
+
+provider "google" {
+  project = "sandbox-project-tc"
+  region  = "australia-southeast1"
 }

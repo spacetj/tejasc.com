@@ -3,7 +3,19 @@ title: $ tejasc projects
 menuTitle: projects
 ---
 
-List of open source projects that I have contributed to / currently maintaining.
+Current focus and selected open source projects that I have contributed to or currently maintain.
+
+<aside class="project-focus project-focus--logit" aria-labelledby="logit-social-project">
+  <p class="project-focus__eyebrow">Current focus</p>
+  <h3 id="logit-social-project">Logit Social</h3>
+  <p>Logit Social is a private journaling app for turning real moments into reflections, one useful next step, or a trusted Circles conversation. It brings Connect, Act, Reflect, Learn, and Self into one loop so personal work stays private and support stays consent-led.</p>
+  <ul class="project-focus__tags" aria-label="Logit Social focus areas">
+    <li>private journaling</li>
+    <li>trusted Circles</li>
+    <li>intentional action</li>
+  </ul>
+  <p><a class="project-focus__link" href="https://logit.social">Visit Logit Social</a></p>
+</aside>
 
 ---
 

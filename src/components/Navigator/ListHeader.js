@@ -6,7 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 
-const styles = theme => ({
+const styles = (theme) => ({
   closed: {
     display: "none",
     ".is-aside.closed &, .moving-featured.closed &": {
@@ -20,7 +20,7 @@ const styles = theme => ({
       width: "100%",
       margin: 0,
       height: `${theme.navigator.sizes.closedHeight}px`,
-      padding: "0 30px 0 40px"
+      padding: "0 30px 0 40px",
     },
     "& h3": {
       fontSize: "1.1em",
@@ -33,12 +33,12 @@ const styles = theme => ({
         display: "block",
         margin: "0 0 .1em",
         fontWeight: 300,
-        letterSpacing: ".2em"
-      }
-    }
+        letterSpacing: ".2em",
+      },
+    },
   },
   expand: {
-    color: theme.navigator.colors.postsHeader
+    color: theme.navigator.colors.postsHeader,
   },
   filter: {
     margin: `0 calc(-.5rem + ${theme.base.sizes.linesMargin}) 1em calc(-.5rem + ${
@@ -53,11 +53,11 @@ const styles = theme => ({
     fontWeight: 300,
     "& strong": {
       fontWeight: 600,
-      display: "block"
+      display: "block",
     },
     "& small": {
       display: "block",
-      margin: "0 0 .3em 0"
+      margin: "0 0 .3em 0",
     },
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
       margin: "0 0 1em 0",
@@ -66,18 +66,18 @@ const styles = theme => ({
         padding: "0 0 1em .5em",
         margin: `0 calc(-.5rem + ${theme.base.sizes.linesMargin}) 1em calc(-.5rem + ${
           theme.base.sizes.linesMargin
-        })`
-      }
-    }
+        })`,
+      },
+    },
   },
   clear: {
     position: "absolute",
     top: 0,
-    right: 0
-  }
+    right: 0,
+  },
 });
 
-const ListHeader = props => {
+const ListHeader = (props) => {
   const { classes, expandOnClick, categoryFilter, navigatorShape, removeFilter } = props;
 
   return (
@@ -95,20 +95,19 @@ const ListHeader = props => {
           </IconButton>
         </div>
       )}
-      {navigatorShape === "open" &&
-        categoryFilter !== "all posts" && (
-          <div className={classes.filter}>
-            <small>Active category filter:</small> <strong>{categoryFilter}</strong>
-            <IconButton
-              aria-label="Remove filtering"
-              className={classes.clear}
-              onClick={removeFilter}
-              title="Clear filtering"
-            >
-              <CloseIcon />
-            </IconButton>
-          </div>
-        )}
+      {navigatorShape === "open" && categoryFilter !== "all posts" && (
+        <div className={classes.filter}>
+          <small>Active category filter:</small> <strong>{categoryFilter}</strong>
+          <IconButton
+            aria-label="Remove filtering"
+            className={classes.clear}
+            onClick={removeFilter}
+            title="Clear filtering"
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
+      )}
     </header>
   );
 };
@@ -118,7 +117,7 @@ ListHeader.propTypes = {
   expandOnClick: PropTypes.func.isRequired,
   categoryFilter: PropTypes.string.isRequired,
   navigatorShape: PropTypes.string.isRequired,
-  removeFilter: PropTypes.func.isRequired
+  removeFilter: PropTypes.func.isRequired,
 };
 
 export default injectSheet(styles)(ListHeader);

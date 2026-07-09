@@ -6,15 +6,15 @@ require("core-js/es/array/find");
 
 import config from "../../../content/meta/config";
 
-const styles = theme => ({
+const styles = (theme) => ({
   postComments: {
     margin: "3em 0 0",
     padding: "3em 0 0",
-    borderTop: "1px solid #ddd"
-  }
+    borderTop: "1px solid #ddd",
+  },
 });
 
-const PostComments = props => {
+const PostComments = (props) => {
   const { classes, slug, facebook } = props;
 
   return (
@@ -35,7 +35,7 @@ PostComments.propTypes = {
   post: PropTypes.object.isRequired,
   slug: PropTypes.string.isRequired,
   theme: PropTypes.object.isRequired,
-  facebook: PropTypes.object.isRequired
+  facebook: PropTypes.object.isRequired,
 };
 
 export default injectSheet(styles, { injectTheme: true })(PostComments);

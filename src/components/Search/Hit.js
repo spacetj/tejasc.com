@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import injectSheet from "react-jss";
 import { Link } from "gatsby";
 
-const styles = theme => ({
+const styles = (theme) => ({
   link: {
     padding: ".5em 0 1em 1em",
     position: "relative",
@@ -16,18 +16,18 @@ const styles = theme => ({
       position: "absolute",
       top: ".5em",
       left: ".1em",
-      color: theme.base.colors.accent
+      color: theme.base.colors.accent,
     },
     "& span": {
       fontWeight: 300,
       display: "block",
       fontSize: ".9em",
-      margin: ".2em 0 0 0"
-    }
-  }
+      margin: ".2em 0 0 0",
+    },
+  },
 });
 
-const Hit = props => {
+const Hit = (props) => {
   const { classes, hit } = props;
 
   return (
@@ -40,7 +40,7 @@ const Hit = props => {
 
 Hit.propTypes = {
   classes: PropTypes.object.isRequired,
-  hit: PropTypes.object.isRequired
+  hit: PropTypes.object.isRequired,
 };
 
 export default injectSheet(styles)(Hit);
