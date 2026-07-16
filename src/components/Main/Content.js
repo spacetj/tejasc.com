@@ -51,6 +51,17 @@ const styles = (theme) => ({
     "& li": {
       margin: "0 0 .5em 0",
     },
+    "& li > strong:first-child > code": {
+      background: "#f4f7ee",
+      border: "1px solid #c7d5ad",
+      borderRadius: "4px",
+      color: "#4f681d",
+      display: "inline-block",
+      fontSize: ".9em",
+      lineHeight: 1.4,
+      padding: ".08em .38em",
+      textShadow: "none",
+    },
     "& blockquote": {
       border: `5px solid ${theme.main.colors.blockquoteFrame}`,
       fontStyle: "italic",
