@@ -7,7 +7,7 @@ As founder of Logit Social, I focus on building private, intentional software fo
 
 Global Options:
 
-* **--contact-email**	     tejas@logit.social
-* **--current-city**	     Sydney, NSW
-* **--current-title**	     Founder of Logit Social
-* **--linkedin**	         https://www.linkedin.com/in/tejasc/
+* **`--contact-email`**     tejas@logit.social
+* **`--current-city`**      Sydney, NSW
+* **`--current-title`**     Founder of Logit Social
+* **`--linkedin`**          https://www.linkedin.com/in/tejasc/
