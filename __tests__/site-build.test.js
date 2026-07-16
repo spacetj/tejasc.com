@@ -295,16 +295,22 @@ describe("Gatsby build output", () => {
 
       const hydratedState = await page.evaluate(() => {
         const root = document.querySelector("#___gatsby");
+        const credentialsLink = Array.from(document.querySelectorAll("a")).some(link => {
+          const path = new URL(link.href).pathname.replace(/\/$/, "");
+          return path === "/credentials";
+        });
         return {
           bodyText: document.body.innerText.replace(/\s+/g, " ").trim(),
+          credentialsLink,
           rootChildCount: root ? root.children.length : 0
         };
       });
 
       expect(runtimeErrors).toEqual([]);
       expect(hydratedState.rootChildCount).toBeGreaterThan(0);
+      expect(hydratedState.credentialsLink).toBe(true);
       expect(hydratedState.bodyText.toLowerCase()).toContain("stability and reliability");
-      ["projects", "talks", "blog"].forEach(label => {
+      ["projects", "talks", "credentials", "blog"].forEach(label => {
         expect(hydratedState.bodyText.toLowerCase()).toContain(label);
       });
       expect(hydratedState.bodyText.toLowerCase()).not.toContain("success");
@@ -582,6 +588,212 @@ describe("Profile content", () => {
     expect(bodyText).not.toContain("Melbourne, Victoria, Australia");
     expect(bodyText).not.toContain("Lead Cloud Engineer");
     expect($("a[href*='github.com/spacetj']").length).toBe(0);
+  });
+});
+
+describe("Command-style page options", () => {
+  const expectedOptions = {
+    "/about/": [
+      "--contact-email tejas@logit.social",
+      "--current-city Sydney, NSW",
+      "--current-title Founder of Logit Social",
+      "--linkedin https://www.linkedin.com/in/tejasc/"
+    ],
+    "/projects/": [
+      "--status Current focus",
+      "--type Product",
+      "--focus Private journaling and trusted Circles",
+      "--website logit.social",
+      "--type Open source project",
+      "--focus Cloud-native production readiness",
+      "--repository github.com/spacetj/production-readiness",
+      "--type Command-line utility",
+      "--status Under development",
+      "--focus Distributed systems testing",
+      "--repository github.com/covarity/anchorctl",
+      "--type Personal website",
+      "--stack React and GatsbyJS",
+      "--repository github.com/spacetj/tejasc.com"
+    ],
+    "/talks/": [
+      "--event Google Cloud Next",
+      "--date 2025",
+      "--topic Enterprise-grade Cloud Run",
+      "--video Watch on YouTube",
+      "--event KubeSummit Sydney",
+      "--date 2019",
+      "--topic OPA policy templating and testing"
+    ],
+    "/credentials/": [
+      "--provider Google Cloud",
+      "--provider Cloud Native Computing Foundation",
+      "--specialty Hybrid Multi-Cloud",
+      "--date 28 September 2020",
+      "--specialty Kubernetes administration",
+      "--date 1 November 2019",
+      "--specialty Cloud architecture",
+      "--date 1 April 2019",
+      "--original-expiry 1 April 2021",
+      "--specialty Kubernetes application development",
+      "--date 5 January 2019"
+    ]
+  };
+
+  Object.entries(expectedOptions).forEach(([slug, options]) => {
+    test(`${slug} renders meaningful option and value pairs`, () => {
+      const html = readPage(slug);
+      const $ = parseHtml(html);
+      const renderedOptions = $("article li")
+        .toArray()
+        .map(element => $(element).text().replace(/[‘’]/g, "'").replace(/\s+/g, " ").trim());
+
+      options.forEach(option => {
+        expect(renderedOptions).toContain(option);
+      });
+    });
+  });
+});
+
+describe("Credentials page", () => {
+  test("shows all four credential records as responsive images", () => {
+    const html = readPage("/credentials/");
+    const $ = parseHtml(html);
+    const bodyText = $("body").text().replace(/\s+/g, " ").trim();
+    const certificateImages = $("img[alt*='certificate awarded to Tejas Cherukara']");
+
+    [
+      "Google Cloud Certified Fellow",
+      "Certified Kubernetes Administrator",
+      "Google Cloud Certified Professional Cloud Architect",
+      "Certified Kubernetes Application Developer",
+      "lead enterprise hybrid and multi-cloud adoption with Anthos",
+      "install, configure, operate, and troubleshoot production-grade Kubernetes clusters",
+      "turn business objectives into robust, secure, scalable, cost-effective",
+      "design, build, configure, expose, observe, and troubleshoot scalable cloud-native applications"
+    ].forEach(title => {
+      expect(bodyText).toContain(title);
+    });
+
+    expect(certificateImages.length).toBe(4);
+    expect($("a[href$='.pdf']").length).toBe(0);
+  });
+
+  test("places options inside the credential they describe", () => {
+    const html = readPage("/credentials/");
+    const $ = parseHtml(html);
+    const expectedSections = {
+      "#gcp-certified-fellow": [
+        "--provider Google Cloud",
+        "--specialty Hybrid Multi-Cloud",
+        "--date 28 September 2020"
+      ],
+      "#certified-kubernetes-administrator": [
+        "--provider Cloud Native Computing Foundation",
+        "--specialty Kubernetes administration",
+        "--date 1 November 2019"
+      ],
+      "#professional-cloud-architect": [
+        "--provider Google Cloud",
+        "--specialty Cloud architecture",
+        "--date 1 April 2019",
+        "--original-expiry 1 April 2021"
+      ],
+      "#certified-kubernetes-application-developer": [
+        "--provider Cloud Native Computing Foundation",
+        "--specialty Kubernetes application development",
+        "--date 5 January 2019"
+      ]
+    };
+
+    expect($("article ul").length).toBe(4);
+
+    Object.entries(expectedSections).forEach(([selector, options]) => {
+      const sectionText = $(selector)
+        .nextUntil("hr")
+        .text()
+        .replace(/\s+/g, " ")
+        .trim();
+
+      options.forEach(option => {
+        expect(sectionText).toContain(option);
+      });
+    });
+  });
+});
+
+describe("Project and talk option placement", () => {
+  test("places options inside the project they describe", () => {
+    const html = readPage("/projects/");
+    const $ = parseHtml(html);
+    const expectedSections = {
+      "#logit-social-project": [
+        "--status Current focus",
+        "--type Product",
+        "--website logit.social"
+      ],
+      "#cloud-native-production-readiness": [
+        "--type Open source project",
+        "--repository github.com/spacetj/production-readiness"
+      ],
+      "#anchorctl": [
+        "--type Command-line utility",
+        "--status Under development",
+        "--repository github.com/covarity/anchorctl"
+      ],
+      "#website": [
+        "--type Personal website",
+        "--stack React and GatsbyJS",
+        "--repository github.com/spacetj/tejasc.com"
+      ]
+    };
+
+    expect($("article ul").length).toBe(4);
+
+    Object.entries(expectedSections).forEach(([selector, options]) => {
+      const heading = $(selector);
+      const sectionText =
+        selector === "#logit-social-project"
+          ? heading.closest("aside").text()
+          : heading.nextUntil("hr").text();
+      const normalizedText = sectionText.replace(/\s+/g, " ").trim();
+
+      options.forEach(option => {
+        expect(normalizedText).toContain(option);
+      });
+    });
+  });
+
+  test("places options inside the talk they describe", () => {
+    const html = readPage("/talks/");
+    const $ = parseHtml(html);
+    const expectedSections = {
+      "#cloud-next-25": [
+        "--event Google Cloud Next",
+        "--date 2025",
+        "--topic Enterprise-grade Cloud Run",
+        "--video Watch on YouTube"
+      ],
+      "#kubesummit-2019": [
+        "--event KubeSummit Sydney",
+        "--date 2019",
+        "--topic OPA policy templating and testing",
+        "--video Watch on YouTube"
+      ]
+    };
+
+    expect($("article ul").length).toBe(2);
+
+    Object.entries(expectedSections).forEach(([selector, options]) => {
+      const sectionText = $(selector)
+        .nextUntil("hr")
+        .text()
+        .replace(/\s+/g, " ")
+        .trim();
+
+      options.forEach(option => {
+        expect(sectionText).toContain(option);
+      });
+    });
   });
 });
 
