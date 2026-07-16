@@ -206,6 +206,19 @@ const readPage = (slug, filename = "index.html") => {
   return content;
 };
 
+const readStructuredData = slug => {
+  const html = readPage(slug);
+  const $ = parseHtml(html);
+  const scripts = $("script[type='application/ld+json']")
+    .toArray()
+    .map(element => JSON.parse($(element).html()));
+
+  expect(scripts).toHaveLength(1);
+  expect(scripts[0]["@context"]).toBe("https://schema.org");
+  expect(Array.isArray(scripts[0]["@graph"])).toBe(true);
+  return scripts[0]["@graph"];
+};
+
 const expectLinkForSlug = ($, slug) => {
   const linkCount = $(`a[href='${slug}']`).length + $(`a[href='${slug.replace(/\/$/, "")}']`).length;
   expect(linkCount).toBeGreaterThan(0);
@@ -349,15 +362,19 @@ describe("Gatsby build output", () => {
       const layoutState = await page.evaluate(() => {
         const main = document.querySelector("main");
         const article = document.querySelector("article");
+        const optionFlag = article && article.querySelector("li > strong:first-child > code");
         const mainRect = main && main.getBoundingClientRect();
         const articleRect = article && article.getBoundingClientRect();
+        const optionFlagStyle = optionFlag && getComputedStyle(optionFlag);
 
         return {
           mainHeight: mainRect ? mainRect.height : 0,
           mainLeft: mainRect ? mainRect.left : 0,
           articleHeight: articleRect ? articleRect.height : 0,
           articleLeft: articleRect ? articleRect.left : 0,
-          articleWidth: articleRect ? articleRect.width : 0
+          articleWidth: articleRect ? articleRect.width : 0,
+          optionFlagBackground: optionFlagStyle ? optionFlagStyle.backgroundColor : "",
+          optionFlagColor: optionFlagStyle ? optionFlagStyle.color : ""
         };
       });
 
@@ -366,6 +383,8 @@ describe("Gatsby build output", () => {
       expect(layoutState.articleHeight).toBeGreaterThan(600);
       expect(layoutState.articleLeft).toBeGreaterThan(300);
       expect(layoutState.articleWidth).toBeGreaterThan(300);
+      expect(layoutState.optionFlagBackground).toBe("rgb(244, 247, 238)");
+      expect(layoutState.optionFlagColor).toBe("rgb(79, 104, 29)");
       expect(runtimeErrors).toEqual([]);
     } finally {
       if (browser) {
@@ -717,6 +736,84 @@ describe("Credentials page", () => {
       options.forEach(option => {
         expect(sectionText).toContain(option);
       });
+    });
+  });
+});
+
+describe("Structured SEO data", () => {
+  test("publishes a canonical professional profile", () => {
+    const graph = readStructuredData("/about/");
+    const profilePage = graph.find(node => node["@type"] === "ProfilePage");
+    const person = graph.find(node => node["@type"] === "Person");
+
+    expect(profilePage.mainEntity).toEqual({ "@id": "https://tejasc.com/#person" });
+    expect(person).toEqual(
+      expect.objectContaining({
+        "@id": "https://tejasc.com/#person",
+        name: "Tejas Cherukara",
+        alternateName: "Tejas C",
+        jobTitle: "Founder of Logit Social",
+        url: "https://tejasc.com/about"
+      })
+    );
+    expect(person.sameAs).toContain("https://www.linkedin.com/in/tejasc/");
+    expect(person.hasCredential).toHaveLength(4);
+  });
+
+  test("describes all credentials and their providers", () => {
+    const graph = readStructuredData("/credentials/");
+    const page = graph.find(node => node["@type"] === "CollectionPage");
+    const credentialList = graph.find(
+      node => node["@type"] === "ItemList" && node["@id"].endsWith("#credential-list")
+    );
+    const credentials = graph.filter(node => node["@type"] === "EducationalOccupationalCredential");
+
+    expect(page.mainEntity).toEqual({ "@id": credentialList["@id"] });
+    expect(credentialList.itemListElement).toHaveLength(4);
+    expect(credentials).toHaveLength(4);
+    credentials.forEach(credential => {
+      expect(credential.name).toBeTruthy();
+      expect(credential.dateCreated).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(credential.credentialCategory).toBe("Professional certification");
+      expect(credential.recognizedBy.name).toBeTruthy();
+      expect(credential.competencyRequired).toBeTruthy();
+    });
+  });
+
+  test("describes both videos with Google-required discovery fields", () => {
+    const graph = readStructuredData("/talks/");
+    const videoList = graph.find(
+      node => node["@type"] === "ItemList" && node["@id"].endsWith("#video-list")
+    );
+    const videos = graph.filter(node => node["@type"] === "VideoObject");
+
+    expect(videoList.itemListElement).toHaveLength(2);
+    expect(videos).toHaveLength(2);
+    videos.forEach(video => {
+      expect(video.name).toBeTruthy();
+      expect(video.description).toBeTruthy();
+      expect(video.thumbnailUrl).toMatch(/^https:\/\/i\.ytimg\.com\/vi\//);
+      expect(video.uploadDate).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+      expect(video.duration).toMatch(/^PT\d+M\d+S$/);
+      expect(video.embedUrl).toMatch(/^https:\/\/www\.youtube\.com\/embed\//);
+    });
+  });
+
+  test("describes the product and source-code projects", () => {
+    const graph = readStructuredData("/projects/");
+    const projectList = graph.find(
+      node => node["@type"] === "ItemList" && node["@id"].endsWith("#project-list")
+    );
+    const softwareApplication = graph.find(node => node["@type"] === "SoftwareApplication");
+    const sourceProjects = graph.filter(node => node["@type"] === "SoftwareSourceCode");
+
+    expect(projectList.itemListElement).toHaveLength(4);
+    expect(softwareApplication.name).toBe("Logit Social");
+    expect(softwareApplication.creator).toEqual({ "@id": "https://tejasc.com/#person" });
+    expect(sourceProjects).toHaveLength(3);
+    sourceProjects.forEach(project => {
+      expect(project.codeRepository).toMatch(/^https:\/\/github\.com\//);
+      expect(project.contributor).toEqual({ "@id": "https://tejasc.com/#person" });
     });
   });
 });

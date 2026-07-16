@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import config from "../../../content/meta/config";
+import { buildStructuredData, serializeStructuredData } from "../../utils/structuredData";
 
 const siteRoot = `${config.siteUrl}${config.pathPrefix || ""}`.replace(/\/+$/, "");
 
@@ -43,6 +44,12 @@ const Seo = (props) => {
   const twitterCreator = config.authorTwitterAccount
     ? `@${config.authorTwitterAccount.replace(/^@/, "")}`
     : "";
+  const structuredData = buildStructuredData({
+    description,
+    slug: normalizePath(postSlug),
+    title: postTitle || config.siteTitle,
+    url,
+  });
 
   return (
     <Helmet
@@ -67,6 +74,7 @@ const Seo = (props) => {
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
+      <script type="application/ld+json">{serializeStructuredData(structuredData)}</script>
     </Helmet>
   );
 };
